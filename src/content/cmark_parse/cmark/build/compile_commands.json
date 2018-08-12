@@ -1,0 +1,322 @@
+[
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/cmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/node.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/iterator.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/blocks.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/inlines.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/scanners.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/utf8.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/buffer.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/references.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/render.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/man.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/xml.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/html.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/erlang.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/commonmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/latex.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/houdini_href_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/houdini_html_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/houdini_html_u.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/cmark_ctype.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -DCMARK_STATIC_DEFINE -o CMakeFiles/cmark.dir/main.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/main.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/main.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/cmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/node.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/iterator.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/blocks.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/inlines.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/scanners.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/utf8.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/buffer.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/references.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/render.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/man.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/xml.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/html.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/erlang.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/commonmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/latex.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/houdini_href_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/houdini_html_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/houdini_html_u.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc  -Dlibcmark_EXPORTS -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -o CMakeFiles/libcmark.dir/cmark_ctype.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/cmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/node.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/node.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/iterator.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/iterator.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/blocks.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/blocks.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/inlines.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/inlines.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/scanners.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/scanners.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/utf8.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/utf8.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/buffer.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/buffer.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/references.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/references.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/render.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/render.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/man.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/man.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/xml.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/xml.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/html.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/html.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/erlang.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/erlang.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/commonmark.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/commonmark.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/latex.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/latex.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/houdini_href_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_href_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/houdini_html_e.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_e.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/houdini_html_u.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/houdini_html_u.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/src",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src/. -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG -fPIC -fvisibility=hidden   -DCMARK_STATIC_DEFINE -o CMakeFiles/libcmark_static.dir/cmark_ctype.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/src/cmark_ctype.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/api_test",
+  "command": "/usr/bin/c++    -I/home/lloyd/ep/src/content/cmark_parse/cmark/src -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src  -O3 -DNDEBUG   -o CMakeFiles/api_test.dir/cplusplus.cpp.o -c /home/lloyd/ep/src/content/cmark_parse/cmark/api_test/cplusplus.cpp",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/api_test/cplusplus.cpp"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/api_test",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -o CMakeFiles/api_test.dir/harness.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/api_test/harness.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/api_test/harness.c"
+},
+{
+  "directory": "/home/lloyd/ep/src/content/cmark_parse/cmark/build/api_test",
+  "command": "/usr/bin/cc   -I/home/lloyd/ep/src/content/cmark_parse/cmark/src -I/home/lloyd/ep/src/content/cmark_parse/cmark/build/src   -Wall -Wextra -std=c99 -pedantic -O3 -DNDEBUG   -o CMakeFiles/api_test.dir/main.c.o   -c /home/lloyd/ep/src/content/cmark_parse/cmark/api_test/main.c",
+  "file": "/home/lloyd/ep/src/content/cmark_parse/cmark/api_test/main.c"
+}
+]

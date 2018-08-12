@@ -1,0 +1,74 @@
+
+
+January 1, 2018
+
+ErlPress System Design 
+
+
+DEFINITIONS
+
+Document
+   Meta data plus list of Pages
+
+Format
+   Structure that defines print and digital content delivery 
+   conventions
+
+Page
+   Structure that associates page number with PageGrid
+
+PageGrid
+   Structure that specifies composition of Panels on a Page
+
+Panel
+   Structure that associates an index number, name, and a Box
+
+Box
+   A map that specifies position, dimensions, borders, colors, etc.;
+   e.g. all attributes needed to impose a Block of Copy on a Page
+
+Block
+   A unit of Copy such as N lines of Text or a graphic 
+
+Copy
+   Text
+   Graphics
+
+Layout
+   A structure that defines how copy is imposed on pages in a 
+   document
+
+TagMap
+   Structrure that maps XML tags to font specifications
+
+TypeSpec
+   Structure that specifies text style attributes including:
+     Justification, Leading, PointSize, TagMap
+
+TagMap
+   Structure that maps copy mark_up tags to font specifications
+
+COPYFITTING
+
+We assume that Copy proceeds through a pipeline of transformations
+from input to output. It needs to styled and positioned on the Page.
+The transformations might look something like:
+
+MarkDown | GUI input 
+XML      - Canonical structure
+RichText - List of styled, copyfit lines
+pdf | LaTex | HTML 
+
+PASTE-UP
+
+Appropriate paste-up routines are needed for each output format.
+
+EDITORS
+   
+   Content management
+   Text input
+   Graphics input
+   Format specifications
+   Layout editor
+
+

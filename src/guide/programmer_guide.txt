@@ -1,0 +1,465 @@
+
+%% *****************************************************************
+%% NOTE: erlPress is very much a work in progress. No doubt the 
+%%       functionality of erlPress_core can be extended in many ways
+%%       and both code and documentation can be significantly
+%%       improved.
+%%
+%%       We welcome your involvement. High on our list: support for
+%%       OpenType and TrueType fonts. And more: We much look forward
+%%       to creative applications that build on erlPress_core.
+%% *****************************************************************
+
+
+erlPress Programmer’s Guide
+
+
+erlPress strives to automate print-media editorial/publishng workflow and to deliver the most intuitive possible user interface.
+
+At heart, erlPress involves positioning boxes of various size in two-dimensional space.
+
+Boxes contain other boxes, graphic elements, and text. Much of the code involves translating sets of xy coordinates relative to other xy coordinates. Boxes define the “selected areas” in which output devices “paint” graphic elements and text.
+
+Operationally, “paint” is implemented as sequences of PDF and postscript operators defined in PDF reference manual Version 1.4.
+
+
+%% *****************************************************************
+%% Concepts, technical terms, and jargon 
+%% *****************************************************************
+
+
+Concepts, technical terms, and jargon
+
+The history of printing and graphic design stretches back to Johannes Gutenberg’s invention of movable type in 1439 and, no doubt, before.
+
+A rich and descriptive technical vocabulary that facilitates efficient teamwork in the production of printed documents has evolved over over the centuries and is used widely in graphic design studios and print shops today.
+
+For this reason, erlPress employs technical terms and concepts drawn from print/graphic design tradition as well as terms defined in the PDF reference manual.
+
+We've added a few technical/jarony terms of our own.
+
+Here are a few terms that will serve you well as you review and work with erlPress code:
+
+
+%% *****************************************************************
+%% Content
+%% *****************************************************************
+
+
+CONTENT
+
+erlPress composes "content elements" to generate PDF files. Content 
+includes text, images, and geometric objects. Text may be presented
+as "text_blocks", e.g. raw text; "articles"; or "manuscripts." 
+
+Content elements have one or more attributes that define the 
+position, size, and other attributes of the element. These attributes
+are represented in erlPress as Erlang maps.
+
+
+%% *****************************************************************
+%% Job 
+%% *****************************************************************
+
+JOB
+
+This Erlang map defines a "Job":
+
+create(Title, Publisher) ->
+   #{ title          => Title
+    , publisher      => Publisher
+    , path           => "./publishers/" ++ Publisher ++ "/jobs"
+    , directory      => re:replace(Title, " ", "_", [global, {return, list}])
+    , author         => undefined
+    , subject        => undefined
+    , description    => undefined
+    , keywords       => undefined
+    , start_date     => ep_lib:today()
+    , deadline       => undefined
+    , paper_stock    => ?PAPER_STOCK
+    , page_format    => ?PAGE_FORMAT
+   }.
+
+Note that defaults are provided for several attributes. But the defaults are easily changed.
+
+
+%% *****************************************************************
+%% Metrics 
+%% *****************************************************************
+
+METRICS
+
+Printers use picas and points as primary units of measure.
+
+1 pica  = 1/6 inch
+1 point = 12 picas
+
+erlPress uses points for all positioning and size specifications. 
+
+erlPress copyfitting routines use 1/1000th of a pica as unit of 
+measure between glyphs. 
+
+To convert a position or size tuple specified in inches, e.g. {X, Y}
+or {Width, Height}, to points, execute ...ep_metrics:to_points/2
+
+
+%% *****************************************************************
+%% Paper stock 
+%% *****************************************************************
+
+PAPER STOCK
+
+Printers feed "paper stock" through their printers to reproduce
+printed matter.
+
+To see list of of standard paper sizes used by printers, execute
+...ep_paper_stock:standard_sizes/0.
+
+To convert paper stock specified in inches to points, execute
+..ep_paper_stock:stock_size_points/1.
+
+To see selected list of paper stock suitable for desktop printers,
+execute ..ep_paper_stock:desktop_printer_stock/0.
+
+
+%% *****************************************************************
+%% Boxes 
+%% *****************************************************************
+
+BOXES
+
+Rectangles or "boxes" are convenient abstractions for placing 
+content elements on a page.
+
+The PDF reference manual Ver. 1.4 specifies several nested boxes; p. 677:
+
+-- Media box 
+-- Crop box
+-- Bleed box
+-- Trim box
+-- Art box
+
+Media box is essentially synonomous with dimensions paper stock.
+
+Crop box "defines the region to which the contents of the page are to be
+clipped (cropped) when displayed or printed... the crop box will
+determine how the page's contents are to be positioned on the output
+medium."
+
+Bleed box "defines the region to which the contents of the page should
+be clipped when output in a production environment. This may include
+some extra 'bleed area' needed to accomodate the physical limitations
+of cutting, folding, and trimming equipment."
+
+Trim box "defines the intended dimensions of the finished page after
+trimming... The default value is the page's crop box."
+
+Art box "defines the extent of the page's meaningful content... as 
+intended by the page's creator."
+
+erlPress positions and scales content in "panels." See ../layout/ep_panels.erl.
+
+
+%% *****************************************************************
+%% Imposition 
+%% *****************************************************************
+
+IMPOSITION
+
+Imposition refers to how the crop box is positioned on the output
+medium. If the page is sufficiently smaller than the paper stock
+on which it's printed, a bookmark or postcard say, it may be possible 
+to print two or more pages on the same sheet. 
+
+
+%% *****************************************************************
+%% Format 
+%% *****************************************************************
+
+FORMAT
+
+Format refers to the size and intended functionality of the final
+printed piece. 
+
+To see list of formats supported by erlPress, execute
+rp(ep_format:formats()).
+
+To trim sizes, execute rp(ep_format:format_list()) in the erlPress_core Erlang shell..
+
+
+%% *****************************************************************
+%% Page grid 
+%% *****************************************************************
+
+PAGE GRID 
+
+Graphic designers create "page grids" to organize content on a page.
+
+A page grid is a composition of boxes, each of which represents a block
+of text or image.
+
+A well-designed page grid presents a pleasing composition, organized
+content, and a controlled "eye-path" guiding the consumer through
+the content.
+
+Page grids are represented by a list of "panels" in erlPress. Page grid functions are not yet available in erlPress_core.
+
+
+
+%% *****************************************************************
+%% Panel 
+%% *****************************************************************
+
+PANEL
+
+In erlPress, a panel is a box that has width, height, a name and a unique 
+index number relative to other panels on the page.
+
+This map describes a panel:
+
+create(ID, Position, Size) ->
+    #{ id                => ID
+     , position          => Position
+     , size              => Size
+     , radius            => ?RADIUS
+     , content_cursor    => init_content_cursor(Position)
+     , border            => ?BORDER
+     , border_style      => ?BORDER_STYLE
+     , border_color      => ?BORDER_COLOR
+     , background_color  => ?BACKGROUND_COLOR
+     , margin            => ?MARGIN
+     , typestyle         => ?TYPESTYLE
+     , indent            => ?INDENT
+     , rot               => ?ROT
+     , jump_prompt       => ?JUMP_PROMPT
+     }.
+
+
+%% *****************************************************************
+%% Type styles
+%% *****************************************************************
+
+TYPE STYLES
+
+Type styles are defined in ../typespec. Type styles define type faces,
+leading, line justification, and paragrph indentation.
+
+Styles defined to date can be found in:
+
+-- ep_report_sty.erl
+-- ep_report_hv_sty.erl
+
+Note that ep_report_sty.erl defines five styles:
+
+- justify_report/1
+- ragged_report/1
+- preformatted_report/1
+- centered_report/1
+- ragged_left_report/1
+
+You can use ep_report_sty.erl as a model for defining your own styles.
+
+Functions to access style attributes can be found in ../typespec/ep_typespec.erl
+
+- ep_typespec:get_specs(TypeStyle, Tag)
+- ep_typespec:faces(TypeStyle, Tag)
+- ep_typespec:fontsize(TypeStyle, Tag)
+- ep_typespec:max_linespace(TypeStyle, Tag)
+- ep_typespec:leading(TypeStyle, Tag)
+- ep_typespec:justify(TypeStyle, Tag)
+- ep_typespec:indent(TypeStyle, Tag)
+
+
+%% *****************************************************************
+%% Text 
+%% *****************************************************************
+
+Refer to examples in ../tests/ep_show_n_tell.erl to see how to display text blocks.
+
+%% **************************************************
+%% Text transformations 
+%% **************************************************
+
+Note the "rot" attribute in the panel map. 
+
+This code taken from ../tests/ep_show_n_tell.erl demonstrates how to rotate text:
+
+    Text8A         = "Th-th-th-that's all folks!",
+    Font8A         = "Helvetica",
+    TextPosition8A = {450, 550},
+    FontSize8A     = 36,
+    TextMap8A      = ep_text:create(Font8A, TextPosition8A, FontSize8A),
+    TextMap8B      = maps:put(rot, 90, TextMap8A),
+    ep_text:one_line(PDF, Text8A, Job, TextMap8B),
+
+
+%% *****************************************************************
+%% Content maps 
+%% *****************************************************************
+
+In addition to text, content elements include images, lines, and geometric shapes.
+
+The module ../tests/ep_show_n_tell.erl demonstrates how to display these elements. 
+
+
+%% *****************************************************************
+%% Images 
+%% *****************************************************************
+
+IMAGE
+
+create(ImageFileName, Position, Size) ->
+   #{ image_file_name  => ImageFileName
+    , position         => Position    %% NOTE: bottom left xy of image 
+    , size             => Size
+    }.
+
+%% *****************************************************************
+%% Line elements 
+%% *****************************************************************
+
+LINE
+
+create(From, To) ->
+   #{ from         => From
+    , to           => To
+    , width        => ?DEFAULT_WIDTH
+    , dash         => ?DEFAULT_DASH
+    , color        => ?DEFAULT_COLOR
+    }.
+
+LINES
+
+create(LineList) ->
+    #{ lines   => LineList
+     }.
+
+GRID
+
+create(XList, YList) ->
+    #{ xlist    => XList
+     , ylist    => YList
+     }.
+
+CROPMARK
+
+create(Position) ->
+   #{position    =>  Position
+    }.
+
+BEZIER
+
+create(Pt1, Pt2, Pt3, Pt4) ->
+   #{ from         => Pt1
+    , pt2          => Pt2
+    , pt3          => Pt3
+    , to           => Pt4
+    , width        => ?DEFAULT_WIDTH
+    , color        => ?DEFAULT_COLOR
+    }.
+
+
+%% *****************************************************************
+%% Shapes 
+%% *****************************************************************
+
+
+CIRCLE
+
+create(Center, Radius) ->
+   #{ center        => Center
+    , radius        => Radius
+    , border        => ?BORDER
+    , border_style  => ?BORDER_STYLE
+    , border_color  => ?BORDER_COLOR
+    , fill_color    => ?FILL_COLOR
+    }.
+
+DOT
+
+create(Center) ->
+   #{ center         => Center
+    , radius         => ?DEFAULT_RADIUS
+    , color          => black
+    , border         => 1
+    , border_type    => solid
+    , border_color   =>  black
+    }.
+
+ELLIPSE
+
+create(Center, Axes) ->
+   #{ center         => Center
+    , axes           => Axes
+    , border         => ?DEFAULT_BORDER
+    , border_style   => ?DEFAULT_BORDER_STYLE
+    , border_color   => ?DEFAULT_BORDER_COLOR
+    , fill_color     => ?DEFAULT_FILL_COLOR
+    }.
+
+POLYGON
+
+create(Vertices) ->
+   #{ vertices      => Vertices
+    , outline       => ?OUTLINE_WIDTH
+    , dash          => ?DASH
+    , outline_color => ?OUTLINE_COLOR
+    , fill_color    => ?FILL_COLOR
+    }.
+
+RECTANGLE
+
+create(Position, Size) ->
+   #{ position       => Position
+    , size           => Size
+    , outline        => ?BORDER
+    , outline_style  => ?BORDER_STYLE
+    , outline_color  => ?BORDER_COLOR
+    , fill_color     => ?FILL_COLOR
+    }.
+
+ROUNDED RECTANGLE
+
+create(Position, Size, Radius) ->
+   #{ position          => Position
+    , size              => Size
+    , radius            => Radius
+    , border            => ?BORDER
+    , border_style      => ?BORDER_STYLE
+    , border_color      => ?BORDER_COLOR
+    , background_color  => ?BACKGROUND_COLOR
+    }.
+
+
+%% **************************************************
+%% Page layout 
+%% **************************************************
+
+Future work.
+
+%% **************************************************
+%% Articles and Beads
+%% **************************************************
+
+Future work.
+
+%% *****************************************************************
+%% Road Map/Wish List 
+%% *****************************************************************
+
+Road Map/Wish List
+
+- Extended Markdown text input
+- Page layout tools
+- Articles and Beads
+- Initial caps
+- Footnotes
+- Guru challenge: Wouldn't it be neat to wrap text in a circle or 
+      ellipse with even margin all the way around
+— Support for Open Type and True Type fonts
+— GUI - Fontmap editor
+— GUI - Text editor
+— Document design/layout editor
+— One-input multiple-output functionality; e.g. true output device independence, both digital and print
+
+

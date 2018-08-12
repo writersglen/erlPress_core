@@ -1,0 +1,79 @@
+
+Here be dragons!
+
+Markdown to xml conversion needs to be extended and debugged.
+
+erlPress_lib.01 relies on Joe Armstrong's eg_xml_lite:parse_all_forms/1 parser.
+
+cmark_parse output differs slightly from parse_all_forms/1 output slightly. 
+
+The outputs need to be reconciled.
+
+For instance, the cmark parser test function md_parse:test2() generates...
+
+[{p,["This is normal text with ",
+     {em,["emphasized terms"]},
+     ". It implements the TeX\nhyphenation algorithm.\nIt includes ",
+     {em,["cursive text"]},
+     " and an Erlang term, ",
+     {code,["{person, \"Joe\"}"]},
+     ". \nThe variable ",
+     {code,["X"]},
+     ", is immediately followed by\na comma. The justification algorithm does proper ",
+     {em,["kerning"]},
+     ",\nwhich is more than ",
+     {em,["Microsoft Word"]},
+     " can do. AWAY is\ncorrectly kerned! Erlang terms ",
+     {code,["{like, this}"]},
+     "\nare typeset in ",
+     {code,["courier"]},
+     "."]}]
+
+
+...when passed the following *.md copy:
+
+  This is normal text with *emphasized terms*. It implements the TeX\nhyphenation algorithm.\nIt includes *cursive text* and an Erlang term, `{person, \"Joe\"}`. \nThe variable `X`, is immediately followed by\na comma. The justification algorithm does proper _kerning_,\nwhich is more than *Microsoft Word* can do. AWAY is\ncorrectly kerned! Erlang terms `{like, this}`\nare typeset in `courier`.
+
+Joe Armstrong's ex_xml_lite:parse_all_forms/1, on the other hand, generates:
+
+[{xml,{p,[],
+         [{raw,"This is normal text set in 14/21 Times Roman.\nIt includes "},
+          {em,[],[{raw,"emphasized terms,"}]},
+          {raw," set in Times-Italic. The TeX\nhyphenation algorithm is implemented.  The term "},
+          {code,[],[{raw,"{person, \n\"Joe\"}"}]},
+          {raw," is an Erlang term.\nThe variable "},
+          {code,[],[{raw,"X"}]},
+          {raw,", was immediately followed by\na comma. The justification algorithm does proper "},
+          {em,[],[{raw,"kerning"}]},
+          {raw,",\nwhich is more than "},
+          {em,[],[{raw,"Microsoft Word"}]},
+          {raw," can do. AWAY is\ncorrectly kerned! Erlang terms "},
+          {code,[],[{raw,"{like, this}"}]},
+          {raw,"\nare typeset in "},
+          {em,[],[{raw,"courier."}]}]}}]
+
+...when passed:
+
+"<p>This is normal text set in 14/21 Times Roman.\nIt includes <em>emphasized terms,</em> set in Times-Italic. The TeX\nhyphenation algorithm is implemented.  The term <code>{person, \n\"Joe\"}</code> is an Erlang term.\nThe variable <code>X</code>, was immediately followed by\na comma. The justification algorithm does proper <em>kerning</em>,\nwhich is more than <em>Microsoft Word</em> can do. AWAY is\ncorrectly kerned! Erlang terms <code>{like, this}</code>\nare typeset in <em>courier.</em></p>"
+
+
+The parser outputs could be reconciled in any number of ways. Joe's source code for eg_xml_lite:parse_all_forms/1 is rather opague so it should either be completely re-written, a challenge that's quite beyond me, or left alone.
+
+A simple translational function might do the trick. Or, we could dig into md_parse/parse/1 to modify the output.
+
+EXTENSIONS
+
+erlPress Markdown needs to be extended to include:
+
+checklists
+shapes
+???
+
+
+
+
+
+
+
+
+

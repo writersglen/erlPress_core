@@ -1,0 +1,15 @@
+
+text_path(Project, FileName) ->
+   ?PROJECTS ++ Project ++ "/" ++  "text" ++ "/" ++ FileName.
+
+
+list_text(Project) ->
+   Dir = ?PROJECTS ++ Project ++ "/" ++ "text" ++ "/",
+   file:list_dir(Dir).
+
+
+get_text(Project, FileName) ->
+   TextPath = text_path(Project, FileName),
+   io:format("TextFile: ~p~n", [TextPath]),
+   file:read_file(TextPath).
+

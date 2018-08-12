@@ -1,0 +1,137 @@
+
+
+%% ********************************************************************
+NOTE: erlPress is a suite of Erlang applications based on 
+      erlPpress_core, a library of PDF-generation functions.
+
+      Since the applications have yet to be written, consider this 
+      guide a visionary statement rather than practical document. 
+%% ********************************************************************
+
+
+ErlPress User's Guide
+
+erlPress is a suite of Erlang applications for “painting” text and images on print media. It enables document creators to generate typographically sophisticated PDF documents and publications.
+
+erlPress is Open Source, flexible, and easy to use.
+
+
+%% *****************************************************************
+%% Genesis 
+%% *****************************************************************
+
+Genesis
+
+erlPress revises and extends ErlGuten, Joe Armstrong’s Erlang-based “system for high-quality typesetting.”
+
+It honors and strives to advance Joe’s original goals:
+
+— Easy to use – simple textual input
+
+— Multi-mode inputs (suited for technical reports, magazine layout and presentations)
+
+— Very high quality layout engine (better than TeX, in-design, quark etc.)
+
+http://erlang.org/euc/04/erlguten.pdf
+http://erlang.org/pipermail/erlang-questions/2003-March/008001.html
+
+erlPress further draws on excellent work by Hugh Hawkins, Carl Wright and others who have carried forward Joe’s vision.
+
+https://github.com/hwatkins/erlguten
+https://github.com/richcarl/erlguten
+
+Hugh Hawkins modestly describes ErlGuten as a “PDF generation application.” Thus, Adobe reference manual Version 1.4 is the inspiration and blueprint underlying ErlGuten.
+
+https://www.adobe.com/devnet/pdf/pdf_reference_archive.html
+
+Developed in the early 1990’s by Adobe, PDF is “a file format for representing documents in a manner independent of the application software, hardware, and operating system used to create them and of the output device on which they are to be displayed or printed.”
+
+PDF reference manual Version 1.4 p. 9
+
+PDF is based on the industry standard Postscript programming language developed by Adobe in 1985. Postscript, in turn, is an implementation of Adobe’s imaging model which, simply stated, models “paint” placed on a page in selected areas.
+
+Adobe reference manual Version 1.4 p. 32
+
+ErlGuten brings PDF and Postscript to Erlang. But ErlGuten as a diamond in the rough. It’s font handling and typesetting routines are particularly noteworthy. But, despite work by several contributors, ErlGuten it fall short of promised goals.
+
+
+%% *****************************************************************
+%% erlPress 
+%% *****************************************************************
+
+erlPress
+
+ErlPress strives to advance ErlGuten in several ways:
+
+— Improve code readability and documentation
+
+— Reorganize code for easier maintenance and extensibility
+
+— Provide user interfaces and terminology more aligned with editorial, graphic design, and print traditions and practices
+
+— Provide support for extended Markdown input
+
+— Provide libraries for easy development of conventional print formats ranging from business cards, invoices, and reports to books and magazines.
+
+
+%% *****************************************************************
+%% Editorial work flow 
+%% *****************************************************************
+
+
+Editorial work flow
+
+erlPress is inspired by traditions of the commercial editorial and 
+publishing world.  In this world, print matter is created by
+specialist professionals: 
+
+
+-- Client or publisher commissions an editorial project; e.g. job
+   and specifies format; e.g. postcard, newsletter, book
+
+-- Writers create articles or manuscripts; e.g. text also known as copy
+
+-- Photographers/photo editors generate images
+
+-- Illustrators generate images
+
+-- Editors assign writers; edit articles or manuscript
+
+-- Graphic designer specifies type; e.g. fonts, faces, sizes
+
+-- Typesetters type set articles or manuscript
+
+-- Editors proof typeset copy
+
+-- Graphic designer creates page layouts, pastes up typeset copy, 
+   and images
+
+-- Printer prints one or more copies 
+
+
+Note that the functions above may be executed by more than one person.
+
+erlPress is concerned mainly with editorial processes resulting in PDF 
+files. These files, in turn, may be printed in quantity on a desktop 
+printer for distribution or given to a commercial printer for reproduction.
+
+
+%% *****************************************************************
+%% erlPress user Work Flow 
+%% *****************************************************************
+
+
+erlPress User Work Flow
+
+— Select document format, e.g. size and shape
+— Write/edit copy
+— Prepare illustrations
+— Design page grids
+— Layout copy and images
+— Select paper stock
+— Impose document format on paper stock
+— Print
+— Proof and correct
+— Publish
+
+

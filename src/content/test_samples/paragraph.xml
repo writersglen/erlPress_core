@@ -1,0 +1,11 @@
+<p>This is normal text, set 5 picas wide in 12/14 Times Roman.
+I even allow some <em>emphasised term,</em> set in Times-Italic. The TeX
+hyphenation algorithm is also implemented.
+I have also some <em>cursive text</em> and an example of
+an Erlang term. The term <code>{person, \"Joe\"}</code> is an Erlang term.
+The variable <code>X</code>, was immediately followed by
+a comma. The justification algorithm does proper <em>kerning</em>,
+which is more than <em>Microsoft Word</em> can do. AWAY again is
+correctly kerned! Erlang terms <code>{like, this}</code>
+are typeset in <em>courier.</em></p>
+

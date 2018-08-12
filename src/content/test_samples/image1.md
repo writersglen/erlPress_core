@@ -1,0 +1,2 @@
+![](http://url/b.jpg)
+

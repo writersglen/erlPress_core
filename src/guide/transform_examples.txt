@@ -1,0 +1,246 @@
+
+
+
+erlPress text transformations
+
+******************************************************
+Get text
+******************************************************
+
+Article        = ep_sample_text:article().
+
+<h1>This is a headline</h1>
+<h2>This is a deck</h2>
+<p>    </p>
+<p>This is normal text set in 14/21 Times Roman.\nIt includes <em>emphasized terms,</em> set in Times-Italic. The TeX\nhyphenation algorithm is implemented.  The term <code>{person, \n\"Joe\"}</code> is an Erlang term.</p>
+<h3>This is a subhead</h3>
+<p>The variable <code>X</code>, was immediately followed by\na comma. The justification algorithm does proper <em>kerning</em>,\nwhich is more than <em>Microsoft Word</em> can do. AWAY is\ncorrectly kerned! Erlang terms <code>{like, this}</code>\nare typeset in <em>courier.</em></p>
+
+
+******************************************************
+Parse text
+******************************************************
+
+XML            = ep_block:parse_xml(Article).
+
+[{xml,{h1,[],[{raw,"This is a headline"}]}},
+ {xml,{h2,[],[{raw,"This is a deck"}]}},
+ {xml,{p,[],[{raw,"    "}]}},
+ {xml,{p,[],
+         [{raw,"This is normal text set in 14/21 Times Roman.\nIt includes "},
+          {em,[],[{raw,"emphasized terms,"}]},
+          {raw," set in Times-Italic. The TeX\nhyphenation algorithm is implemented.  The term "},
+          {code,[],[{raw,"{person, \n\"Joe\"}"}]},
+          {raw," is an Erlang term."}]}},
+ {xml,{h3,[],[{raw,"This is a subhead"}]}},
+ {xml,{p,[],
+         [{raw,"The variable "},
+          {code,[],[{raw,"X"}]},
+          {raw,", was immediately followed by\na comma. The justification algorithm does proper "},
+          {em,[],[{raw,"kerning"}]},
+          {raw,",\nwhich is more than "},
+          {em,[],[{raw,"Microsoft Word"}]},
+          {raw," can do. AWAY is\ncorrectly kerned! Erlang terms "},
+          {code,[],[{raw,"{like, this}"}]},
+          {raw,"\nare typeset in "},
+          {em,[],[{raw,"courier."}]}]}}]
+
+******************************************************
+Get the first block of text
+******************************************************
+
+[Block | _Rest] = XML.
+
+
+{xml,{h1,[],[{raw,"This is a headline"}]}}
+
+
+******************************************************
+Get Xml 
+******************************************************
+
+{_xml, Xml}     = Block.
+
+{h1,[],[{raw,"This is a headline"}]}
+
+
+******************************************************
+Get Xml tag 
+******************************************************
+
+Tag            = element(1, Xml).
+
+h1
+
+******************************************************
+Get type specification from predefined specs 
+******************************************************
+
+TypeSpec       = ep_typespec:report_faces(Tag).
+
+{[h1],
+ [{default,{face,eg_font_7,36,0,{0,0,0},true}},
+  {h1,{face,eg_font_7,36,0,{0,0,0},true}},
+  {em,{face,eg_font_13,36,0,{0,0,0},true}},
+  {b,{face,eg_font_6,36,0,{0,0,0},true}},
+  {code,{face,eg_font_3,36,0,{0,0,0},true}}]}
+
+
+******************************************************
+Normalise Xml -- weird name, Joe! 
+******************************************************
+
+Norm           = ep_block:normalise_xml(Xml, TypeSpec).
+
+{h1,[],
+    {richText,[{word,68004,
+                     {face,eg_font_7,36,0,{0,0,0},true},
+                     "This"},
+               {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+               {word,25992,{face,eg_font_7,36,0,{0,0,0},true},"is"},
+               {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+               {word,20016,{face,eg_font_7,36,0,{0,0,0},true},"a"},
+               {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+               {word,136080,
+                     {face,eg_font_7,36,0,{0,0,0},true},
+                     "headline"}]}}
+
+
+******************************************************
+Normalise Xml -- weird name, Joe! 
+******************************************************
+
+
+{_, RichText}  = ep_block:rich_text(Norm).
+
+{richText,[{word,68004,
+                {face,eg_font_7,36,0,{0,0,0},true},
+                "This"},
+          {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+          {word,25992,{face,eg_font_7,36,0,{0,0,0},true},"is"},
+          {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+          {word,20016,{face,eg_font_7,36,0,{0,0,0},true},"a"},
+          {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+          {word,136080,
+                {face,eg_font_7,36,0,{0,0,0},true},
+                "headline"}]}
+
+
+******************************************************
+Text specifications from user-defined text map 
+******************************************************
+
+X              = 100.
+
+Y              = 100.
+
+Indent         = 30.
+
+Measure        = 450.
+
+NLines         = 10.
+
+Margin         = 0.
+
+Leading        = 36.
+
+Justified      = ragged.
+
+
+******************************************************
+Get line widths 
+******************************************************
+
+Widths         = ep_block:widths(Indent, Measure, Nlines).
+
+[420,450,450,450,450,450,450,450,450,450]
+
+
+******************************************************
+Get indentation of each line 
+******************************************************
+
+Off = ep_block:offsets(Indent, Margin, NLines).
+
+[30,0,0,0,0,0,0,0,0,0]
+
+
+******************************************************
+Provisionally determine if lines can break 
+******************************************************
+
+MaybeLines = ep_block:break_rich_text(RichText, Justified, Widths).
+
+{[{richText,[{word,68004,
+                   {face,eg_font_7,36,0,{0,0,0},true},
+                   "This"},
+             {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+             {word,25992,{face,eg_font_7,36,0,{0,0,0},true},"is"},
+             {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+             {word,20016,{face,eg_font_7,36,0,{0,0,0},true},"a"},
+             {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+             {word,136080,
+                   {face,eg_font_7,36,0,{0,0,0},true},
+                   "headline"}]}],
+ [450,450,450,450,450,450,450,450,450],
+ []}
+
+
+******************************************************
+They can, so break rich text into lines 
+******************************************************
+
+{Lines, _, _}   = MaybeLines.
+
+[{richText,[{word,68004,
+                  {face,eg_font_7,36,0,{0,0,0},true},
+                  "This"},
+            {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+            {word,25992,{face,eg_font_7,36,0,{0,0,0},true},"is"},
+            {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+            {word,20016,{face,eg_font_7,36,0,{0,0,0},true},"a"},
+            {space,10008,{face,eg_font_7,36,0,{0,0,0},true}},
+            {word,136080,
+                  {face,eg_font_7,36,0,{0,0,0},true},
+                  "headline"}]}]
+
+
+******************************************************
+How much space is available in user-defined panel 
+******************************************************
+
+
+Available       = NLines - length(Lines).
+
+9
+
+
+******************************************************
+Fit lines to space available 
+******************************************************
+
+NOTE: Hand waving here!
+
+Fit function returns {Lines that will fit, Remaining Lines).
+
+If Available < NLInes, need to execute fit function, paste lines that
+will fit, get next panel, and recurse 
+
+
+******************************************************
+Paste up lines 
+******************************************************
+
+PDF = eg_pdf:new().
+
+<0.4421.23>
+
+Code = ep_richText2pdf:richText2pdf(PDF, X, Y, Justify, 0, Lines that fit,
+                                                Leading, Widths, Off)
+
+"1 0 0 1 100 100 Tm 30  -36 TD /F7 36 Tf 0 Tw 0 0 0 rg [(This)0( )0(is)0( )0(a)0( )0(headline)0] TJ "
+
+eg_pdf:begin_text(PDF),
+eg_pdf:append_stream(PDF, Code),
+eg_pdf:end_text(PDF),
+

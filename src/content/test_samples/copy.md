@@ -1,0 +1,1 @@
+This is normal text with *emphasized terms*. It implements the TeX\nhyphenation algorithm. It includes *cursive text* and an Erlang term. The variable `X`, is immediately followed by a comma. The justification algorithm does proper _kerning_, which is more than *Microsoft Word* can do. AWAY is ncorrectly kerned! Erlang terms are typeset in `courier`.
