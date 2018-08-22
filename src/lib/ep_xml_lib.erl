@@ -16,8 +16,7 @@
 -module (ep_xml_lib).
 
 % -export([parse_xml/1]).
-% -export([fit_xml/2, line_specs/2, get_tag/1, impose_cost/3, vacancies/2]). 
-% -export([reduce_cost/2, reposition_content_cursor/2]).
+% -export([fit_xml/2, line_specs/2, vacancies/2]). 
 
 
 -compile(export_all).
@@ -44,6 +43,65 @@ parse_xml(TaggedText) ->
     lists:reverse(XML).
 
 
+
+
+%% @doc Return line widths and offsets for a given panel
+
+-spec line_specs(Tag         :: atom(),
+                 PanelMap    :: map()) -> tuple().
+
+line_specs(Tag, PanelMap) ->
+    Measure   = ep_panel:get_measure(PanelMap),
+    Margin    = ep_panel:get_margin(PanelMap),
+    TypeStyle = ep_panel:get_typestyle(PanelMap),
+    Indent    = ep_typespec:indent(TypeStyle, Tag),
+    Vacancies = vacancies(Tag, PanelMap),
+    case Tag of
+        p     -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure)],
+                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin)];
+        br    -> Widths  = [Measure|lists:duplicate(Vacancies - 1, Margin)],
+                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
+        ul    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
+                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
+        li    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
+                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
+        ci    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
+                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
+        _     -> Widths  = [Measure|lists:duplicate(Vacancies - 1, Margin)],
+                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)]
+    end,
+    {Widths, Offsets}.
+
+
+
+%% @doc Return number of lines that fit in panel 
+
+-spec vacancies(Tag      :: list(),
+                PanelMap :: map()) -> integer().
+
+vacancies(br, PanelMap) ->
+   vacancies(p, PanelMap);
+
+vacancies(Tag, PanelMap) ->
+   TypeStyle = ep_panel:get_typestyle(PanelMap),
+   ep_panel:get_available_lines(TypeStyle, Tag, PanelMap).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %% ***********************************************************
 %% fit_xml/1 - Copyfit XML 
 %% ***********************************************************
@@ -68,9 +126,12 @@ fit_xml(Content, Spill, PanelMap, filled) ->
 
 fit_xml(Content, XML, PanelMap, continue) ->
      [X | Spill] = XML,
+
      Xml                        = element(2, X),
      Tag                        = get_tag(Xml),
-     {Lines, Size, Continue}    = fit(Xml, Tag, PanelMap),
+     {Lines, Size, Continue}    = fit_lines(Tag, Xml, PanelMap),
+
+
      case Continue of
         true  -> Content2 = [{Tag, Lines} | Content],
                  PanelMap1 = ep_panel:update_content_cursor(Size, PanelMap),  
@@ -79,38 +140,42 @@ fit_xml(Content, XML, PanelMap, continue) ->
      end.  
 
 
+get_Xml(XML) ->
+   [X | _Spill] = XML,
+   element(2, X).
+
+
+
+
 %% ***********************************************************
 %% fit_xml/1 - helpers
 %% ***********************************************************
 
 %% @doc Copyfit Xml
 
--spec fit(Xml     :: tuple(),
-          Tag     :: atom(),
-          PanelMap :: map()) -> tuple().
+-spec fit_lines(Tag      :: atom(),
+                Xml      :: tuple(),
+                PanelMap :: map()) -> tuple().
 
-fit(_Xml, br, PanelMap) ->
+fit_lines(_Tag, [], PanelMap) ->
     Lines      = [],
-    Available  = ep_panel:get_available(PanelMap),
-    TypeStyle  = ep_panel:get_typestyle(PanelMap),
-    Size       = ep_typespec:fontsize(TypeStyle, br),
-    Continue   = Available >= Size,
+    {Size, Continue} = space_required(br, Lines, PanelMap),
     {Lines, Size, Continue};
 
-    
-fit(Xml, Tag, PanelMap) -> 
-     Lines        = xml2lines(Xml, PanelMap),
-     io:format(" $$$$$$$$$$$$ Length Lines:: ~p~n", [length(Lines)]),
-     Available    = ep_panel:get_available(PanelMap),
-     io:format(" $$$$$$$$$$$$ Available: ~p~n", [Available]),
-     TypeStyle    = ep_panel:get_typestyle(PanelMap),
-     io:format(" $$$$$$$$$$$$ TypeStyle: ~p~n", [TypeStyle]),
-     Leading      = ep_typespec:leading(TypeStyle, Tag),
-     io:format(" $$$$$$$$$$$$ Leading: ~p~n", [Leading]),
-     Size         = length(Lines) * Leading,
-     io:format(" $$$$$$$$$$$$ Size: ~p~n~n", [Size]),
-     Continue     = Available >= Size,
-     {Lines, Size, Continue}.
+
+fit_lines(Tag, Xml, PanelMap) ->
+   case Tag of
+      ul  ->  Item  = element(2, Xml),
+              List  = element(3, Item),
+              Lines = get_rich_text(List, PanelMap);
+      _    -> Lines = xml2lines(Xml, PanelMap)
+   end,
+   {Size, Continue}  = space_required(Tag, Lines, PanelMap),
+   {Lines, Size, Continue}.
+
+
+get_rich_text(List, PanelMap) ->
+    [ep_xml_lib:rich_text(Item, PanelMap) || Item <- List].     
 
 
 %% @doc Given content elment, return tag 
@@ -122,6 +187,18 @@ get_tag(Xml) ->
 
 
 
+
+space_required(Tag, Lines, PanelMap) ->
+   Available    = ep_panel:get_available(PanelMap),
+   TypeStyle    = ep_panel:get_typestyle(PanelMap),
+   Leading      = ep_typespec:leading(TypeStyle, Tag),
+   Size         = length(Lines) * Leading,
+   Continue     = Available >= Size,
+   {Size, Continue}.
+   
+
+
+   
 %% @doc Transform Xml into lines copyfitted into panel
 
 -spec xml2lines(Xml      :: tuple(),
@@ -172,61 +249,8 @@ get_lines(Tag, RichText, PanelMap) ->
    Lines.
             
 
-%% @doc Return number of lines that fit in panel 
-
--spec vacancies(Tag      :: list(),
-                PanelMap :: map()) -> integer().
-
-vacancies(br, PanelMap) ->
-   vacancies(p, PanelMap);
-
-vacancies(Tag, PanelMap) ->
-   TypeStyle = ep_panel:get_typestyle(PanelMap),
-   ep_panel:get_available_lines(TypeStyle, Tag, PanelMap).
 
 
-%% @doc Return line widths and offsets for a given panel
-
--spec line_specs(Tag         :: atom(),
-                 PanelMap    :: map()) -> tuple().
-
-line_specs(Tag, PanelMap) ->
-    Measure   = ep_panel:get_measure(PanelMap),
-    Margin    = ep_panel:get_margin(PanelMap),
-    TypeStyle = ep_panel:get_typestyle(PanelMap),
-    Indent    = ep_typespec:indent(TypeStyle, Tag),
-    Vacancies = vacancies(Tag, PanelMap),
-    case Tag of
-        p     -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure)],
-                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin)];
-        br    -> Widths  = [Measure|lists:duplicate(Vacancies - 1, Margin)],
-                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
-        li    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
-                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
-        ci    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
-                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
-        _     -> Widths  = [Measure|lists:duplicate(Vacancies - 1, Margin)],
-                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)]
-    end,
-    {Widths, Offsets}.
-
-
-impose_cost(_Adjust, 0, PanelMap) ->
-    {0, PanelMap};
-
-impose_cost(Adjust, Cost, PanelMap) ->
-    Cost1     = reduce_cost(Adjust, Cost),
-    PanelMap1 = reposition_content_cursor(Adjust, PanelMap),
-    {Cost1, PanelMap1}.
-
-
-reduce_cost(Cost, Adjust) ->
-    Cost + Adjust.
-
-reposition_content_cursor(Adjust, PanelMap) ->
-    Cursor  = ep_panel:get_content_cursor(PanelMap),
-    Cursor1 = Cursor + Adjust,
-    ep_panel:update_content_cursor(Cursor1, PanelMap).
 
 
 %% @doc Verify that we have valid lines 

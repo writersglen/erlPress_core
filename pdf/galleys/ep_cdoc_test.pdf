@@ -1,0 +1,113 @@
+%PDF-1.4
+1 0 obj
+<<
+>>
+endobj
+2 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F7 
+/BaseFont  /Helvetica 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F6 
+/BaseFont  /Helvetica-Bold 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+4 0 obj
+<<
+/F7  2 0 R 
+/F6  3 0 R 
+>>
+endobj
+5 0 obj
+<<
+/Type  /Page 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  7 0 R  ] 
+/Resources <<
+/Font  4 0 R 
+/XObject  1 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+6 0 obj
+<<
+/Length  1660 
+>>
+
+stream
+1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 1.00 1.00 1.00  rg
+ 82 420  m 512 420  l 517.52 420 522 425.52 522 430  c
+522 710  l 522 715.52 517.52 720 512 720  c
+82 720  l 77.52 720 72 715.52 72 710  c
+72 430  l 72 425.52 77.52 420 82 420  c
+  B  
+BT
+ 1 0 0 1 72 720 Tm 150  -27 TD /F6 18 Tf 0 Tw 0 0 0 rg [(Listing:)0( )0(cdoc)0( )0(test)0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 681 Tm 10  -15 TD /F7 12 Tf 0 Tw 0 0 0 rg [(r)-15(un\(\)->)0] TJ 0  -15 TD [( )0(OutFile)0( )0(=)0( )0("T)120(est",)0] TJ 0  -15 TD [( )0(PDF)0( )0(=)0( )0(eg_pdf:ne)20(w\(\),)0] TJ 0  -15 TD [( )0(P)40(anelNameF)0( )0(=)0( )0({1,)0( )0(3,)0( )0(code},)0] TJ 0  -15 TD [( )0(Cop)30(yF)0( )0(=)0( )0(ep_sample_te)30(xt:code_listing\(\),)0] TJ 0  -15 TD [( )0(P)50(ositionF)0( )0(=)0( )0({72,)0( )0(530},)0] TJ 0  -15 TD [( )0(Siz)15(eF)0( )0(=)0( )0({210,)0( )0(150},)0] TJ 0  -15 TD [( )0(P)40(anelMapF1)0( )0(=)0( )0(ep_panel:create\(P)40(anelNameF)150(,)0( )0(P)50(ositionF)150(,)0( )0(Siz)15(eF\),)0] TJ 0  -15 TD [( )0(P)40(anelMapF2)0( )0(=)0( )0(ep_panel:re)30(v)25(eal\(P)40(anelMapF1\),)0] TJ 0  -15 TD [( )0(P)40(anelMapF3)0( )0(=)0( )0(ep_panel:update_typestyle\(cdoc)15(,)0( )0(P)40(anelMapF2\),)0] TJ 0  -15 TD [( )0({P)40(asteF)150(,)0( )0(_Spill,)0( )0(_P)40(anelMapF4})0( )0(=)0( )0(ep_te)30(xt_b)20(loc)20(k:fit_cop)30(y\(Cop)30(yF)150(,)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ok)0( )0(=)0( )0(ep_paste_lib:paste_panel\(PDF)150(,)0( )0(Job)40(,)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ok)0( )0(=)0( )0(ep_paste_lib:paste\(PDF)150(,)0( )0(P)40(asteF)150(,)0( )0([],)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ep_job:sa)20(v)25(e_job\(PDF)150(,)0( )0(OutFile\).)0] TJ  
+ET
+ 
+endstream
+endobj
+7 0 obj
+<<
+/Type  /Page 
+/Parent  5 0 R 
+/Contents  6 0 R 
+>>
+endobj
+8 0 obj
+<<
+/Type  /Catalog 
+/Pages  5 0 R 
+>>
+endobj
+9 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate (D:20180813182806)
+/Producer  (erlguten-3.1) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000030 00000 n 
+0000000148 00000 n 
+0000000271 00000 n 
+0000000316 00000 n 
+0000000493 00000 n 
+0000002208 00000 n 
+0000002277 00000 n 
+0000002330 00000 n 
+trailer
+<<
+/Size 10
+/Root 8 0 R
+/Info 9 0 R
+>>
+startxref
+2498
+%%EOF

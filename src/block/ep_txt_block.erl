@@ -1,12 +1,12 @@
 %%% ==========================================================================
-%%% ep_text_block.erl
+%%% ep_txt_block.erl
 
 %%% @author     Lloyd R. Prentice
 %%% @copyright  2018 Lloyd R. Prentice
 %%% @version   .01
 %%% @doc
 %%%   License:      MIT
-%%%   File:         ep_text_block.erl
+%%%   File:         ep_txt_block.erl
 %%%   Description:  Typseset paragraphs 
 %%% @end
 %%%
@@ -14,7 +14,7 @@
 %%% ==========================================================================
 
 
--module (ep_text_block).
+-module (ep_txt_block).
 
 -export ([fit_copy/2, create/3, text_block/3]).
 -export([update_tag/2]).

@@ -1,7 +1,7 @@
 %%% ==========================================================================
 %%% ep_paste_lib.erl
 
-%%% @author     Lloyd R. Prentice
+%%% @author     aloyd R. Prentice
 %%% @copyright  2018 Lloyd R. Prentice
 %%% @version   .01
 %%% @doc
@@ -11,6 +11,7 @@
 %%% @end
 
 %%% ==========================================================================
+
 
 
 -module (ep_paste_lib).
@@ -49,7 +50,7 @@ paste_panel(PDF, Job, PanelMap) ->
 %% ***********************************************************
 %% paste_copy/3 - 
 %%
-%% NOTE: Cost parameter supports articles-and-beads which is
+%% NOTE: Gap parameter supports articles-and-beads which is
 %%       on the roadmap   
 %% ***********************************************************
 
@@ -57,13 +58,13 @@ paste_panel(PDF, Job, PanelMap) ->
 %% @doc Paste copy; write out PDF 
 
 
-paste_copy(Paste, Cost, PanelMap) ->
+paste_copy(Paste, Gap, PanelMap) ->
     PDF       = eg_pdf:new(),
     Job       = ep_job:create("Trial Paste", "LRP"),
     NameString = "text",
     ok        = paste_panel(PDF, Job, PanelMap),
 
-    ok        = paste(PDF, Paste, Cost, PanelMap),
+    ok        = paste(PDF, Paste, Gap, PanelMap),
     OutFile   = "./pdf/galleys/" ++
                  ?MODULE_STRING ++
                  "_" ++
@@ -76,12 +77,12 @@ paste_copy(Paste, Cost, PanelMap) ->
 %% @doc Paste copy; write out PDF 
 
 
-paste_copy(Paste, Cost, PanelMap, NameString) ->
+paste_copy(Paste, Gap, PanelMap, NameString) ->
     PDF       = eg_pdf:new(),
     Job       = ep_job:create("Trial Paste", "LRP"),
     ok        = paste_panel(PDF, Job, PanelMap),
 
-    ok        = paste(PDF, Paste, Cost, PanelMap),
+    ok        = paste(PDF, Paste, Gap, PanelMap),
     OutFile   = "./pdf/galleys/" ++
                  ?MODULE_STRING ++
                  "_" ++
@@ -99,29 +100,30 @@ paste_copy(Paste, Cost, PanelMap, NameString) ->
 
 -spec paste(PDF      :: identifier(),
             Paste    :: list(),
-            Cost     :: integer(),
+            Gap      :: integer(),
             PanelMap :: map()) -> ok.
 
 
-paste(PDF, Paste, Cost, PanelMap) ->
-    paste_elements(PDF, Paste, Cost, PanelMap).
+paste(PDF, Paste, Gap, PanelMap) ->
+   io:format("Entering paste/4 - Paste: ~p~n~n", [Paste]),
+    paste_elements(PDF, Paste, Gap, PanelMap).
 
 
-paste_elements(_PDF, [], _Cost,  _PanelMap) ->
+paste_elements(_PDF, [], _Gap,  _PanelMap) ->
     ok;
 
-paste_elements(PDF, Paste, Cost, PanelMap) ->
+paste_elements(PDF, Paste, Gap, PanelMap) ->
+   io:format("Entering paste_elements/4 - Paste: ~p~n~n", [Paste]),
     [Paste1 | MorePaste] = Paste,
     Tag                = element(1, Paste1),
     Lines              = element(2, Paste1),
     WillFit   = ep_panel:will_fit(Tag, Lines, PanelMap), 
     case WillFit of
-       true  -> {Cost1, PanelMap1} = paste_up(PDF, Tag, Lines, Cost, PanelMap),
-                PanelMap2          = ep_panel:update_panel(Tag, Lines, PanelMap1),
+       true  -> {Gap1, PanelMap1} = paste_up(PDF, Tag, Lines, Gap, PanelMap),
                 Paste2             = MorePaste,
                 % Recurse
-                paste_elements(PDF, Paste2, Cost1, PanelMap2);
-       false -> paste_elements(PDF, [], Cost, PanelMap)
+                paste_elements(PDF, Paste2, Gap1, PanelMap1);
+       false -> paste_elements(PDF, [], Gap, PanelMap)
      end.
 
 
@@ -135,15 +137,15 @@ paste_elements(PDF, Paste, Cost, PanelMap) ->
 -spec paste_up(PDF            :: identifier(),
                Tag            :: atom(),
                Lines          :: list(),
-               Cost           :: tuple(),
+               Gap            :: tuple(),
                PanelMap       :: map()) -> tuple().
 
-paste_up(PDF, Tag, Lines, Cost, PanelMap) ->
-    {Cost1, PanelMap1} = paste_lines(PDF, Tag, Lines, Cost, PanelMap),
-    ok                 = paste_if_li(PDF, Tag, PanelMap),
+paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
+   io:format("Entering paste_up/4 - Lines: ~p~n~n", [Lines]),
+   io:format("Entering paste_up/4 - Gap: ~p~n~n", [Gap]),
+    {Gap1, PanelMap1} = paste_lines(PDF, Tag, Lines, Gap, PanelMap),
     ok                 = paste_if_ci(PDF, Tag, PanelMap),
-    {Cost1, PanelMap1}.
-
+    {Gap1, PanelMap1}.
 
 
 %% @doc Paste lines into panel
@@ -151,49 +153,90 @@ paste_up(PDF, Tag, Lines, Cost, PanelMap) ->
 -spec paste_lines(PDF     :: identifier(),
                   Tag     :: atom(),
                   Lines   :: list(),
-                  Cost    :: integer(),
+                  Gap     :: integer(),
                   PanelMap :: map()) -> tuple().
 
-paste_lines(_PDF, br, _Lines, Cost, PanelMap) ->
-    {Cost, PanelMap};
+paste_lines(_PDF, br, _Lines, Gap, PanelMap) ->
+    {Gap, PanelMap};
 
-paste_lines(PDF, Tag, Lines, [], PanelMap) ->
-    {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap),
-    Code               = pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap),
+paste_lines(PDF, ul, Lines, Gap, PanelMap) ->
+    PanelMap1          = maybe_line_space(ul, PanelMap),
+    PanelMap2          = paste_li_list(PDF, ul, Lines, PanelMap1),
+    {Gap, PanelMap2};
+    
+
+paste_lines(PDF, Tag, Lines, Gap, PanelMap) ->
+    {Gap1, PanelMap1}  = maybe_adjust_gap(Gap, PanelMap),
+   io:format("Entering paste_lines/5 - Gap1: ~p~n", [Gap1]),
+    {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap1),
+    PanelMap2          = maybe_line_space(Tag, PanelMap1),
+    ok                 = maybe_paste_li_symbol(PDF, Tag, PanelMap2),
+   io:format("Entering paste_lines/5 - Lines: ~p~n", [Lines]),
+   io:format("Entering paste_lines/5 - Tag: ~p~n", [Tag]),
+    Code               = pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap2),
     ok                 = paste(PDF, Code),
-    {[], PanelMap};
+    PanelMap3          = ep_panel:update_panel(Tag, Lines, PanelMap2),
+    PanelMap4          = maybe_line_space(Tag, PanelMap3),
+    {Gap1, PanelMap4}.
 
-paste_lines(PDF, Tag, Lines, Cost, PanelMap) ->
-    {Cost1, PanelMap1} = ep_xml_lib:impose_cost(-1, Cost, PanelMap),
+
+paste_li_list(_PDF, ul, [], PanelMap) ->
+   PanelMap;
+
+paste_li_list(PDF, ul, Lines, PanelMap) ->
+    [Linez | Rest]  = Lines,
+    ok              = paste_li(PDF, ul, Linez, PanelMap),
+    TypeStyle       = ep_panel:get_typestyle(PanelMap),
+    Leading         = ep_typespec:leading(TypeStyle, li),
+    PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
+    paste_li_list(PDF, ul, Rest, PanelMap1).
+   
+    
+
+paste_li(PDF, Tag, Lines, PanelMap) ->
     {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap),
-    Code               = pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap1),
-    ok                 = paste(PDF, Code),
-    {Cost1, PanelMap1}.
+    ok                 = maybe_paste_li_symbol(PDF, Tag, PanelMap),
+    Code               = pdf_code(PDF, Tag, [Lines], Widths, Offsets, PanelMap),
+    ok                 = paste(PDF, Code).
 
 
 
-paste_if_li(PDF, Tag, PanelMap) ->
+maybe_line_space(Tag, PanelMap) ->
+   case Tag of
+      ul  -> TypeStyle = ep_panel:get_typestyle(PanelMap),
+             ep_panel:one_line_space(ul, TypeStyle, PanelMap);
+      _   -> PanelMap
+   end.
+
+
+maybe_paste_li_symbol(PDF, Tag, PanelMap) ->
+   case Tag of
+      ul -> paste_dot(PDF, PanelMap);
+      _  -> ok
+   end.
+
+
+paste_dot(PDF, PanelMap) ->
    Margin     = ep_panel:get_margin(PanelMap),
    TypeStyle  = ep_panel:get_typestyle(PanelMap),
-   Indent     = ep_typespec:indent(TypeStyle, Tag) div 2,
+   LiFill     = ep_panel:get_li_fill(PanelMap),
+   Indent     = ep_typespec:indent(TypeStyle, p) div 2,
    Radius     = 2,
-   Diff       = ep_typespec:leading(TypeStyle, Tag) - Radius,
-   case Tag of
-      li  -> 
-            {TextX, TextY} = ep_panel:get_text_position(PanelMap),
-             DiffX = TextX + Margin + Indent,
-             DiffY = TextY - Diff,
-             eg_pdf:save_state(PDF),
-             eg_pdf:set_line_width(PDF, 1),
-             eg_pdf:set_dash(PDF, solid),
-             eg_pdf:set_stroke_color(PDF, black),
-             eg_pdf:set_fill_color(PDF, black),
-             eg_pdf:circle(PDF, {DiffX, DiffY}, Radius),
-             eg_pdf:path(PDF, fill_stroke),
-             eg_pdf:restore_state(PDF),
-             ok;
-        _  -> ok
-    end.
+   Diff       = ep_typespec:leading(TypeStyle, ul) - Radius,
+   {X, Y}     = ep_panel:get_text_position(PanelMap),
+   TextX      = X + Margin + (2 * Indent),
+   TextY      = Y - Diff,
+   eg_pdf:save_state(PDF),
+   eg_pdf:set_line_width(PDF, 1),
+   eg_pdf:set_dash(PDF, solid),
+   eg_pdf:set_stroke_color(PDF, black),
+   eg_pdf:set_fill_color(PDF, LiFill),
+   eg_pdf:circle(PDF, {TextX, TextY}, Radius),
+   eg_pdf:path(PDF, fill_stroke),
+   eg_pdf:restore_state(PDF),
+   ok.
+
+
 
 paste_if_ci(PDF, Tag, PanelMap) ->
    TypeStyle = ep_panel:get_typestyle(PanelMap),
@@ -227,7 +270,7 @@ paste_if_ci(PDF, Tag, PanelMap) ->
 
 
 pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap) ->
-   {TextX, TextY}                       = ep_panel:get_text_position(PanelMap),
+   {TextX, TextY}                       = text_placement(Tag, PanelMap),
    Rot                                  = ep_panel:get_rot(PanelMap),
    TypeStyle                            = ep_panel:get_typestyle(PanelMap),
    Justify                              = ep_typespec:justify(TypeStyle, Tag),
@@ -242,6 +285,16 @@ pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap) ->
                                        Widths,
                                        Offsets),
     Code.
+
+
+
+text_placement(ul, PanelMap) ->
+   Indent = ep_panel:get_indent(PanelMap),
+   {X, Y} =  ep_panel:get_text_position(PanelMap),
+   {X + (2 * Indent) , Y};
+
+text_placement(_Tag, PanelMap) ->
+    ep_panel:get_text_position(PanelMap).
 
 
 %% @doc Append PDF code to text stream in PDF
@@ -265,4 +318,34 @@ save(PDF) ->
     OutFile = "./pdf/galleys/" ++ ?MODULE_STRING ++ ".trial.pdf",
     ep_job:save_job(PDF, OutFile).
 
+
+%%% ==========================================================================
+%%% Spill functions 
+%%% ==========================================================================
+
+
+
+maybe_adjust_gap(Gap, PanelMap) ->
+    case  Gap of
+       []   -> Gap1              = [],
+               PanelMap1          = PanelMap;
+       _    -> {Gap1, PanelMap1} = adjust_gap(-1, Gap, PanelMap)
+    end,
+   {Gap1, PanelMap1}.
+
+
+adjust_gap(_Adjust, [], PanelMap) ->
+    {0, PanelMap};
+
+adjust_gap(Adjust, Gap, PanelMap) ->
+    Gap1      = new_gap(Adjust, Gap),
+    PanelMap1 = move_content_cursor(Adjust, PanelMap),
+    {Gap1, PanelMap1}.
+
+
+new_gap(Gap, Adjust) ->
+    Gap + Adjust.
+
+move_content_cursor(Adjust, PanelMap) ->
+    ep_panel:update_content_cursor(Adjust, PanelMap).
 

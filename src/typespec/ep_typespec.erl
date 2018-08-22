@@ -66,7 +66,10 @@ get_specs(TypeStyle, Tag) ->
       preformatted_report_hv  -> ep_report_hv_sty:preformatted_report_hv(Tag);
       centered_report_hv      -> ep_report_hv_sty:centered_report_hv(Tag);
       ragged_left_report_hv   -> ep_report_hv_sty:ragged_left_report_hv(Tag);
+
+      cdoc                    -> ep_cdoc_sty:cdoc(Tag);
       _                       -> ep_report_sty:justify_report(Tag)
+
    end.
 
 
@@ -92,7 +95,9 @@ faces(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_faces(Tag);
 faces(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_faces(Tag);
 faces(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_faces(Tag);
 faces(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_faces(Tag);
-faces(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_faces(Tag).
+faces(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_faces(Tag);
+
+faces(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_faces(Tag).
 
 
 %% ***************************************************************
@@ -115,8 +120,9 @@ fontsize(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_fontsize(Tag
 fontsize(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_fontsize(Tag);
 fontsize(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_fontsize(Tag);
 fontsize(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_fontsize(Tag);
-fontsize(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_fontsize(Tag).
+fontsize(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_fontsize(Tag);
 
+fontsize(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_fontsize(Tag).
 
 %% ***************************************************************
 %% max_linespace/2 - Return return maximimum linespace for 
@@ -139,7 +145,9 @@ max_linespace(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_max_lin
 max_linespace(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_max_linespace(Tag);
 max_linespace(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_max_linespace(Tag);
 max_linespace(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_max_linespace(Tag);
-max_linespace(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_max_linespace(Tag).
+max_linespace(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_max_linespace(Tag);
+
+max_linespace(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_max_linespace(Tag).
 
 
 %% ***************************************************************
@@ -162,7 +170,9 @@ leading(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_leading(Tag);
 leading(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_leading(Tag);
 leading(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_leading(Tag);
 leading(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_leading(Tag);
-leading(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_leading(Tag).
+leading(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_leading(Tag);
+
+leading(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_leading(Tag).
 
 
 %% ***************************************************************
@@ -185,7 +195,9 @@ justify(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_justify(Tag);
 justify(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_justify(Tag);
 justify(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_justify(Tag);
 justify(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_justify(Tag);
-justify(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_justify(Tag).
+justify(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_justify(Tag);
+
+justify(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_justify(Tag).
 
 
 %% ***************************************************************
@@ -208,7 +220,9 @@ indent(justify_report_hv, Tag)      -> ep_report_hv_sty:report_hv_indent(Tag);
 indent(ragged_report_hv, Tag)       -> ep_report_hv_sty:report_hv_indent(Tag);
 indent(preformatted_report_hv, Tag) -> ep_report_hv_sty:report_hv_no_indent(Tag);
 indent(centered_report_hv, Tag)     -> ep_report_hv_sty:report_hv_no_indent(Tag);
-indent(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_no_indent(Tag).
+indent(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_no_indent(Tag);
+
+indent(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_no_indent(Tag).
 
 
 %% ***********************************************************************
@@ -220,6 +234,21 @@ indent(ragged_left_report_hv, Tag)  -> ep_report_hv_sty:report_hv_no_indent(Tag)
 
 -spec times(Tag      :: atom(),
             FontSize :: integer()) -> tuple().
+
+times(ul, FontSize) ->
+   {[ul],
+    [tag_face(default, "Times-Roman", FontSize),
+     tag_face(ul,      "Times-Roman", FontSize),
+     tag_face(li,      "Times-Roman", FontSize)
+    ]};
+
+times(ol, FontSize) ->
+   {[ol],
+    [tag_face(default, "Times-Roman", FontSize),
+     tag_face(ul,      "Times-Roman", FontSize),
+     tag_face(li,      "Times-Roman", FontSize)
+    ]};
+
 
 times(Tag, FontSize) ->
    {[Tag],

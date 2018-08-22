@@ -49,14 +49,15 @@
 -export([get_border/1]).
 -export([get_border_style/1, get_border_color/1, get_margin/1]).
 -export([get_measure/1, get_indent/1, get_rot/1]).
--export([get_jump_prompt/1, get_typestyle/1]).
+-export([get_jump_prompt/1, get_typestyle/1, get_li_fill/1]).
 
 -export([update_id/2, update_position/2, update_size/2, update_radius/2]).
 -export([update_content_cursor/2]).
 -export([update_border/2, update_border_style/2, update_border_color/2]).
 -export([update_background_color/2, update_margin/2, update_rot/2]).
 -export([update_jump_prompt/2]).
--export([update_typestyle/2, update_panel/3, break/1]).
+-export([update_typestyle/2, update_li_fill/2, update_panel/3, break/1]).
+-export([one_line_space/3]).
 -export([reveal/1]).
 -export([default_panel/0]).
 
@@ -73,6 +74,7 @@
 -define(MARGIN, 10).
 -define(INDENT, 20).
 -define(TYPESTYLE, justify_report).
+-define(LI_FILL, black).
 -define(ROT, 0).
 -define(JUMP_PROMPT, "No jump").
 
@@ -104,6 +106,7 @@ create(ID, Position, Size) ->
      , background_color  => ?BACKGROUND_COLOR
      , margin            => ?MARGIN
      , typestyle         => ?TYPESTYLE
+     , li_fill           => ?LI_FILL
      , indent            => ?INDENT
      , rot               => ?ROT
      , jump_prompt       => ?JUMP_PROMPT
@@ -292,6 +295,7 @@ get_available(PanelMap) ->
                Lines :: list()) -> integer().
 
 consumed(Tag, Lines) ->
+   io:format("^^^^^^^^^^^^^^^^ Tag: ~p~n~n", [Tag]),
    Leading  = ep_report_sty:report_leading(Tag),
    Leading * length(Lines).
 
@@ -442,6 +446,19 @@ get_typestyle(PanelMap) ->
 
 
 %% ***********************************************************
+%% Get li fill color 
+%% ***********************************************************
+
+
+%% @doc Get li fill color 
+
+-spec get_li_fill(PanelMap :: map()) -> tuple().
+
+get_li_fill(PanelMap) ->
+   maps:get(li_fill, PanelMap).
+
+
+%% ***********************************************************
 %% Update id 
 %% ***********************************************************
 
@@ -507,6 +524,16 @@ update_content_cursor(Pixels, PanelMap) ->
    Cursor1 = Cursor + Pixels,
    maps:put(content_cursor, Cursor1, PanelMap).
 
+
+%% @doc Update content cursor by one line
+
+-spec one_line_space(Tag       :: atom(),
+                     TypeStyle :: atom(),
+                     PanelMap  :: map()) -> map().
+
+one_line_space(Tag, TypeStyle, PanelMap) ->
+   Pixels = ep_typespec:leading(TypeStyle, Tag),
+   update_content_cursor(Pixels, PanelMap).
 
 %% ***********************************************************
 %% Update border 
@@ -611,6 +638,18 @@ update_jump_prompt(JumpPrompt, PanelMap) ->
 update_typestyle(TypeStyle, PanelMap) ->
    maps:put(typestyle, TypeStyle, PanelMap).
 
+
+%% ***********************************************************
+%% Update li fill color 
+%% ***********************************************************
+
+%% @doc Update li fill color 
+
+-spec update_li_fill(LiFill    :: atom(),
+                     PanelMap  :: map()) -> map().
+
+update_li_fill(LiFill, PanelMap) ->
+   maps:put(li_fill, LiFill, PanelMap).
 
 
 %% ***********************************************************
