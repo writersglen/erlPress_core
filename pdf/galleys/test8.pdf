@@ -1,0 +1,193 @@
+%PDF-1.4
+1 0 obj
+<<
+>>
+endobj
+2 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F11 
+/BaseFont  /Times-Bold 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F13 
+/BaseFont  /Times-Roman 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+4 0 obj
+<<
+/F11  2 0 R 
+/F13  3 0 R 
+>>
+endobj
+5 0 obj
+<<
+/Type  /Page 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  7 0 R  ] 
+/Resources <<
+/Font  4 0 R 
+/XObject  1 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+6 0 obj
+<<
+/Length  2256 
+>>
+
+stream
+1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 1.00 1.00 1.00  rg
+ 82 72  m 492 72  l 497.52 72 502 77.52 502 82  c
+502 762  l 502 767.52 497.52 772 492 772  c
+82 772  l 77.52 772 72 767.52 72 762  c
+72 82  l 72 77.52 77.52 72 82 72  c
+  B  
+BT
+ 1 0 0 1 72 773 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(This)0( )0(is)0( )0(a)0( )0(test)0( )0(of)0( )0(an)0( )0] TJ /F11 12 Tf [(unorder)18(ed)0( )0(list)0] TJ /F13 12 Tf [( )0(with)0( )0(a)0( )0(bold)0( )0(phrase.)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 0.00 0.00 0.00  rg
+ 114 733  m 114 734.10 113.10 735 112 735  c
+110.90 735 110 734.10 110 733  c
+110 731.90 110.90 731 112 731  c
+113.10 731 114 731.90 114 733  c
+  B  
+Q
+ 
+BT
+ 1 0 0 1 112 743 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Display)0( )0(Adobe)0( )0(T)80(ype)0( )0(I)0( )0(fonts)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 0.00 0.00 0.00  rg
+ 114 715  m 114 716.10 113.10 717 112 717  c
+110.90 717 110 716.10 110 715  c
+110 713.90 110.90 713 112 713  c
+113.10 713 114 713.90 114 715  c
+  B  
+Q
+ 
+BT
+ 1 0 0 1 112 725 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Position)0( )0(and)0( )0(cop)10(yf)20(it)0( )0(te)15(xt)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 0.00 0.00 0.00  rg
+ 114 697  m 114 698.10 113.10 699 112 699  c
+110.90 699 110 698.10 110 697  c
+110 695.90 110.90 695 112 695  c
+113.10 695 114 695.90 114 697  c
+  B  
+Q
+ 
+BT
+ 1 0 0 1 112 707 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Justify)65(,)0( )0(k)10(ern,)0( )0(and)0( )0(rotate)0( )0(te)15(xt)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 0.00 0.00 0.00  rg
+ 114 679  m 114 680.10 113.10 681 112 681  c
+110.90 681 110 680.10 110 679  c
+110 677.90 110.90 677 112 677  c
+113.10 677 114 677.90 114 679  c
+  B  
+Q
+ 
+BT
+ 1 0 0 1 112 689 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Specify)0( )0(and)0( )0(position)0( )0(images)0( )0(and)0( )0(graphic)0( )0(elements)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 0.00 0.00 0.00  rg
+ 114 661  m 114 662.10 113.10 663 112 663  c
+110.90 663 110 662.10 110 661  c
+110 659.90 110.90 659 112 659  c
+113.10 659 114 659.90 114 661  c
+  B  
+Q
+ 
+BT
+ 1 0 0 1 112 671 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Support)0( )0(checklists)0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 654 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(More)0( )0(cop)10(y)0] TJ  
+ET
+ 
+endstream
+endobj
+7 0 obj
+<<
+/Type  /Page 
+/Parent  5 0 R 
+/Contents  6 0 R 
+>>
+endobj
+8 0 obj
+<<
+/Type  /Catalog 
+/Pages  5 0 R 
+>>
+endobj
+9 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate (D:20180823132916)
+/Producer  (erlguten-3.1) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000030 00000 n 
+0000000150 00000 n 
+0000000271 00000 n 
+0000000318 00000 n 
+0000000495 00000 n 
+0000002806 00000 n 
+0000002875 00000 n 
+0000002928 00000 n 
+trailer
+<<
+/Size 10
+/Root 8 0 R
+/Info 9 0 R
+>>
+startxref
+3096
+%%EOF

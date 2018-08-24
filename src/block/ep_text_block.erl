@@ -10,7 +10,7 @@
 %%%   Description:  Typseset paragraphs 
 %%% @end
 %%%
-%%% NOTE: Deprecated
+%%% NOTE: Deprecated -- will soon delete!!!!!!!!!!!!!!!!!
 %%% ==========================================================================
 
 

@@ -133,13 +133,13 @@ report_fontsize(Tag) ->
 report_leading(Tag) ->
   FontSize = report_fontsize(Tag),
   case Tag of
-     p  -> round(FontSize * 1.5);
+     p  -> round(FontSize * 1.4);
      h2 -> round(FontSize * 1.5);
      h3 -> round(FontSize * 1.5);
      ul -> FontSize;
      ol -> FontSize;
-     li -> round(FontSize * 1.5);
-     ci -> round(FontSize * 1.5);
+     li -> round(FontSize * 1.4);
+     ci -> round(FontSize * 1.4);
      br -> FontSize;
      _  -> round(FontSize * 1.25)
   end. 

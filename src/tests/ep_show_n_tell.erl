@@ -28,11 +28,11 @@ run()->
     %% Page 1 Make up
 
    Copy                        = ep_sample_text:erlpress(),
-   PanelMap                    = ep_panel:create({1, 1, test}, {72, 20}, {460, 705}),
+   PanelMap                    = ep_panel:create({1, 1, test}, {72, 50}, {450, 680}),
    PanelMap1                   = ep_panel:reveal(PanelMap),
-   {Paste, _Spill, _PanelMap2} = ep_text_block:fit_copy(Copy, PanelMap1),
+   {Paste, _Gap, PanelMap2}    = ep_copy_block:text(Copy, PanelMap),
    ok                          = ep_paste_lib:paste_panel(PDF, Job, PanelMap1),
-   ok                          = ep_paste_lib:paste(PDF, Paste, [], PanelMap1),
+   ok                          = ep_paste_lib:paste(PDF, Paste, [], PanelMap2),
 
     ep_pagination:next_page(PDF),    % ****** Page 2
    
@@ -56,8 +56,8 @@ run()->
     PositionC                    = {72, 140},
     SizeC                        = {450, 150},
     PanelMapC                    = ep_panel:create(PanelNameC, PositionC, SizeC),
-    {PasteC, _Spill, _PanelMapC} = ep_text_block:fit_copy(CopyC, PanelMapC),
-    ep_paste_lib:paste(PDF, PasteC, [], PanelMapC),
+    {PasteC, _GapC, PanelMapC1}  = ep_copy_block:text(CopyC, PanelMapC),
+    ep_paste_lib:paste(PDF, PasteC, [], PanelMapC1),
 
 
     TextD          = "Boxed Text",
@@ -76,9 +76,9 @@ run()->
      PanelMapE2                    = ep_panel:update_typestyle(justify_report_hv, PanelMapE1),
      PanelMapE3                    = ep_panel:reveal(PanelMapE2),
      PanelMapE4                    = ep_panel:update_background_color(gainsboro, PanelMapE3),
-     {PasteE, _Spill, _PanelMapE5} = ep_text_block:fit_copy(CopyE, PanelMapE4),
+     {PasteE, _GapE, PanelMapE5}    = ep_copy_block:text(CopyE, PanelMapE4),
      ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapE4),
-     ok                            = ep_paste_lib:paste(PDF, PasteE, [], PanelMapE4),
+     ok                            = ep_paste_lib:paste(PDF, PasteE, [], PanelMapE5),
 
 
     Text1S         = "Poetry (Preformatted Text)",
@@ -96,9 +96,9 @@ run()->
      PanelMapF1                    = ep_panel:create(PanelNameF, PositionF, SizeF),
      PanelMapF2                    = ep_panel:reveal(PanelMapF1),
      PanelMapF3                    = ep_panel:update_typestyle(preformatted_report, PanelMapF2),
-     {PasteF, _Spill, _PanelMapF4} = ep_text_block:fit_copy(CopyF, PanelMapF3),
-     ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapF3),
-     ok                            = ep_paste_lib:paste(PDF, PasteF, [], PanelMapF3),
+     {PasteF, _GapF, PanelMapF4}   = ep_copy_block:text(CopyF, PanelMapF3),
+     ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapF4),
+     ok                            = ep_paste_lib:paste(PDF, PasteF, [], PanelMapF4),
 
 
     ep_pagination:next_page(PDF),    % ****** Page 2
@@ -120,7 +120,7 @@ run()->
      PanelMapG2                    = ep_panel:reveal(PanelMapG1),
      PanelMapG3                    = ep_panel:update_background_color(gainsboro, PanelMapG2),
      PanelMapG4                    = ep_panel:update_typestyle(centered_report, PanelMapG3),
-     {PasteG, _Spill, _PanelMapG5} = ep_text_block:fit_copy(CopyG, PanelMapG4),
+     {PasteG, _GapG, PanelMapG5}    = ep_copy_block:text(CopyG, PanelMapG4),
      ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapG4),
      ok                            = ep_paste_lib:paste(PDF, PasteG, [], PanelMapG4),
 
@@ -143,9 +143,9 @@ run()->
      PanelMapH3                      = ep_panel:reveal(PanelMapH2),
      PanelMapH4                      = ep_panel:update_radius(0, PanelMapH3),
      PanelMapH5                      = ep_panel:update_typestyle(ragged_left_report, PanelMapH4),
-     {PasteH, _Spill, _PanelMapH6}   = ep_text_block:fit_copy(CopyH, PanelMapH5),
-     ok                              = ep_paste_lib:paste_panel(PDF, Job, PanelMapH5),
-     ok                              = ep_paste_lib:paste(PDF, PasteH, [], PanelMapH5),
+     {PasteH, _GapH, PanelMapH6}    = ep_copy_block:text(CopyH, PanelMapH5),
+     ok                              = ep_paste_lib:paste_panel(PDF, Job, PanelMapH6),
+     ok                              = ep_paste_lib:paste(PDF, PasteH, [], PanelMapH6),
 
 %% NOTE: The following example demonstrates how to position and display text
 %%       Note that Y coordinate of text sample is not inverted; e.g. text will

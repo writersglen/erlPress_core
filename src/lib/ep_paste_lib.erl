@@ -13,7 +13,6 @@
 %%% ==========================================================================
 
 
-
 -module (ep_paste_lib).
 
 % -export([create/3, one_line/4]).
@@ -105,7 +104,7 @@ paste_copy(Paste, Gap, PanelMap, NameString) ->
 
 
 paste(PDF, Paste, Gap, PanelMap) ->
-   io:format("Entering paste/4 - Paste: ~p~n~n", [Paste]),
+   io:format("Entering paste/4 - Length Paste: ~p~n~n", [length(Paste)]),
     paste_elements(PDF, Paste, Gap, PanelMap).
 
 
@@ -113,11 +112,12 @@ paste_elements(_PDF, [], _Gap,  _PanelMap) ->
     ok;
 
 paste_elements(PDF, Paste, Gap, PanelMap) ->
-   io:format("Entering paste_elements/4 - Paste: ~p~n~n", [Paste]),
+   io:format("Entering paste_elements/4 - Length Paste: ~p~n~n", [length(Paste)]),
     [Paste1 | MorePaste] = Paste,
     Tag                = element(1, Paste1),
     Lines              = element(2, Paste1),
     WillFit   = ep_panel:will_fit(Tag, Lines, PanelMap), 
+    io:format("+++++++++++++++++++=  WillFit:  ~p~n~n", [WillFit]),
     case WillFit of
        true  -> {Gap1, PanelMap1} = paste_up(PDF, Tag, Lines, Gap, PanelMap),
                 Paste2             = MorePaste,
@@ -141,7 +141,7 @@ paste_elements(PDF, Paste, Gap, PanelMap) ->
                PanelMap       :: map()) -> tuple().
 
 paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
-   io:format("Entering paste_up/4 - Lines: ~p~n~n", [Lines]),
+   io:format("Entering paste_up/4 - Length Lines: ~p~n~n", [length(Lines)]),
    io:format("Entering paste_up/4 - Gap: ~p~n~n", [Gap]),
     {Gap1, PanelMap1} = paste_lines(PDF, Tag, Lines, Gap, PanelMap),
     ok                 = paste_if_ci(PDF, Tag, PanelMap),
@@ -157,7 +157,10 @@ paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
                   PanelMap :: map()) -> tuple().
 
 paste_lines(_PDF, br, _Lines, Gap, PanelMap) ->
-    {Gap, PanelMap};
+    TypeStyle = ep_panel:get_typestyle(PanelMap),
+    Leading   = ep_typespec:leading(TypeStyle, br),
+    PanelMap1 = ep_copyfit:move_content_cursor(Leading, PanelMap), 
+    {Gap, PanelMap1};
 
 paste_lines(PDF, ul, Lines, Gap, PanelMap) ->
     PanelMap1          = maybe_line_space(ul, PanelMap),
@@ -171,7 +174,7 @@ paste_lines(PDF, Tag, Lines, Gap, PanelMap) ->
     {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap1),
     PanelMap2          = maybe_line_space(Tag, PanelMap1),
     ok                 = maybe_paste_li_symbol(PDF, Tag, PanelMap2),
-   io:format("Entering paste_lines/5 - Lines: ~p~n", [Lines]),
+   io:format("Entering paste_lines/5 - Length Lines: ~p~n", [length(Lines)]),
    io:format("Entering paste_lines/5 - Tag: ~p~n", [Tag]),
     Code               = pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap2),
     ok                 = paste(PDF, Code),
@@ -339,13 +342,11 @@ adjust_gap(_Adjust, [], PanelMap) ->
 
 adjust_gap(Adjust, Gap, PanelMap) ->
     Gap1      = new_gap(Adjust, Gap),
-    PanelMap1 = move_content_cursor(Adjust, PanelMap),
+    PanelMap1 = ep_copyfit:move_content_cursor(Adjust, PanelMap),
     {Gap1, PanelMap1}.
 
 
 new_gap(Gap, Adjust) ->
     Gap + Adjust.
 
-move_content_cursor(Adjust, PanelMap) ->
-    ep_panel:update_content_cursor(Adjust, PanelMap).
 

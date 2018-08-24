@@ -9,7 +9,8 @@
 %%%   File:         ep_guide1.erl
 %%%   Description:  Programmers guide 
 %%% @end
-
+%%%
+%%% NOTE: Work-in-progress
 %%% ==========================================================================
 
 

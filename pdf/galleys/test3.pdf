@@ -1,0 +1,117 @@
+%PDF-1.4
+1 0 obj
+<<
+>>
+endobj
+2 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F10 
+/BaseFont  /Times-Italic 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F13 
+/BaseFont  /Times-Roman 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+4 0 obj
+<<
+/F10  2 0 R 
+/F13  3 0 R 
+>>
+endobj
+5 0 obj
+<<
+/Type  /Page 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  7 0 R  ] 
+/Resources <<
+/Font  4 0 R 
+/XObject  1 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+6 0 obj
+<<
+/Length  1017 
+>>
+
+stream
+1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 1.00 1.00 1.00  rg
+ 82 62  m 512 62  l 517.52 62 522 67.52 522 72  c
+522 732  l 522 737.52 517.52 742 512 742  c
+82 742  l 77.52 742 72 737.52 72 732  c
+72 72  l 72 67.52 77.52 62 82 62  c
+  B  
+BT
+ 1 0 0 1 72 743 Tm 10  -17 TD /F13 12 Tf 0 Tw [( )0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 727 Tm 10  -17 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)80(w)10(o)0( )0(roads)0( )0(di)25(v)15(er)18(ged)0( )0(in)0( )0(a)0( )0(yello)25(w)0( )0(w)10(ood,)0] TJ 0  -17 TD [(And)0( )0(sorry)0( )0(I)0( )0(could)0( )0(not)0( )0(tra)20(v)15(el)0( )0(both)0] TJ 0  -17 TD [(And)0( )0(be)0( )0(one)0( )0(tra)20(v)15(eler)40(,)0( )0(long)0( )0(I)0( )0(stood)0] TJ 0  -17 TD [(And)0( )0(look)10(ed)0( )0(do)25(wn)0( )0(one)0( )0(as)0( )0(f)10(ar)0( )0(as)0( )0(I)0( )0(could)0] TJ 0  -17 TD [(T)80(o)0( )0(where)0( )0(it)0( )0(bent)0( )0(in)0( )0(the)0( )0(under)18(gro)25(wth;)0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 643 Tm 10  -17 TD /F13 12 Tf 0 Tw [( )0] TJ 0 0 0 rg [(-)0( )0] TJ /F10 12 Tf [(Robert)0( )0(F)55(r)45(ost)0] TJ  
+ET
+ 
+endstream
+endobj
+7 0 obj
+<<
+/Type  /Page 
+/Parent  5 0 R 
+/Contents  6 0 R 
+>>
+endobj
+8 0 obj
+<<
+/Type  /Catalog 
+/Pages  5 0 R 
+>>
+endobj
+9 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate (D:20180824180022)
+/Producer  (erlguten-3.1) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000030 00000 n 
+0000000152 00000 n 
+0000000273 00000 n 
+0000000320 00000 n 
+0000000497 00000 n 
+0000001569 00000 n 
+0000001638 00000 n 
+0000001691 00000 n 
+trailer
+<<
+/Size 10
+/Root 8 0 R
+/Info 9 0 R
+>>
+startxref
+1859
+%%EOF

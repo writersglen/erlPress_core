@@ -10,7 +10,8 @@
 %%%   File:         ep_block.erl
 %%%   Description:  Display text blocks 
 %%% @end
-
+%%%
+%%% NOTE: Deprecated -- soon to be deleteed!!!!!!!!!!!!!!!!!!
 %%% ==========================================================================
 
 

@@ -43,8 +43,6 @@ parse_xml(TaggedText) ->
     lists:reverse(XML).
 
 
-
-
 %% @doc Return line widths and offsets for a given panel
 
 -spec line_specs(Tag         :: atom(),
@@ -89,19 +87,6 @@ vacancies(Tag, PanelMap) ->
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 %% ***********************************************************
 %% fit_xml/1 - Copyfit XML 
 %% ***********************************************************
@@ -113,31 +98,31 @@ vacancies(Tag, PanelMap) ->
               PanelMap :: map()) -> tuple().
 
 fit_xml(XML, PanelMap) ->
-   fit_xml([], XML, PanelMap, continue).
+  fit_xml([], XML, PanelMap, continue).
 
 
 fit_xml(Content, [], PanelMap, _Continue) ->
-    {Content, [], PanelMap};
+   {Content, [], PanelMap};
 
 
 fit_xml(Content, Spill, PanelMap, filled) ->
-    {Content, Spill, PanelMap};
+   {Content, Spill, PanelMap};
 
 
 fit_xml(Content, XML, PanelMap, continue) ->
-     [X | Spill] = XML,
+    [X | Spill] = XML,
 
-     Xml                        = element(2, X),
-     Tag                        = get_tag(Xml),
-     {Lines, Size, Continue}    = fit_lines(Tag, Xml, PanelMap),
+    Xml                        = element(2, X),
+    Tag                        = get_tag(Xml),
+    {Lines, Size, Continue}    = fit_lines(Tag, Xml, PanelMap),
 
 
-     case Continue of
-        true  -> Content2 = [{Tag, Lines} | Content],
-                 PanelMap1 = ep_panel:update_content_cursor(Size, PanelMap),  
-                 fit_xml(Content2, Spill, PanelMap1, continue);
-        false -> fit_xml(Content, Spill, PanelMap, filled)
-     end.  
+    case Continue of
+       true  -> Content2 = [{Tag, Lines} | Content],
+                PanelMap1 = ep_panel:update_content_cursor(Size, PanelMap),  
+                fit_xml(Content2, Spill, PanelMap1, continue);
+       false -> fit_xml(Content, Spill, PanelMap, filled)
+    end.  
 
 
 get_Xml(XML) ->

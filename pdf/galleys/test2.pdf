@@ -1,0 +1,120 @@
+%PDF-1.4
+1 0 obj
+<<
+>>
+endobj
+2 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F3 
+/BaseFont  /Courier 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F13 
+/BaseFont  /Times-Roman 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+4 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F7 
+/BaseFont  /Helvetica 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+5 0 obj
+<<
+/F3  2 0 R 
+/F13  3 0 R 
+/F7  4 0 R 
+>>
+endobj
+6 0 obj
+<<
+/Type  /Page 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  8 0 R  ] 
+/Resources <<
+/Font  5 0 R 
+/XObject  1 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+7 0 obj
+<<
+/Length  1371 
+>>
+
+stream
+1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 1.00 1.00 1.00  rg
+ 82 62  m 512 62  l 517.52 62 522 67.52 522 72  c
+522 732  l 522 737.52 517.52 742 512 742  c
+82 742  l 77.52 742 72 737.52 72 732  c
+72 72  l 72 67.52 77.52 62 82 62  c
+  B  
+BT
+ 1 0 0 1 72 743 Tm 40  -18 TD /F7 12 Tf 0.50 Tw 0 0 0 rg [(This)0( )0(is)0( )0(nor)-25(mal)0( )0(te)30(xt)0( )0(set)0( )0(in)0( )0(14/21)0( )0(Times)0( )0(Roman.)0( )0(It)0( )0(includes)0( )0] TJ /F13 12 Tf [(emphasized)0( )0(terms,)0] TJ -30  -18 TD /F7 12 Tf 2.52 Tw [(set)0( )0(in)0( )0(Times-Italic.)0( )0(The)0( )0(T)120(eX)0( )0(h)30(yphenation)0( )0(algor)-15(ithm)0( )0(is)0( )0(implemented.)0( )0(The)0( )0(ter)-25(m)0] TJ 0  -18 TD /F3 12 Tf 0.25 Tw [({person,)0( )0("Joe"})0] TJ /F7 12 Tf [( )0(is)0( )0(an)0( )0(Er)-15(lang)0( )0(ter)-25(m.)0( )0(The)0( )0(v)25(ar)-15(iab)20(le)0( )0] TJ /F3 12 Tf [(X)0] TJ /F7 12 Tf [(,)0( )0(w)15(as)0( )0(immediately)0( )0(f)30(ollo)15(w)10(ed)0] TJ 0  -18 TD 1.31 Tw [(b)20(y)0( )0(a)0( )0(comma.)0( )0(The)0( )0(justification)0( )0(algor)-15(ithm)0( )0(does)0( )0(proper)0( )0] TJ /F13 12 Tf [(k)10(erning)0] TJ /F7 12 Tf [(.)0( )0(A)50(W)50(A)100(Y)0( )0(is)0( )0(correctly)0] TJ 0  -18 TD 0 Tw [(k)20(er)-25(ned!)0( )0(Er)-15(lang)0( )0(ter)-25(ms)0( )0] TJ /F3 12 Tf [({like,)0( )0(this})0] TJ /F7 12 Tf [( )0(are)0( )0(typeset)0( )0(in)0( )0] TJ /F13 12 Tf [(courier)55(.)0] TJ  
+ET
+ 
+endstream
+endobj
+8 0 obj
+<<
+/Type  /Page 
+/Parent  6 0 R 
+/Contents  7 0 R 
+>>
+endobj
+9 0 obj
+<<
+/Type  /Catalog 
+/Pages  6 0 R 
+>>
+endobj
+10 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate (D:20180824180018)
+/Producer  (erlguten-3.1) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000030 00000 n 
+0000000146 00000 n 
+0000000267 00000 n 
+0000000385 00000 n 
+0000000443 00000 n 
+0000000620 00000 n 
+0000002046 00000 n 
+0000002115 00000 n 
+0000002168 00000 n 
+trailer
+<<
+/Size 11
+/Root 9 0 R
+/Info 10 0 R
+>>
+startxref
+2337
+%%EOF

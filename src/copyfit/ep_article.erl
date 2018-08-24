@@ -102,7 +102,7 @@ beads(Paste, XML, []) ->
    
 beads(Paste, XML, Beads) ->
    [PanelMap | MoreBeads] = Beads,
-   Gap = gap(PanelMap),
+   Gap =    ep_copyfit:gap(PanelMap),
    Paste1 = panel(Paste, Gap, XML, PanelMap),
    case MoreBeads == [] of
       true  -> beads(Paste1, [], []);
@@ -113,15 +113,6 @@ beads(Paste, XML, Beads) ->
 %%% ==========================================================================
 %%% beads/3 - Helpers 
 %%% ==========================================================================
-
-
-
-%% @doc Available space in panel
-
--spec gap(PanelMap :: map()) -> integer(). % pixels 
-
-gap(PanelMap) ->
-   ep_panel:get_available(PanelMap).
 
 
 
@@ -142,56 +133,16 @@ panel(Paste, _Gap, [], _PanelMap) ->
 panel(Paste, Gap, XML, PanelMap) ->
    [X | MoreXML]        = XML,
    Xml                  = element(2, X),
-   Tag                  = get_tag(Xml),
-   Lines                = get_lines(Tag, Xml, PanelMap),
+   Tag                  = ep_copyfit:get_tag(Xml),
+   Lines                = ep_copyfit:get_lines(Tag, Xml, PanelMap),
    SpaceAvailable       = Gap >= 0,
    case SpaceAvailable of
       true  -> Paste1   = [Lines | Paste],
-               Gap1     = close_gap(Gap, Tag, Lines, PanelMap),
+               Gap1     = ep_copyfit:close_gap(Gap, Tag, Lines, PanelMap),
                panel(Paste1, Gap1, MoreXML, PanelMap); 
       false -> top_off(Paste, Lines, Gap, Xml, PanelMap)
    end.
 
-
-%%% ==========================================================================
-%%% panel/4 - Helpers 
-%%% ==========================================================================
-
-
-%% @doc Given content elment, return tag 
-
--spec get_tag(Xml :: tuple()) -> atom().
-
-get_tag(Xml) ->
-   element(1, Xml).
-
-
-%% @doc Convert Xml to copyfit richText.
-
--spec get_lines(Tag        :: atom(),
-                Xml        :: list(),
-                PanelMap   :: map()) -> list().
-
-get_lines(Tag, Xml, PanelMap) ->
-   io:format("Tag: ~p~n", [Tag]),
-   case Tag of
-      ul  ->  List  = element(3, Xml),
-              get_richText(List, PanelMap);
-      br   -> break_rt();
-      _    -> ep_xml_lib:xml2lines(Xml, PanelMap)
-   end.
-
-%% @doc Convert list of Xml copy elements into richText
-
--spec get_richText(List     :: list(),
-                   PanelMap :: list()) -> list().
-
-get_richText(List, PanelMap) ->
-    [ep_xml_lib:rich_text(Item, PanelMap) || Item <- List].
-
-
-break_rt() ->
-     [{richText, [{space,3000, {face,eg_font_13,12,0,{0,0,0},true}}]}].
 
 
 %%% ==========================================================================
@@ -220,7 +171,7 @@ break_rt() ->
 
 top_off(Paste, Lines, Gap, Xml, PanelMap) ->
    io:format("top-off/5 - Lines: ~p~n~n", [Lines]),
-   WillFit  = will_fit(Gap, PanelMap),
+   WillFit  = ep_copyfit:will_fit(Gap, PanelMap),
    case WillFit > 0 of
       true   -> Spill  = Xml,   % backfill/N
                 Gap1   = Gap,
@@ -232,51 +183,6 @@ top_off(Paste, Lines, Gap, Xml, PanelMap) ->
     {Paste1, Gap1, Spill}.
    
    
-%%% ==========================================================================
-%%% panel/4 - Helpers 
-%%% ==========================================================================
-
-
-will_fit(Gap, PanelMap) ->
-    TypeStyle = ep_panel:get_typestyle(PanelMap),
-    Leading   = ep_typespec:leading(TypeStyle, p),
-    Gap div Leading.
-
-%%  backfill/N - yet to be developed
-%   shim/N     - yet to be developed
-   
-
-close_gap(Gap, Tag, Lines, PanelMap) ->
-   Needs = lines_need(Tag,Lines, PanelMap),
-   Gap - Needs.
-
-
-
-%% @doc Return vertical panel space required by lines
-
--spec lines_need(Tag      :: atom(),
-                 Lines    :: list(),
-                 PanelMap :: map()) -> integer().
-
-lines_need(p, Lines, PanelMap) ->
-   needs(p, Lines, PanelMap);
-
-lines_need(Tag, Lines, PanelMap) ->
-   Needs    = needs(Tag, Lines, PanelMap),
-   TypeStyle = ep_panel:get_typestyle(PanelMap),
-   Leading   = ep_typespec:leading(TypeStyle, Tag),
-   Padding  = Leading * 2,
-   Needs + Padding. 
-
-
-%% @doc lines_need/3 helper 
- 
-needs(Tag, Lines, PanelMap) -> 
-    TypeStyle = ep_panel:get_typestyle(PanelMap),
-    Leading   = ep_typespec:leading(TypeStyle, Tag),
-    Leading * length(Lines).
-
-
 %%% ==========================================================================
 %%% Paste functions 
 %%% ==========================================================================

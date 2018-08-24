@@ -72,7 +72,7 @@ code_listing() ->
      PanelMapF1                    = ep_panel:create(PanelNameF, PositionF, SizeF),
      PanelMapF2                    = ep_panel:reveal(PanelMapF1),
      PanelMapF3                    = ep_panel:update_typestyle(cdoc, PanelMapF2),
-     {PasteF, _Spill, _PanelMapF4} = ep_text_block:fit_copy(CopyF, PanelMapF3),
+     {PasteF, _GapF, _PanelMapF4}  = ep_copy_block:text(CopyF, PanelMapF3),
      ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapF3),
      ok                            = ep_paste_lib:paste(PDF, PasteF, [], PanelMapF3),
      ep_job:save_job(PDF, OutFile).</p>".
