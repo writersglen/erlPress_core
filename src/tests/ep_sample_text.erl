@@ -92,18 +92,18 @@ ul() ->
 
 cl() ->
 "<h3>Roadmap:</h3>
-<br> </br>
-<ci>Extend and debug Markdown parsing</ci>
-<ci>Ordered lists</ci>
-<ci>Footnotes</ci>
-<ci>Tables</ci>
-<ci>Articles and beads</ci>
-<ci>Test! Test! Test!</ci>
-<ci>TrueType and OpenType fonts</ci>
-<ci>Impostion and layout functions</ci>
-<ci>PDF-to-Erlang functions</ci>
-<ci>Applications for diverse print formats</ci>
-<br> </br>
+<cl>
+<li>Extend and debug Markdown parsing</li>
+<li>Ordered lists</li>
+<li>Footnotes</li>
+<li>Tables</li>
+<li>Articles and beads</li>
+<li>Test! Test! Test!</li>
+<li>TrueType and OpenType fonts</li>
+<li>Impostion and layout functions</li>
+<li>PDF-to-Erlang functions</li>
+<li>Applications for diverse print formats</li>
+</cl>
 <p><em>erlPress_core.01</em> provides a foundation for development of Erlang applications that support creative generation of print formats ranging from business cards to technical books. We immodestly imagine the evolution of a comprehensive Human Communication Platform, HCP, parallel to OTP.</p>".
 
 
@@ -140,18 +140,18 @@ erlpress() ->
 </ul>
 <p><em>erlPress_lib.01</em> revises and extends the Hugh Watkins fork of the Erlang Erlguten library originally developed by Joe Armstrong. See: <em>https://github.com/hwatkins/erlguten</em></p>
 <h3>Roadmap:</h3>
-<br> </br>
-<ci>Extend and debug Markdown parsing</ci>
-<ci>Ordered lists</ci>
-<ci>Footnotes</ci>
-<ci>Tables</ci>
-<ci>Articles and beads</ci>
-<ci>Test! Test! Test!</ci>
-<ci>TrueType and OpenType fonts</ci>
-<ci>Impostion and layout functions</ci>
-<ci>PDF-to-Erlang functions</ci>
-<ci>Applications for diverse print formats</ci>
-<br> </br>
+<cl>
+<li>Extend and debug Markdown parsing</li>
+<li>Ordered lists</li>
+<li>Footnotes</li>
+<li>Tables</li>
+<li>Articles and beads</li>
+<li>Test! Test! Test!</li>
+<li>TrueType and OpenType fonts</li>
+<li>Impostion and layout functions</li>
+<li>PDF-to-Erlang functions</li>
+<li>Applications for diverse print formats</li>
+</cl>
 <p><em>erlPress_core.01</em> provides a foundation for development of Erlang applications that support creative generation of print formats ranging from business cards to technical books. We immodestly imagine the evolution of a comprehensive Human Communication Platform, HCP, parallel to OTP.</p>
 
 <p> Join in!</p>

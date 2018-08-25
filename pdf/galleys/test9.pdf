@@ -53,7 +53,7 @@ endobj
 endobj
 7 0 obj
 <<
-/Length  3043 
+/Length  3047 
 >>
 
 stream
@@ -61,29 +61,17 @@ stream
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 72  m 492 72  l 497.52 72 502 77.52 502 82  c
-502 762  l 502 767.52 497.52 772 492 772  c
-82 772  l 77.52 772 72 767.52 72 762  c
-72 82  l 72 77.52 77.52 72 82 72  c
+ 82 62  m 512 62  l 517.52 62 522 67.52 522 72  c
+522 732  l 522 737.52 517.52 742 512 742  c
+82 742  l 77.52 742 72 737.52 72 732  c
+72 72  l 72 67.52 77.52 62 82 62  c
   B  
 BT
- 1 0 0 1 72 773 Tm 10  -27 TD /F7 18 Tf 0 Tw 0 0 0 rg [(Roadmap:)0] TJ  
+ 1 0 0 1 72 743 Tm 10  -27 TD /F7 18 Tf 0 Tw 0 0 0 rg [(Roadmap:)0] TJ  
 ET
  
 BT
- 1 0 0 1 72 747 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Extend)0( )0(and)0( )0(deb)20(ug)0( )0(Markdo)25(wn)0( )0(parsing)0] TJ  
-ET
- 
-q
- 1 w
- [] 0 d
- 0.00 0.00 0.00  RG
- 1.00 1.00 1.00  rg
- 82 728 9.60 9.60  re   B  
-Q
- 
-BT
- 1 0 0 1 72 730 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Ordered)0( )0(lists)0] TJ  
+ 1 0 0 1 112 704 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Extend)0( )0(and)0( )0(deb)20(ug)0( )0(Markdo)25(wn)0( )0(parsing)0] TJ  
 ET
  
 q
@@ -91,11 +79,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 711 9.60 9.60  re   B  
+ 82 692 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 713 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(F)15(ootnotes)0] TJ  
+ 1 0 0 1 112 687 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Ordered)0( )0(lists)0] TJ  
 ET
  
 q
@@ -103,11 +91,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 694 9.60 9.60  re   B  
+ 82 675 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 696 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)80(ables)0] TJ  
+ 1 0 0 1 112 670 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(F)15(ootnotes)0] TJ  
 ET
  
 q
@@ -115,11 +103,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 677 9.60 9.60  re   B  
+ 82 658 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 679 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Articles)0( )0(and)0( )0(beads)0] TJ  
+ 1 0 0 1 112 653 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)80(ables)0] TJ  
 ET
  
 q
@@ -127,11 +115,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 660 9.60 9.60  re   B  
+ 82 641 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 662 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)70(est!)0( )0(T)70(est!)0( )0(T)70(est!)0] TJ  
+ 1 0 0 1 112 636 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Articles)0( )0(and)0( )0(beads)0] TJ  
 ET
  
 q
@@ -139,11 +127,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 643 9.60 9.60  re   B  
+ 82 624 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 645 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)35(rueT)80(ype)0( )0(and)0( )0(OpenT)80(ype)0( )0(fonts)0] TJ  
+ 1 0 0 1 112 619 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)70(est!)0( )0(T)70(est!)0( )0(T)70(est!)0] TJ  
 ET
  
 q
@@ -151,11 +139,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 626 9.60 9.60  re   B  
+ 82 607 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 628 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Impostion)0( )0(and)0( )0(layout)0( )0(functions)0] TJ  
+ 1 0 0 1 112 602 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)35(rueT)80(ype)0( )0(and)0( )0(OpenT)80(ype)0( )0(fonts)0] TJ  
 ET
  
 q
@@ -163,11 +151,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 609 9.60 9.60  re   B  
+ 82 590 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 611 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(PDF-to-Erlang)0( )0(functions)0] TJ  
+ 1 0 0 1 112 585 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Impostion)0( )0(and)0( )0(layout)0( )0(functions)0] TJ  
 ET
  
 q
@@ -175,11 +163,11 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 592 9.60 9.60  re   B  
+ 82 573 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 594 Tm 40  -18 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Applications)0( )0(for)0( )0(di)25(v)15(erse)0( )0(print)0( )0(formats)0] TJ  
+ 1 0 0 1 112 568 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(PDF-to-Erlang)0( )0(functions)0] TJ  
 ET
  
 q
@@ -187,11 +175,23 @@ q
  [] 0 d
  0.00 0.00 0.00  RG
  1.00 1.00 1.00  rg
- 82 575 9.60 9.60  re   B  
+ 82 556 9.60 9.60  re   B  
 Q
  
 BT
- 1 0 0 1 72 577 Tm 40  -18 TD /F10 12 Tf 0.10 Tw 0 0 0 rg [(erlPr)37(ess_cor)37(e)15(.01)0] TJ /F13 12 Tf [( )0(pro)15(vides)0( )0(a)0( )0(foundation)0( )0(for)0( )0(de)25(v)15(elopment)0( )0(of)0( )0(Erlang)0( )0(applications)0] TJ -30  -18 TD 0.29 Tw [(that)0( )0(support)0( )0(creati)25(v)15(e)0( )0(generation)0( )0(of)0( )0(print)0( )0(formats)0( )0(ranging)0( )0(from)0( )0(b)20(usiness)0( )0(cards)0( )0(to)0( )0(tech-)0] TJ 0  -18 TD 0.12 Tw [(nical)0( )0(books.)0( )0(W)80(e)0( )0(immodestly)0( )0(imagine)0( )0(the)0( )0(e)25(v)20(olution)0( )0(of)0( )0(a)0( )0(comprehensi)25(v)15(e)0( )0(Human)0( )0(Com-)0] TJ 0  -18 TD 0 Tw [(munication)0( )0(Platform,)0( )0(HCP)111(,)0( )0(parallel)0( )0(to)0( )0(O)40(TP)111(.)0] TJ  
+ 1 0 0 1 112 551 Tm 10  -12 TD /F13 12 Tf 0 Tw 0 0 0 rg [(Applications)0( )0(for)0( )0(di)25(v)15(erse)0( )0(print)0( )0(formats)0] TJ  
+ET
+ 
+q
+ 1 w
+ [] 0 d
+ 0.00 0.00 0.00  RG
+ 1.00 1.00 1.00  rg
+ 82 539 9.60 9.60  re   B  
+Q
+ 
+BT
+ 1 0 0 1 72 535 Tm 40  -17 TD /F10 12 Tf -0.02 Tw 0 0 0 rg [(erlPr)37(ess_cor)37(e)15(.01)0] TJ /F13 12 Tf [( )0(pro)15(vides)0( )0(a)0( )0(foundation)0( )0(for)0( )0(de)25(v)15(elopment)0( )0(of)0( )0(Erlang)0( )0(applications)0( )0(that)0] TJ -30  -17 TD -0.79 Tw [(support)0( )0(creati)25(v)15(e)0( )0(generation)0( )0(of)0( )0(print)0( )0(formats)0( )0(ranging)0( )0(from)0( )0(b)20(usiness)0( )0(cards)0( )0(to)0( )0(technical)0( )0(books.)0] TJ 0  -17 TD 0.67 Tw [(W)80(e)0( )0(immodestly)0( )0(imagine)0( )0(the)0( )0(e)25(v)20(olution)0( )0(of)0( )0(a)0( )0(comprehensi)25(v)15(e)0( )0(Human)0( )0(Communication)0( )0(Plat-)0] TJ 0  -17 TD 0 Tw [(form,)0( )0(HCP)111(,)0( )0(parallel)0( )0(to)0( )0(O)40(TP)111(.)0] TJ  
 ET
  
 endstream
@@ -212,7 +212,7 @@ endobj
 10 0 obj
 <<
 /Creator  (Erlang) 
-/CreationDate (D:20180823132921)
+/CreationDate (D:20180825171244)
 /Producer  (erlguten-3.1) 
 /Author  () 
 /Title  () 
@@ -230,9 +230,9 @@ xref
 0000000391 00000 n 
 0000000450 00000 n 
 0000000627 00000 n 
-0000003725 00000 n 
-0000003794 00000 n 
-0000003847 00000 n 
+0000003729 00000 n 
+0000003798 00000 n 
+0000003851 00000 n 
 trailer
 <<
 /Size 11
@@ -240,5 +240,5 @@ trailer
 /Info 10 0 R
 >>
 startxref
-4016
+4020
 %%EOF

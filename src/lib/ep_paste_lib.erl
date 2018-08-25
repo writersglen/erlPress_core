@@ -104,7 +104,6 @@ paste_copy(Paste, Gap, PanelMap, NameString) ->
 
 
 paste(PDF, Paste, Gap, PanelMap) ->
-   io:format("Entering paste/4 - Length Paste: ~p~n~n", [length(Paste)]),
     paste_elements(PDF, Paste, Gap, PanelMap).
 
 
@@ -112,12 +111,10 @@ paste_elements(_PDF, [], _Gap,  _PanelMap) ->
     ok;
 
 paste_elements(PDF, Paste, Gap, PanelMap) ->
-   io:format("Entering paste_elements/4 - Length Paste: ~p~n~n", [length(Paste)]),
     [Paste1 | MorePaste] = Paste,
     Tag                = element(1, Paste1),
     Lines              = element(2, Paste1),
     WillFit   = ep_panel:will_fit(Tag, Lines, PanelMap), 
-    io:format("+++++++++++++++++++=  WillFit:  ~p~n~n", [WillFit]),
     case WillFit of
        true  -> {Gap1, PanelMap1} = paste_up(PDF, Tag, Lines, Gap, PanelMap),
                 Paste2             = MorePaste,
@@ -141,10 +138,7 @@ paste_elements(PDF, Paste, Gap, PanelMap) ->
                PanelMap       :: map()) -> tuple().
 
 paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
-   io:format("Entering paste_up/4 - Length Lines: ~p~n~n", [length(Lines)]),
-   io:format("Entering paste_up/4 - Gap: ~p~n~n", [Gap]),
     {Gap1, PanelMap1} = paste_lines(PDF, Tag, Lines, Gap, PanelMap),
-    ok                 = paste_if_ci(PDF, Tag, PanelMap),
     {Gap1, PanelMap1}.
 
 
@@ -167,15 +161,21 @@ paste_lines(PDF, ul, Lines, Gap, PanelMap) ->
     PanelMap2          = paste_li_list(PDF, ul, Lines, PanelMap1),
     {Gap, PanelMap2};
     
+paste_lines(PDF, ol, Lines, Gap, PanelMap) ->
+    PanelMap1          = maybe_line_space(ol, PanelMap),
+    PanelMap2          = paste_li_list(PDF, ol, Lines, PanelMap1),
+    {Gap, PanelMap2};
+    
+paste_lines(PDF, cl, Lines, Gap, PanelMap) ->
+    PanelMap1          = maybe_line_space(cl, PanelMap),
+    PanelMap2          = paste_li_list(PDF, cl, Lines, PanelMap1),
+    {Gap, PanelMap2};
+    
 
 paste_lines(PDF, Tag, Lines, Gap, PanelMap) ->
     {Gap1, PanelMap1}  = maybe_adjust_gap(Gap, PanelMap),
-   io:format("Entering paste_lines/5 - Gap1: ~p~n", [Gap1]),
     {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap1),
     PanelMap2          = maybe_line_space(Tag, PanelMap1),
-    ok                 = maybe_paste_li_symbol(PDF, Tag, PanelMap2),
-   io:format("Entering paste_lines/5 - Length Lines: ~p~n", [length(Lines)]),
-   io:format("Entering paste_lines/5 - Tag: ~p~n", [Tag]),
     Code               = pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap2),
     ok                 = paste(PDF, Code),
     PanelMap3          = ep_panel:update_panel(Tag, Lines, PanelMap2),
@@ -189,16 +189,40 @@ paste_li_list(_PDF, ul, [], PanelMap) ->
 paste_li_list(PDF, ul, Lines, PanelMap) ->
     [Linez | Rest]  = Lines,
     ok              = paste_li(PDF, ul, Linez, PanelMap),
+    ok              = maybe_paste_item_symbol(PDF, ul, PanelMap),
     TypeStyle       = ep_panel:get_typestyle(PanelMap),
     Leading         = ep_typespec:leading(TypeStyle, li),
     PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
-    paste_li_list(PDF, ul, Rest, PanelMap1).
+    paste_li_list(PDF, ul, Rest, PanelMap1);
+   
+paste_li_list(_PDF, ol, [], PanelMap) ->
+   PanelMap;
+
+paste_li_list(PDF, ol, Lines, PanelMap) ->
+    [Linez | Rest]  = Lines,
+    ok              = paste_li(PDF, ul, Linez, PanelMap),
+    ok              = maybe_paste_item_symbol(PDF, ol, PanelMap),
+    TypeStyle       = ep_panel:get_typestyle(PanelMap),
+    Leading         = ep_typespec:leading(TypeStyle, li),
+    PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
+    paste_li_list(PDF, ol, Rest, PanelMap1);
    
     
+paste_li_list(_PDF, cl, [], PanelMap) ->
+   PanelMap;
+
+paste_li_list(PDF, cl, Lines, PanelMap) ->
+    [Linez | Rest]  = Lines,
+    ok              = paste_li(PDF, cl, Linez, PanelMap),
+    ok              = maybe_paste_item_symbol(PDF, cl, PanelMap),
+    TypeStyle       = ep_panel:get_typestyle(PanelMap),
+    Leading         = ep_typespec:leading(TypeStyle, li),
+    PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
+    paste_li_list(PDF, cl, Rest, PanelMap1).
+   
 
 paste_li(PDF, Tag, Lines, PanelMap) ->
     {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap),
-    ok                 = maybe_paste_li_symbol(PDF, Tag, PanelMap),
     Code               = pdf_code(PDF, Tag, [Lines], Widths, Offsets, PanelMap),
     ok                 = paste(PDF, Code).
 
@@ -208,15 +232,22 @@ maybe_line_space(Tag, PanelMap) ->
    case Tag of
       ul  -> TypeStyle = ep_panel:get_typestyle(PanelMap),
              ep_panel:one_line_space(ul, TypeStyle, PanelMap);
+      ol  -> TypeStyle = ep_panel:get_typestyle(PanelMap),
+             ep_panel:one_line_space(ol, TypeStyle, PanelMap);
+      cl  -> TypeStyle = ep_panel:get_typestyle(PanelMap),
+             ep_panel:one_line_space(cl, TypeStyle, PanelMap);
       _   -> PanelMap
    end.
 
 
-maybe_paste_li_symbol(PDF, Tag, PanelMap) ->
+maybe_paste_item_symbol(PDF, Tag, PanelMap) ->
    case Tag of
       ul -> paste_dot(PDF, PanelMap);
+      ol -> paste_index(PDF, PanelMap);
+      cl -> paste_checkbox(PDF, Tag, PanelMap);
       _  -> ok
    end.
+
 
 
 paste_dot(PDF, PanelMap) ->
@@ -240,14 +271,18 @@ paste_dot(PDF, PanelMap) ->
    ok.
 
 
+ paste_index(PDF, PanelMap) ->
+   io:format("~p~n", [PDF]),
+   io:format("~p~n", [PanelMap]).
 
-paste_if_ci(PDF, Tag, PanelMap) ->
+
+paste_checkbox(PDF, Tag, PanelMap) ->
    TypeStyle = ep_panel:get_typestyle(PanelMap),
    Size      = ep_typespec:fontsize(TypeStyle, Tag) * 0.80,
    Margin    = ep_panel:get_margin(PanelMap),
    Diff      = ep_typespec:leading(TypeStyle, Tag),
    case Tag of
-      ci  -> {TextX, TextY} = ep_panel:get_text_position(PanelMap),
+       cl -> {TextX, TextY} = ep_panel:get_text_position(PanelMap),
              DiffX = TextX + Margin,
              DiffY = TextY  - Diff,
              eg_pdf:save_state(PDF),
@@ -261,6 +296,8 @@ paste_if_ci(PDF, Tag, PanelMap) ->
              ok;
         _  -> ok
     end.
+
+
 
 %% @doc Transform lines to PDF code
 
@@ -292,6 +329,16 @@ pdf_code(PDF, Tag, Lines, Widths, Offsets, PanelMap) ->
 
 
 text_placement(ul, PanelMap) ->
+   Indent = ep_panel:get_indent(PanelMap),
+   {X, Y} =  ep_panel:get_text_position(PanelMap),
+   {X + (2 * Indent) , Y};
+
+text_placement(ol, PanelMap) ->
+   Indent = ep_panel:get_indent(PanelMap),
+   {X, Y} =  ep_panel:get_text_position(PanelMap),
+   {X + (2 * Indent) , Y};
+
+text_placement(cl, PanelMap) ->
    Indent = ep_panel:get_indent(PanelMap),
    {X, Y} =  ep_panel:get_text_position(PanelMap),
    {X + (2 * Indent) , Y};

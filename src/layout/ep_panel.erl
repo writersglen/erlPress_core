@@ -293,7 +293,6 @@ get_available(PanelMap) ->
                Lines :: list()) -> integer().
 
 consumed(Tag, Lines) ->
-   io:format("^^^^^^^^^^^^^^^^ Tag: ~p~n~n", [Tag]),
    Leading  = ep_report_sty:report_leading(Tag),
    Leading * length(Lines).
 

@@ -28,7 +28,7 @@ run()->
     %% Page 1 Make up
 
    Copy                        = ep_sample_text:erlpress(),
-   PanelMap                    = ep_panel:create({1, 1, test}, {72, 50}, {450, 680}),
+   PanelMap                    = ep_panel:create({1, 1, test}, {72, 30}, {450, 680}),
    PanelMap1                   = ep_panel:reveal(PanelMap),
    {Paste, _Gap, PanelMap2}    = ep_copy_block:text(Copy, PanelMap),
    ok                          = ep_paste_lib:paste_panel(PDF, Job, PanelMap1),
@@ -121,8 +121,8 @@ run()->
      PanelMapG3                    = ep_panel:update_background_color(gainsboro, PanelMapG2),
      PanelMapG4                    = ep_panel:update_typestyle(centered_report, PanelMapG3),
      {PasteG, _GapG, PanelMapG5}    = ep_copy_block:text(CopyG, PanelMapG4),
-     ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapG4),
-     ok                            = ep_paste_lib:paste(PDF, PasteG, [], PanelMapG4),
+     ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMapG5),
+     ok                            = ep_paste_lib:paste(PDF, PasteG, [], PanelMapG5),
 
  
 

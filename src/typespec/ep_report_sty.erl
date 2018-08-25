@@ -104,6 +104,8 @@ report_faces(Tag) ->
       h6 -> ep_typespec:helvetica(h6, 10);
       p  -> ep_typespec:times(p, 12);
       ul -> ep_typespec:times(ul, 12);
+      ol -> ep_typespec:times(cl, 12);
+      cl -> ep_typespec:times(cl, 12);
       li -> ep_typespec:times(li, 12);
       ci -> ep_typespec:times(ci, 12);
       _  -> ep_typespec:times(p, 12)
@@ -137,6 +139,7 @@ report_leading(Tag) ->
      h2 -> round(FontSize * 1.5);
      h3 -> round(FontSize * 1.5);
      ul -> FontSize;
+     cl -> FontSize;
      ol -> FontSize;
      li -> round(FontSize * 1.4);
      ci -> round(FontSize * 1.4);

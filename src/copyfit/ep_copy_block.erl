@@ -13,7 +13,6 @@
 %%% ==========================================================================
 
 
-
 -module (ep_copy_block).
 
 -export([text/2, run/0]).
@@ -53,15 +52,13 @@ text(Copy, PanelMap) ->
 
 
 text([], Gap, XML, PanelMap) ->
-   io:format("Entering test/4 1~n"),
    copyfit_text([], Gap, XML, PanelMap);
  
 text(Paste, Gap, [], PanelMap) ->
-   io:format("Entering test/4 2~n"),
     {Paste, Gap, PanelMap};
 
 text(Paste, Gap, XML, PanelMap) ->
-    io:format("Out of space for: ~p~n~n", [XML]),
+    io:format("Out of space. Spill: ~p~n~n", [XML]),
     {Paste, Gap, PanelMap}.
 
 
@@ -80,10 +77,8 @@ text(Paste, Gap, XML, PanelMap) ->
 %   {Paste, Gap, [], PanelMap};
 
 copyfit_text(Paste, Gap, XML, PanelMap) ->
-   io:format("Length XML: ~p~n", [length(XML)]), 
    [X | MoreXML]        = XML,
    Xml                  = element(2, X),
-   io:format("Xml: ~p~n", [Xml]), 
    Tag                  = ep_copyfit:get_tag(Xml),
    Lines                = ep_copyfit:get_lines(Tag, Xml, PanelMap),
    SpaceAvailable       = Gap >= 0,
@@ -107,7 +102,6 @@ copyfit_text(Paste, Gap, XML, PanelMap) ->
 
 
 run() ->
-    io:format("Entering ep_copy_block:run()~n"),
     Job = ep_job:create("erlPress: Copy Block Test", "LRP"),
     OutFile = "./pdf/galleys/" ++ ?OUTFILE ++ ".pdf",
     PDF = eg_pdf:new(),
@@ -118,9 +112,7 @@ run() ->
     PanelMap                      = ep_panel:create(PanelName, Position, Size),
     PanelMap1                     = ep_panel:reveal(PanelMap),
     PanelMap2                     = ep_panel:update_typestyle(?TYPESTYLE, PanelMap1),
-    io:format("I'm here!~n"),
     {Paste, Gap, PanelMap3}       = text(Copy, PanelMap2),
-    io:format("Gap: ~p~n~n", [Gap]),
     ok                            = ep_paste_lib:paste_panel(PDF, Job, PanelMap3),
     ok                            = ep_paste_lib:paste(PDF, Paste, Gap, PanelMap3),
     ep_job:save_job(PDF, OutFile).

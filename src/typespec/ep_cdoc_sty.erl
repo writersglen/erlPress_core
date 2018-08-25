@@ -62,6 +62,9 @@ cdoc_faces(Tag) ->
       h5 -> ep_typespec:helvetica(h5, 12);
       h6 -> ep_typespec:helvetica(h6, 10);
       p  -> ep_typespec:helvetica(p, 12);
+      ul -> ep_typespec:helvetica(ul, 12);
+      ol -> ep_typespec:helvetica(cl, 12);
+      cl -> ep_typespec:helvetica(cl, 12);
       li -> ep_typespec:helvetica(li, 12);
       ci -> ep_typespec:helvetica(ci, 12);
       _  -> ep_typespec:helvetica(p, 12)
@@ -111,6 +114,9 @@ cdoc_leading(Tag) ->
      p  -> round(FontSize * 1.25);
      h2 -> round(FontSize * 1.5);
      h3 -> round(FontSize * 1.5);
+     ul -> FontSize;
+     cl -> FontSize;
+     ol -> FontSize;
      li -> round(FontSize * 1.5);
      ci -> round(FontSize * 1.5);
      br -> FontSize;

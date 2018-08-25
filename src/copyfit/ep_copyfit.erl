@@ -35,9 +35,12 @@ get_tag(Xml) ->
                 PanelMap   :: map()) -> list().
 
 get_lines(Tag, Xml, PanelMap) ->
-   io:format("Tag: ~p~n", [Tag]),
    case Tag of
       ul  ->  List  = element(3, Xml),
+              get_richText(List, PanelMap);
+      ol  ->  List  = element(3, Xml),
+              get_richText(List, PanelMap);
+      cl  ->  List  = element(3, Xml),
               get_richText(List, PanelMap);
       br   -> break_rt();
       _    -> ep_xml_lib:xml2lines(Xml, PanelMap)

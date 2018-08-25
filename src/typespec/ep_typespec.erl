@@ -245,7 +245,14 @@ times(ul, FontSize) ->
 times(ol, FontSize) ->
    {[ol],
     [tag_face(default, "Times-Roman", FontSize),
-     tag_face(ul,      "Times-Roman", FontSize),
+     tag_face(ol,      "Times-Roman", FontSize),
+     tag_face(li,      "Times-Roman", FontSize)
+    ]};
+
+times(cl, FontSize) ->
+   {[cl],
+    [tag_face(default, "Times-Roman", FontSize),
+     tag_face(cl,      "Times-Roman", FontSize),
      tag_face(li,      "Times-Roman", FontSize)
     ]};
 
@@ -264,6 +271,27 @@ times(Tag, FontSize) ->
 -spec helvetica(Tag      :: atom(),
                 FontSize :: integer()) -> tuple().
 
+helvetica(ul, FontSize) ->
+   {[ul],
+    [tag_face(default, "Helvetica", FontSize),
+     tag_face(ul,      "Helvetica", FontSize),
+     tag_face(li,      "Helvetica", FontSize)
+    ]};
+
+helvetica(ol, FontSize) ->
+   {[ol],
+    [tag_face(default, "Helvetica", FontSize),
+     tag_face(ol,      "Helvetica", FontSize),
+     tag_face(li,      "Helvetica", FontSize)
+    ]};
+
+helvetica(cl, FontSize) ->
+   {[cl],
+    [tag_face(default, "Helvetica", FontSize),
+     tag_face(cl,      "Helvetica", FontSize),
+     tag_face(li,      "Helvetica", FontSize)
+    ]};
+
 helvetica(Tag, FontSize) ->
    {[Tag],
     [tag_face(default, "Helvetica", FontSize),
@@ -277,6 +305,28 @@ helvetica(Tag, FontSize) ->
 
 -spec courier(Tag      :: atom(),
               FontSize :: integer()) -> tuple().
+
+courier(ul, FontSize) ->
+   {[ul],
+    [tag_face(default, "Courier", FontSize),
+     tag_face(ul,      "Courier", FontSize),
+     tag_face(li,      "Courier", FontSize)
+    ]};
+
+courier(ol, FontSize) ->
+   {[ol],
+    [tag_face(default, "Courier", FontSize),
+     tag_face(ol,      "Courier", FontSize),
+     tag_face(li,      "Courier", FontSize)
+    ]};
+
+courier(cl, FontSize) ->
+   {[cl],
+    [tag_face(default, "Courier", FontSize),
+     tag_face(cl,      "Courier", FontSize),
+     tag_face(li,      "Courier", FontSize)
+    ]};
+
 
 courier(Tag, FontSize) ->
    {[Tag],

@@ -672,7 +672,6 @@ handle_cast({image, FilePath, Size}, [PDFC, Stream]) ->
 	    {noreply, [PDFC#pdfContext{images=I,procset=ProcSet}, Binary]};	    
     
 handle_cast({page_script, Script}, [PDFC, Stream]) ->	
-	    %% io:format("New script ~p\n", [Script]),
 	    NewScript = handle_pagescript(PDFC#pdfContext.scripts,
 					  PDFC#pdfContext.currentpage,
 					  Script),
@@ -890,7 +889,7 @@ font_dir() ->
     case code:priv_dir(erlguten) of
     %% TODO: Don't think this is correct
 	{error, bad_name} ->
-        io:format(user,"no priv dir:~n",[]),
+        % io:format(user,"no priv dir:~n",[]),
 	    filename:join(this_dir(), "../priv/fonts");
 	N ->
 	    filename:join(N, "fonts")

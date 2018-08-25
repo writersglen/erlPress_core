@@ -60,7 +60,11 @@ line_specs(Tag, PanelMap) ->
         br    -> Widths  = [Measure|lists:duplicate(Vacancies - 1, Margin)],
                  Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
         ul    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
-                 Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
+                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
+        ol    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
+                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
+        cl    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
+                 Offsets = [Margin|lists:duplicate(Vacancies - 1, Margin)];
         li    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
                  Offsets = [Margin + Indent|lists:duplicate(Vacancies - 1, Margin + Indent)];
         ci    -> Widths  = [Measure - Indent|lists:duplicate(Vacancies - 1, Measure - Indent)],
@@ -151,6 +155,12 @@ fit_lines(_Tag, [], PanelMap) ->
 fit_lines(Tag, Xml, PanelMap) ->
    case Tag of
       ul  ->  Item  = element(2, Xml),
+              List  = element(3, Item),
+              Lines = get_rich_text(List, PanelMap);
+      ol  ->  Item  = element(2, Xml),
+              List  = element(3, Item),
+              Lines = get_rich_text(List, PanelMap);
+      cl  ->  Item  = element(2, Xml),
               List  = element(3, Item),
               Lines = get_rich_text(List, PanelMap);
       _    -> Lines = xml2lines(Xml, PanelMap)
