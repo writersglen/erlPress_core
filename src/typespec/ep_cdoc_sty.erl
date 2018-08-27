@@ -20,7 +20,7 @@
 
 -export ([cdoc/1]).
 
--export([cdoc_fontsize/1, cdoc_max_linespace/1]).
+-export([cdoc_faces/1, cdoc_fontsize/1, cdoc_max_linespace/1]).
 -export([cdoc_leading/1, cdoc_justify/1, cdoc_no_indent/1]).
 -export([cdoc_indent/1]).
 

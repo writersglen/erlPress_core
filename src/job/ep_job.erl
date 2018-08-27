@@ -155,6 +155,7 @@ stock_position(Job) ->
     {PaperStock, Position}.
 
 
+
 save_job(PDF, OutFile) ->
     {Serialised, _PageNo} = eg_pdf:export(PDF),
     file:write_file(OutFile,[Serialised]),

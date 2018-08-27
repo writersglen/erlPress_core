@@ -15,11 +15,10 @@
 
 -module (ep_xml_lib).
 
-% -export([parse_xml/1]).
-% -export([fit_xml/2, line_specs/2, vacancies/2]). 
+-export([parse_xml/1, line_specs/2, vacancies/2, fit_xml/2]).
+-export([xml2lines/2, rich_text/2, get_Xml/1]).
 
-
--compile(export_all).
+%  -compile(export_all).
 
 
 %% ***********************************************************
@@ -181,8 +180,6 @@ get_tag(Xml) ->
    element(1, Xml).
 
 
-
-
 space_required(Tag, Lines, PanelMap) ->
    Available    = ep_panel:get_available(PanelMap),
    TypeStyle    = ep_panel:get_typestyle(PanelMap),
@@ -192,8 +189,6 @@ space_required(Tag, Lines, PanelMap) ->
    {Size, Continue}.
    
 
-
-   
 %% @doc Transform Xml into lines copyfitted into panel
 
 -spec xml2lines(Xml      :: tuple(),
@@ -228,7 +223,6 @@ normalise_xml(Xml, FontMap) ->
     eg_xml2richText:normalise_xml(Xml, FontMap).
 
 
-
 %% @doc Transform xml to lines to fit panel
 
 -spec get_lines(Tag      :: atom(),
@@ -243,10 +237,6 @@ get_lines(Tag, RichText, PanelMap) ->
    Lines              = lines(MaybeLines),
    Lines.
             
-
-
-
-
 
 %% @doc Verify that we have valid lines 
 

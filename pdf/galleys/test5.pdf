@@ -7,8 +7,8 @@ endobj
 <<
 /Type  /Font 
 /Subtype  /Type1 
-/Name  /F3 
-/BaseFont  /Courier 
+/Name  /F7 
+/BaseFont  /Helvetica 
 /Encoding  /MacRomanEncoding 
 >>
 endobj
@@ -16,44 +16,34 @@ endobj
 <<
 /Type  /Font 
 /Subtype  /Type1 
-/Name  /F10 
-/BaseFont  /Times-Italic 
+/Name  /F6 
+/BaseFont  /Helvetica-Bold 
 /Encoding  /MacRomanEncoding 
 >>
 endobj
 4 0 obj
 <<
-/Type  /Font 
-/Subtype  /Type1 
-/Name  /F13 
-/BaseFont  /Times-Roman 
-/Encoding  /MacRomanEncoding 
+/F7  2 0 R 
+/F6  3 0 R 
 >>
 endobj
 5 0 obj
 <<
-/F3  2 0 R 
-/F10  3 0 R 
-/F13  4 0 R 
->>
-endobj
-6 0 obj
-<<
 /Type  /Page 
 /Count  1 
 /MediaBox  [  0  0  595  842  ] 
-/Kids  [  8 0 R  ] 
+/Kids  [  7 0 R  ] 
 /Resources <<
-/Font  5 0 R 
+/Font  4 0 R 
 /XObject  1 0 R 
 /ProcSet  [  /PDF  /Text  ] 
 >>
 
 >>
 endobj
-7 0 obj
+6 0 obj
 <<
-/Length  1345 
+/Length  1651 
 >>
 
 stream
@@ -67,28 +57,32 @@ stream
 72 72  l 72 67.52 77.52 62 82 62  c
   B  
 BT
- 1 0 0 1 72 743 Tm 40  -17 TD /F13 12 Tf 1.25 Tw 0 0 0 rg [(This)0( )0(is)0( )0(normal)0( )0(te)15(xt)0( )0(set)0( )0(in)0( )0(14/21)0( )0(T)35(imes)0( )0(Roman.)0( )0(It)0( )0(includes)0( )0] TJ /F10 12 Tf [(emphasized)0( )0(terms,)0] TJ /F13 12 Tf [( )0(set)0] TJ -30  -17 TD 1.24 Tw [(in)0( )0(T)35(imes-Italic.)0( )0(The)0( )0(T)70(eX)0( )0(h)5(yphenation)0( )0(algorithm)0( )0(is)0( )0(implemented.)0( )0(The)0( )0(term)0( )0] TJ /F3 12 Tf [({person,)0] TJ 0  -17 TD -1.00 Tw [("Joe"})0] TJ /F13 12 Tf [( )0(is)0( )0(an)0( )0(Erlang)0( )0(term.)0( )0(The)0( )0(v)25(ariable)0( )0] TJ /F3 12 Tf [(X)0] TJ /F13 12 Tf [(,)0( )0(w)10(as)0( )0(immediately)0( )0(follo)25(wed)0( )0(by)0( )0(a)0( )0(comma.)0( )0(The)0( )0(jus-)0] TJ 0  -17 TD -0.74 Tw [(tif)20(ication)0( )0(algorithm)0( )0(does)0( )0(proper)0( )0] TJ /F10 12 Tf [(k)10(erning)0] TJ /F13 12 Tf [(.)0( )0(A)90(W)120(A)105(Y)0( )0(is)0( )0(correctly)0( )0(k)10(erned!)0( )0(Erlang)0( )0(terms)0( )0] TJ /F3 12 Tf [({like,)0] TJ 0  -17 TD 0 Tw [(this})0] TJ /F13 12 Tf [( )0(are)0( )0(typeset)0( )0(in)0( )0] TJ /F10 12 Tf [(courier)111(.)0] TJ  
+ 1 0 0 1 72 743 Tm 150  -27 TD /F6 18 Tf 0 Tw 0 0 0 rg [(Listing:)0( )0(cdoc)0( )0(test)0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 705 Tm 10  -15 TD /F7 12 Tf 0 Tw 0 0 0 rg [(r)-15(un\(\)->)0] TJ 0  -15 TD [( )0(OutFile)0( )0(=)0( )0("T)120(est",)0] TJ 0  -15 TD [( )0(PDF)0( )0(=)0( )0(eg_pdf:ne)20(w\(\),)0] TJ 0  -15 TD [( )0(P)40(anelNameF)0( )0(=)0( )0({1,)0( )0(3,)0( )0(code},)0] TJ 0  -15 TD [( )0(Cop)30(yF)0( )0(=)0( )0(ep_sample_te)30(xt:code_listing\(\),)0] TJ 0  -15 TD [( )0(P)50(ositionF)0( )0(=)0( )0({72,)0( )0(530},)0] TJ 0  -15 TD [( )0(Siz)15(eF)0( )0(=)0( )0({210,)0( )0(150},)0] TJ 0  -15 TD [( )0(P)40(anelMapF1)0( )0(=)0( )0(ep_panel:create\(P)40(anelNameF)150(,)0( )0(P)50(ositionF)150(,)0( )0(Siz)15(eF\),)0] TJ 0  -15 TD [( )0(P)40(anelMapF2)0( )0(=)0( )0(ep_panel:re)30(v)25(eal\(P)40(anelMapF1\),)0] TJ 0  -15 TD [( )0(P)40(anelMapF3)0( )0(=)0( )0(ep_panel:update_typestyle\(cdoc)15(,)0( )0(P)40(anelMapF2\),)0] TJ 0  -15 TD [( )0({P)40(asteF)150(,)0( )0(_GapF)150(,)0( )0(_P)40(anelMapF4})0( )0(=)0( )0(ep_cop)30(y_b)20(loc)20(k:te)30(xt\(Cop)30(yF)150(,)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ok)0( )0(=)0( )0(ep_paste_lib:paste_panel\(PDF)150(,)0( )0(Job)40(,)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ok)0( )0(=)0( )0(ep_paste_lib:paste\(PDF)150(,)0( )0(P)40(asteF)150(,)0( )0([],)0( )0(P)40(anelMapF3\),)0] TJ 0  -15 TD [( )0(ep_job:sa)20(v)25(e_job\(PDF)150(,)0( )0(OutFile\).)0] TJ  
 ET
  
 endstream
 endobj
-8 0 obj
+7 0 obj
 <<
 /Type  /Page 
-/Parent  6 0 R 
-/Contents  7 0 R 
+/Parent  5 0 R 
+/Contents  6 0 R 
+>>
+endobj
+8 0 obj
+<<
+/Type  /Catalog 
+/Pages  5 0 R 
 >>
 endobj
 9 0 obj
 <<
-/Type  /Catalog 
-/Pages  6 0 R 
->>
-endobj
-10 0 obj
-<<
 /Creator  (Erlang) 
-/CreationDate (D:20180825171225)
+/CreationDate (D:20180827175825)
 /Producer  (erlguten-3.1) 
 /Author  () 
 /Title  () 
@@ -97,24 +91,23 @@ endobj
 >>
 endobj
 xref
-0 11
+0 10
 0000000000 65535 f 
 0000000009 00000 n 
 0000000030 00000 n 
-0000000146 00000 n 
-0000000268 00000 n 
-0000000389 00000 n 
-0000000448 00000 n 
-0000000625 00000 n 
-0000002025 00000 n 
-0000002094 00000 n 
-0000002147 00000 n 
+0000000148 00000 n 
+0000000271 00000 n 
+0000000316 00000 n 
+0000000493 00000 n 
+0000002199 00000 n 
+0000002268 00000 n 
+0000002321 00000 n 
 trailer
 <<
-/Size 11
-/Root 9 0 R
-/Info 10 0 R
+/Size 10
+/Root 8 0 R
+/Info 9 0 R
 >>
 startxref
-2316
+2489
 %%EOF

@@ -7,21 +7,12 @@ endobj
 <<
 /Type  /Font 
 /Subtype  /Type1 
-/Name  /F3 
-/BaseFont  /Courier 
-/Encoding  /MacRomanEncoding 
->>
-endobj
-3 0 obj
-<<
-/Type  /Font 
-/Subtype  /Type1 
 /Name  /F10 
 /BaseFont  /Times-Italic 
 /Encoding  /MacRomanEncoding 
 >>
 endobj
-4 0 obj
+3 0 obj
 <<
 /Type  /Font 
 /Subtype  /Type1 
@@ -30,30 +21,29 @@ endobj
 /Encoding  /MacRomanEncoding 
 >>
 endobj
-5 0 obj
+4 0 obj
 <<
-/F3  2 0 R 
-/F10  3 0 R 
-/F13  4 0 R 
+/F10  2 0 R 
+/F13  3 0 R 
 >>
 endobj
-6 0 obj
+5 0 obj
 <<
 /Type  /Page 
 /Count  1 
 /MediaBox  [  0  0  595  842  ] 
-/Kids  [  8 0 R  ] 
+/Kids  [  7 0 R  ] 
 /Resources <<
-/Font  5 0 R 
+/Font  4 0 R 
 /XObject  1 0 R 
 /ProcSet  [  /PDF  /Text  ] 
 >>
 
 >>
 endobj
-7 0 obj
+6 0 obj
 <<
-/Length  1342 
+/Length  1017 
 >>
 
 stream
@@ -67,28 +57,36 @@ stream
 72 72  l 72 67.52 77.52 62 82 62  c
   B  
 BT
- 1 0 0 1 72 743 Tm 114  -17 TD /F13 12 Tf 0 Tw 0 0 0 rg [(This)0( )0(is)0( )0(normal)0( )0(te)15(xt)0( )0(set)0( )0(in)0( )0(14/21)0( )0(T)35(imes)0( )0(Roman.)0] TJ -29  -17 TD [(It)0( )0(includes)0( )0] TJ /F10 12 Tf [(emphasized)0( )0(terms,)0] TJ /F13 12 Tf [( )0(set)0( )0(in)0( )0(T)35(imes-Italic.)0( )0(The)0( )0(T)70(eX)0] TJ -8  -17 TD [(h)5(yphenation)0( )0(algorithm)0( )0(is)0( )0(implemented.)0( )0(The)0( )0(term)0( )0] TJ /F3 12 Tf [({person,)0] TJ 82  -17 TD [("Joe"})0] TJ /F13 12 Tf [( )0(is)0( )0(an)0( )0(Erlang)0( )0(term.)0] TJ -43  -17 TD [(The)0( )0(v)25(ariable)0( )0] TJ /F3 12 Tf [(X)0] TJ /F13 12 Tf [(,)0( )0(w)10(as)0( )0(immediately)0( )0(follo)25(wed)0( )0(by)0] TJ -31  -17 TD [(a)0( )0(comma.)0( )0(The)0( )0(justif)20(ication)0( )0(algorithm)0( )0(does)0( )0(proper)0( )0] TJ /F10 12 Tf [(k)10(erning)0] TJ /F13 12 Tf [(.)0] TJ -2  -17 TD [(A)90(W)120(A)105(Y)0( )0(is)0( )0(correctly)0( )0(k)10(erned!)0( )0(Erlang)0( )0(terms)0( )0] TJ /F3 12 Tf [({like,)0( )0(this})0] TJ 90  -17 TD /F13 12 Tf [(are)0( )0(typeset)0( )0(in)0( )0] TJ /F10 12 Tf [(courier)111(.)0] TJ  
+ 1 0 0 1 72 743 Tm 10  -17 TD /F13 12 Tf 0 Tw [( )0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 727 Tm 10  -17 TD /F13 12 Tf 0 Tw 0 0 0 rg [(T)80(w)10(o)0( )0(roads)0( )0(di)25(v)15(er)18(ged)0( )0(in)0( )0(a)0( )0(yello)25(w)0( )0(w)10(ood,)0] TJ 0  -17 TD [(And)0( )0(sorry)0( )0(I)0( )0(could)0( )0(not)0( )0(tra)20(v)15(el)0( )0(both)0] TJ 0  -17 TD [(And)0( )0(be)0( )0(one)0( )0(tra)20(v)15(eler)40(,)0( )0(long)0( )0(I)0( )0(stood)0] TJ 0  -17 TD [(And)0( )0(look)10(ed)0( )0(do)25(wn)0( )0(one)0( )0(as)0( )0(f)10(ar)0( )0(as)0( )0(I)0( )0(could)0] TJ 0  -17 TD [(T)80(o)0( )0(where)0( )0(it)0( )0(bent)0( )0(in)0( )0(the)0( )0(under)18(gro)25(wth;)0] TJ  
+ET
+ 
+BT
+ 1 0 0 1 72 643 Tm 10  -17 TD /F13 12 Tf 0 Tw [( )0] TJ 0 0 0 rg [(-)0( )0] TJ /F10 12 Tf [(Robert)0( )0(F)55(r)45(ost)0] TJ  
 ET
  
 endstream
 endobj
-8 0 obj
+7 0 obj
 <<
 /Type  /Page 
-/Parent  6 0 R 
-/Contents  7 0 R 
+/Parent  5 0 R 
+/Contents  6 0 R 
+>>
+endobj
+8 0 obj
+<<
+/Type  /Catalog 
+/Pages  5 0 R 
 >>
 endobj
 9 0 obj
 <<
-/Type  /Catalog 
-/Pages  6 0 R 
->>
-endobj
-10 0 obj
-<<
 /Creator  (Erlang) 
-/CreationDate (D:20180825171221)
+/CreationDate (D:20180827175822)
 /Producer  (erlguten-3.1) 
 /Author  () 
 /Title  () 
@@ -97,24 +95,23 @@ endobj
 >>
 endobj
 xref
-0 11
+0 10
 0000000000 65535 f 
 0000000009 00000 n 
 0000000030 00000 n 
-0000000146 00000 n 
-0000000268 00000 n 
-0000000389 00000 n 
-0000000448 00000 n 
-0000000625 00000 n 
-0000002022 00000 n 
-0000002091 00000 n 
-0000002144 00000 n 
+0000000152 00000 n 
+0000000273 00000 n 
+0000000320 00000 n 
+0000000497 00000 n 
+0000001569 00000 n 
+0000001638 00000 n 
+0000001691 00000 n 
 trailer
 <<
-/Size 11
-/Root 9 0 R
-/Info 10 0 R
+/Size 10
+/Root 8 0 R
+/Info 9 0 R
 >>
 startxref
-2313
+1859
 %%EOF

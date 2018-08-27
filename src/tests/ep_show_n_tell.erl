@@ -8,6 +8,9 @@
 %%%   License:      MIT
 %%%   File:         ep_show_n_tell.erl
 %%%   Description:  Test page construction 
+%%%   
+%%%   ep_show_n_tell.erl tests the full range of erlPress_core
+%%    functionality. It's also many programming examples.
 %%% @end
 
 %%% ==========================================================================
@@ -101,7 +104,7 @@ run()->
      ok                            = ep_paste_lib:paste(PDF, PasteF, [], PanelMapF4),
 
 
-    ep_pagination:next_page(PDF),    % ****** Page 2
+    ep_pagination:next_page(PDF),    % ****** Page 3
 
     Text2N         = "Centered Text",
     Font2N         = "Helvetica",
@@ -177,9 +180,9 @@ run()->
     eg_pdf:end_text(PDF),
 
 
-    ep_pagination:next_page(PDF),    % ****** Page 3
+    ep_pagination:next_page(PDF),    % ****** Page 4
     
-    % ********** Page 3 makeup
+    % ********** Page 4 makeup
 
 
     Text3N         = "Fonts",
@@ -194,7 +197,7 @@ run()->
 
     ep_pagination:next_page(PDF),    % ****** Page 4
 
-    % ********** Page 4 makeup
+    % ********** Page 5 makeup
 
 
     Text4N         = "Colors",
@@ -206,9 +209,9 @@ run()->
 
     ep_colors:all_colors(PDF),
 
-    ep_pagination:next_page(PDF),    % ****** Page 5
+    ep_pagination:next_page(PDF),    % ****** Page 6
 
-    % ********** Page 5 makeup
+    % ********** Page 6 makeup
 
     Text5A         = "Images",
     Font5A         = "Helvetica",
@@ -243,9 +246,9 @@ run()->
     ep_image:image(PDF, Job, ImageMap4C),
 
 
-    ep_pagination:next_page(PDF),    % ****** Page 6
+    ep_pagination:next_page(PDF),    % ****** Page 7
 
-    % ********** Page 6 makeup 
+    % ********** Page 7 makeup 
 
 
     Text6A         = "Lines and Shapes",
@@ -353,9 +356,9 @@ run()->
    ep_poly:polygon(PDF, Job, PolygonMap6C), 
 
 
-    ep_pagination:next_page(PDF),    % ****** Page 7
+    ep_pagination:next_page(PDF),    % ****** Page 8
 
-    % ********** Page 7 makeup 
+    % ********** Page 8 makeup 
 
     Text7A         = "Dots, Boxes, and Grids",
     Font7A         = "Helvetica",
@@ -427,9 +430,61 @@ run()->
    ep_round_rect:round_rect(PDF, Job, BoxMap6AC),
 
 
-   ep_pagination:next_page(PDF),    % ****** Page 8
+   ep_pagination:next_page(PDF),    % ****** Page 9
 
-    % ********** Page 8 makeup 
+
+    TextZ         = "Oh, yes...",
+    FontZ         = "Helvetica",
+    PositionZ     = {72, 72},
+    FontSizeZ     = 36,
+    TextMapZ      = ep_text:create(FontZ, PositionZ, FontSizeZ), 
+    ep_text:one_line(PDF, TextZ, Job, TextMapZ),
+
+
+    TextZ1          = "Ordered Lists",
+    FontZ1          = "Helvetica",
+    PositionZ1      = {72, 125},
+    FontSizeZ1      = 24,
+    TextMapZ1       = ep_text:create(FontZ1, PositionZ1, FontSizeZ1),
+    ep_text:one_line(PDF, TextZ1, Job, TextMapZ1),
+
+
+    PanelNameZ2                    = {9, 3, "ol"},
+    CopyZ2                         = ep_sample_text:ol(),
+    PositionZ2                     = {72, 145},
+    SizeZ2                         = {450, 150},
+    PanelMapZ21                    = ep_panel:create(PanelNameZ2, PositionZ2, SizeZ2),
+    PanelMapZ22                    = ep_panel:reveal(PanelMapZ21),
+    PanelMapZ23                    = ep_panel:update_typestyle(justify_report, PanelMapZ22),
+    {PasteZ2, _Spill, PanelMapZ24} = ep_copy_block:text(CopyZ2, PanelMapZ23),
+    ok                             = ep_paste_lib:paste_panel(PDF, Job, PanelMapZ24),
+    ok                             = ep_paste_lib:paste(PDF, PasteZ2, [], PanelMapZ24),
+
+
+    TextZ3          = "Code",
+    FontZ3          = "Helvetica",
+    PositionZ3      = {72, 350},
+    FontSizeZ3      = 24,
+    TextMapZ3       = ep_text:create(FontZ3, PositionZ3, FontSizeZ3),
+    ep_text:one_line(PDF, TextZ3, Job, TextMapZ3),
+
+
+    PanelNameZ4                     = {9, 5, "code"},
+    CopyZ4                          = ep_sample_text:code_listing(),
+    PositionZ4                      = {72, 370},
+    SizeZ4                          = {450, 300},
+    TypeStyleZ4                     = cdoc,
+    PanelMapZ4                      = ep_panel:create(PanelNameZ4, PositionZ4, SizeZ4),
+    PanelMapZ41                     = ep_panel:reveal(PanelMapZ4),
+    PanelMapZ42                     = ep_panel:update_typestyle(TypeStyleZ4, PanelMapZ41),
+    {PasteZ4, GapZ4, PanelMapZ43}  = ep_copy_block:text(CopyZ4, PanelMapZ42),
+    ok                              = ep_paste_lib:paste_panel(PDF, Job, PanelMapZ42),
+    ok                              = ep_paste_lib:paste(PDF, PasteZ4, GapZ4, PanelMapZ43),
+
+
+   ep_pagination:next_page(PDF),    % ****** Page 10
+
+    % ********** Page 10 makeup 
 
    ep_show_grid:show_grid(PDF, letter),
 
@@ -458,6 +513,15 @@ run()->
     ep_text:one_line(PDF, Text8A, Job, TextMap8B),
 
 
+     PanelName8D                      = {8, 2, thanks},
+     Copy8D                           = ep_sample_text:thanks(),
+     Position8D                       = {72, 500},
+     Size8D                           = {400, 210},
+     PanelMap8D1                      = ep_panel:create(PanelName8D, Position8D, Size8D),
+     PanelMap8D2                      = ep_panel:update_typestyle(justify_report, PanelMap8D1),
+     {Paste8D, _Gap8d, PanelMap8D3}   = ep_copy_block:text(Copy8D, PanelMap8D2),
+     ok                               = ep_paste_lib:paste(PDF, Paste8D, [], PanelMap8D3),
+  
 
 ep_job:save_job(PDF, OutFile).
 

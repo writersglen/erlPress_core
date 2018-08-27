@@ -53,7 +53,7 @@ endobj
 endobj
 7 0 obj
 <<
-/Length  1371 
+/Length  1394 
 >>
 
 stream
@@ -67,7 +67,7 @@ stream
 72 72  l 72 67.52 77.52 62 82 62  c
   B  
 BT
- 1 0 0 1 72 743 Tm 40  -18 TD /F7 12 Tf 0.50 Tw 0 0 0 rg [(This)0( )0(is)0( )0(nor)-25(mal)0( )0(te)30(xt)0( )0(set)0( )0(in)0( )0(14/21)0( )0(Times)0( )0(Roman.)0( )0(It)0( )0(includes)0( )0] TJ /F13 12 Tf [(emphasized)0( )0(terms,)0] TJ -30  -18 TD /F7 12 Tf 2.52 Tw [(set)0( )0(in)0( )0(Times-Italic.)0( )0(The)0( )0(T)120(eX)0( )0(h)30(yphenation)0( )0(algor)-15(ithm)0( )0(is)0( )0(implemented.)0( )0(The)0( )0(ter)-25(m)0] TJ 0  -18 TD /F3 12 Tf 0.25 Tw [({person,)0( )0("Joe"})0] TJ /F7 12 Tf [( )0(is)0( )0(an)0( )0(Er)-15(lang)0( )0(ter)-25(m.)0( )0(The)0( )0(v)25(ar)-15(iab)20(le)0( )0] TJ /F3 12 Tf [(X)0] TJ /F7 12 Tf [(,)0( )0(w)15(as)0( )0(immediately)0( )0(f)30(ollo)15(w)10(ed)0] TJ 0  -18 TD 1.31 Tw [(b)20(y)0( )0(a)0( )0(comma.)0( )0(The)0( )0(justification)0( )0(algor)-15(ithm)0( )0(does)0( )0(proper)0( )0] TJ /F13 12 Tf [(k)10(erning)0] TJ /F7 12 Tf [(.)0( )0(A)50(W)50(A)100(Y)0( )0(is)0( )0(correctly)0] TJ 0  -18 TD 0 Tw [(k)20(er)-25(ned!)0( )0(Er)-15(lang)0( )0(ter)-25(ms)0( )0] TJ /F3 12 Tf [({like,)0( )0(this})0] TJ /F7 12 Tf [( )0(are)0( )0(typeset)0( )0(in)0( )0] TJ /F13 12 Tf [(courier)55(.)0] TJ  
+ 1 0 0 1 72 743 Tm 40  -18 TD /F7 12 Tf 1.02 Tw 0 0 0 rg [(This)0( )0(is)0( )0(nor)-25(mal)0( )0(te)30(xt)0( )0(set)0( )0(in)0( )0(10/15)0( )0(Helv)25(etica.)0( )0(It)0( )0(includes)0( )0] TJ /F13 12 Tf [(emphasized)0( )0(terms,)0] TJ /F7 12 Tf [( )0(set)0] TJ -30  -18 TD 1.32 Tw [(in)0( )0(Helv)25(etica-Ob)20(lique)15(.)0( )0(The)0( )0(T)120(eX)0( )0(h)30(yphenation)0( )0(algor)-15(ithm)0( )0(is)0( )0(implemented.)0( )0(The)0( )0(ter)-25(m)0] TJ 0  -18 TD /F3 12 Tf 0.25 Tw [({person,)0( )0("Joe"})0] TJ /F7 12 Tf [( )0(is)0( )0(an)0( )0(Er)-15(lang)0( )0(ter)-25(m.)0( )0(The)0( )0(v)25(ar)-15(iab)20(le)0( )0] TJ /F3 12 Tf [(X)0] TJ /F7 12 Tf [(,)0( )0(w)15(as)0( )0(immediately)0( )0(f)30(ollo)15(w)10(ed)0] TJ 0  -18 TD 0.93 Tw [(b)20(y)0( )0(a)0( )0(comma.)0( )0(The)0( )0(justification)0( )0(algor)-15(ithm)0( )0(does)0( )0(proper)0( )0] TJ /F13 12 Tf [(k)10(erning)0] TJ /F7 12 Tf [(.)0( )0( )0(A)50(W)50(A)100(Y)0( )0(is)0( )0(correctly)0] TJ 0  -18 TD 0 Tw [(k)20(er)-25(ned!)0( )0(Er)-15(lang)0( )0(ter)-25(ms)0( )0] TJ /F3 12 Tf [({like,)0( )0(this})0] TJ /F7 12 Tf [( )0(are)0( )0(typeset)0( )0(in)0( )0] TJ /F13 12 Tf [(courier)55(.)0] TJ  
 ET
  
 endstream
@@ -88,7 +88,7 @@ endobj
 10 0 obj
 <<
 /Creator  (Erlang) 
-/CreationDate (D:20180825171214)
+/CreationDate (D:20180827175815)
 /Producer  (erlguten-3.1) 
 /Author  () 
 /Title  () 
@@ -106,9 +106,9 @@ xref
 0000000385 00000 n 
 0000000443 00000 n 
 0000000620 00000 n 
-0000002046 00000 n 
-0000002115 00000 n 
-0000002168 00000 n 
+0000002069 00000 n 
+0000002138 00000 n 
+0000002191 00000 n 
 trailer
 <<
 /Size 11
@@ -116,5 +116,5 @@ trailer
 /Info 10 0 R
 >>
 startxref
-2337
+2360
 %%EOF

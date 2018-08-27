@@ -48,6 +48,12 @@ create(From, Text) ->
 %% Page number to PDF  
 %% ***********************************************************
 
+%% @doc Page number to PDF
+
+-spec page_number(PDF            :: identifier(),
+                  Job            :: map(),
+                  PpageNumberMap :: map()) -> ok.  
+
 
 page_number(PDF, Job, PageNumberMap) ->
     {X, Y}       = ep_job:flip_y(Job, PageNumberMap),

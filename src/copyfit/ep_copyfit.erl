@@ -15,9 +15,9 @@
 
 -module (ep_copyfit).
 
-% -export([get_tag/1, get_lines/3, gap/1, will_fit/2, close_gap/4]).
+-export([get_tag/1, get_lines/3, move_content_cursor/2, gap/1, close_gap/4]).
 
--compile([export_all]).
+% -compile([export_all]).
 
 
 %% @doc Given content elment, return tag 
@@ -46,7 +46,8 @@ get_lines(Tag, Xml, PanelMap) ->
       _    -> ep_xml_lib:xml2lines(Xml, PanelMap)
    end.
 
-%% @doc Convert list of Xml copy elements into richText
+
+%% @doc get_lines/3 helper - Convert list of Xml copy elements into richText
 
 -spec get_richText(List     :: list(),
                    PanelMap :: list()) -> list().
@@ -55,14 +56,19 @@ get_richText(List, PanelMap) ->
     [ep_xml_lib:rich_text(Item, PanelMap) || Item <- List].
 
 
+%% @doc get_lines/3 helper
+
 break_rt() ->
      [{richText, [{space,3000, {face,eg_font_13,12,0,{0,0,0},true}}]}].
 
 
+%% @doc Update content cursor in panel map
+
+-spec move_content_cursor(Adjust   :: integer(),
+                          PanelMap :: map()) -> map().
 
 move_content_cursor(Adjust, PanelMap) ->
     ep_panel:update_content_cursor(Adjust, PanelMap).
-
 
 
 %% @doc Available space in panel
@@ -73,42 +79,38 @@ gap(PanelMap) ->
    ep_panel:get_available(PanelMap).
 
 
-will_fit(Gap, PanelMap) ->
-    TypeStyle = ep_panel:get_typestyle(PanelMap),
-    Leading   = ep_typespec:leading(TypeStyle, p),
-    Gap div Leading.
+%% ep_article.erl will eventually need functions
+%% along these lines
 
+%%  slice/N    - yet to be developed
 %%  backfill/N - yet to be developed
-%   shim/N     - yet to be developed
+%%  shim/N     - yet to be developed
+
+
+%% @doc copyfit/copyfit_text/3 helper
+
+-spec close_gap(Gap            :: integer(),
+                Tag            :: atom(),
+                Lines          :: list(),
+                PanelMap       :: map()) -> integer().
 
 close_gap(Gap, Tag, Lines, PanelMap) ->
    Needs = needs(Tag, Lines, PanelMap),
    Gap - Needs.
 
 
+%% @doc close_gap/4 helper 
 
-%% @doc Return vertical panel space required by lines
-
--spec lines_need(Tag      :: atom(),
-                 Lines    :: list(),
-                 PanelMap :: map()) -> integer().
-
-lines_need(p, Lines, PanelMap) ->
-   needs(p, Lines, PanelMap);
-
-lines_need(Tag, Lines, PanelMap) ->
-   Needs    = needs(Tag, Lines, PanelMap),
-   TypeStyle = ep_panel:get_typestyle(PanelMap),
-   Leading   = ep_typespec:leading(TypeStyle, Tag),
-   Padding  = Leading * 2,
-   Needs + Padding.
-
-
-%% @doc lines_need/3 helper 
+-spec needs(Tag      :: atom(),
+            Lines    :: list(),
+            PanelMap :: map()) -> integer().
 
 needs(Tag, Lines, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Leading   = ep_typespec:leading(TypeStyle, Tag),
     Leading * length(Lines).
+
+
+
 
 

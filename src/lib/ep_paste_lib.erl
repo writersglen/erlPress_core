@@ -46,48 +46,6 @@ paste_panel(PDF, Job, PanelMap) ->
     ep_panel:panel(PDF, Job, PanelMap).
 
 
-%% ***********************************************************
-%% paste_copy/3 - 
-%%
-%% NOTE: Gap parameter supports articles-and-beads which is
-%%       on the roadmap   
-%% ***********************************************************
-
-
-%% @doc Paste copy; write out PDF 
-
-
-paste_copy(Paste, Gap, PanelMap) ->
-    PDF       = eg_pdf:new(),
-    Job       = ep_job:create("Trial Paste", "LRP"),
-    NameString = "text",
-    ok        = paste_panel(PDF, Job, PanelMap),
-
-    ok        = paste(PDF, Paste, Gap, PanelMap),
-    OutFile   = "./pdf/galleys/" ++
-                 ?MODULE_STRING ++
-                 "_" ++
-                 NameString ++
-                 "_test.pdf",
-    save(PDF, OutFile).
-
-
-
-%% @doc Paste copy; write out PDF 
-
-
-paste_copy(Paste, Gap, PanelMap, NameString) ->
-    PDF       = eg_pdf:new(),
-    Job       = ep_job:create("Trial Paste", "LRP"),
-    ok        = paste_panel(PDF, Job, PanelMap),
-
-    ok        = paste(PDF, Paste, Gap, PanelMap),
-    OutFile   = "./pdf/galleys/" ++
-                 ?MODULE_STRING ++
-                 "_" ++
-                 NameString ++
-                 "_test.pdf",
-    save(PDF, OutFile).
 
 
 %% ***********************************************************
@@ -163,7 +121,7 @@ paste_lines(PDF, ul, Lines, Gap, PanelMap) ->
     
 paste_lines(PDF, ol, Lines, Gap, PanelMap) ->
     PanelMap1          = maybe_line_space(ol, PanelMap),
-    PanelMap2          = paste_li_list(PDF, ol, Lines, PanelMap1),
+    PanelMap2          = paste_ol_list(PDF, ol, Lines, 1, PanelMap1),
     {Gap, PanelMap2};
     
 paste_lines(PDF, cl, Lines, Gap, PanelMap) ->
@@ -195,18 +153,6 @@ paste_li_list(PDF, ul, Lines, PanelMap) ->
     PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
     paste_li_list(PDF, ul, Rest, PanelMap1);
    
-paste_li_list(_PDF, ol, [], PanelMap) ->
-   PanelMap;
-
-paste_li_list(PDF, ol, Lines, PanelMap) ->
-    [Linez | Rest]  = Lines,
-    ok              = paste_li(PDF, ul, Linez, PanelMap),
-    ok              = maybe_paste_item_symbol(PDF, ol, PanelMap),
-    TypeStyle       = ep_panel:get_typestyle(PanelMap),
-    Leading         = ep_typespec:leading(TypeStyle, li),
-    PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
-    paste_li_list(PDF, ol, Rest, PanelMap1);
-   
     
 paste_li_list(_PDF, cl, [], PanelMap) ->
    PanelMap;
@@ -227,6 +173,19 @@ paste_li(PDF, Tag, Lines, PanelMap) ->
     ok                 = paste(PDF, Code).
 
 
+paste_ol_list(_PDF, ol, [], _Index, PanelMap) ->
+   PanelMap;
+
+paste_ol_list(PDF, ol, Lines, Index, PanelMap) ->
+    [Linez | Rest]  = Lines,
+    ok              = paste_li(PDF, ul, Linez, PanelMap),
+    ok              = maybe_paste_index(PDF, ol, Index, PanelMap),
+    TypeStyle       = ep_panel:get_typestyle(PanelMap),
+    Leading         = ep_typespec:leading(TypeStyle, li),
+    PanelMap1       = ep_panel:update_content_cursor(Leading, PanelMap),
+    Index1          = Index + 1, 
+    paste_ol_list(PDF, ol, Rest, Index1, PanelMap1).
+   
 
 maybe_line_space(Tag, PanelMap) ->
    case Tag of
@@ -243,11 +202,16 @@ maybe_line_space(Tag, PanelMap) ->
 maybe_paste_item_symbol(PDF, Tag, PanelMap) ->
    case Tag of
       ul -> paste_dot(PDF, PanelMap);
-      ol -> paste_index(PDF, PanelMap);
       cl -> paste_checkbox(PDF, Tag, PanelMap);
       _  -> ok
    end.
 
+
+maybe_paste_index(PDF, Tag, Index, PanelMap) ->
+   case Tag of
+      ol -> paste_index(PDF, Tag, Index, PanelMap);
+      _  -> ok
+   end.
 
 
 paste_dot(PDF, PanelMap) ->
@@ -271,9 +235,38 @@ paste_dot(PDF, PanelMap) ->
    ok.
 
 
- paste_index(PDF, PanelMap) ->
-   io:format("~p~n", [PDF]),
-   io:format("~p~n", [PanelMap]).
+ paste_index(PDF, Tag, Index, PanelMap) ->
+   TypeStyle = ep_panel:get_typestyle(PanelMap),
+   Size      = ep_typespec:fontsize(TypeStyle, Tag),
+   Indent    = (Size div 2),
+   Indent1   = ol_indent(Index, Indent),
+   Diff      = ep_typespec:leading(TypeStyle, Tag),
+   Index1    = integer_to_list(Index) ++ ".",
+   {X, Y}    = ep_panel:get_text_position(PanelMap),
+   TextX      = X + Indent1,
+   TextY      = Y - Diff,
+   eg_pdf:save_state(PDF),
+   eg_pdf:begin_text(PDF),
+   eg_pdf:set_font(PDF, "Helvetica", Size),
+   eg_pdf:set_text_pos(PDF, TextX, TextY),
+   eg_pdf:text(PDF, Index1),
+   eg_pdf:end_text(PDF),
+   eg_pdf:restore_state(PDF),
+   ok.
+
+
+ol_indent(Index, Indent) when Index < 10 ->
+    Gutter = 15,
+    (Indent * 3) + Gutter;
+
+ol_indent(Index, Indent) when Index < 100 ->
+    Gutter = 15,
+    (Indent * 2) + Gutter;
+
+ol_indent(_Index, Indent) ->
+    Gutter = 15,
+    Indent + Gutter.
+
 
 
 paste_checkbox(PDF, Tag, PanelMap) ->
@@ -374,7 +367,6 @@ save(PDF) ->
 %%% ==========================================================================
 
 
-
 maybe_adjust_gap(Gap, PanelMap) ->
     case  Gap of
        []   -> Gap1              = [],
@@ -397,3 +389,46 @@ new_gap(Gap, Adjust) ->
     Gap + Adjust.
 
 
+
+%% ***********************************************************
+%% paste_copy/3 - 
+%%
+%% NOTE: Gap parameter supports articles-and-beads which is
+%%       on the roadmap   
+%% ***********************************************************
+
+
+%% @doc Paste copy; write out PDF 
+
+
+paste_copy(Paste, Gap, PanelMap) ->
+    PDF       = eg_pdf:new(),
+    Job       = ep_job:create("Trial Paste", "LRP"),
+    NameString = "text",
+    ok        = paste_panel(PDF, Job, PanelMap),
+
+    ok        = paste(PDF, Paste, Gap, PanelMap),
+    OutFile   = "./pdf/galleys/" ++
+                 ?MODULE_STRING ++
+                 "_" ++
+                 NameString ++
+                 "_test.pdf",
+    save(PDF, OutFile).
+
+
+
+%% @doc Paste copy; write out PDF 
+
+
+paste_copy(Paste, Gap, PanelMap, NameString) ->
+    PDF       = eg_pdf:new(),
+    Job       = ep_job:create("Trial Paste", "LRP"),
+    ok        = paste_panel(PDF, Job, PanelMap),
+
+    ok        = paste(PDF, Paste, Gap, PanelMap),
+    OutFile   = "./pdf/galleys/" ++
+                 ?MODULE_STRING ++
+                 "_" ++
+                 NameString ++
+                 "_test.pdf",
+    save(PDF, OutFile).

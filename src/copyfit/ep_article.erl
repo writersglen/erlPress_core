@@ -10,7 +10,7 @@
 %%%   Description:  Copyfit text that spans panels within a page and
 %%%                 across pages
 %%%
-%%%   NOTE: This is work under development 
+%%%   NOTE: This is work under development. Stay tuned. 
 %%% @end
 
 %%% ==========================================================================
@@ -140,7 +140,7 @@ panel(Paste, Gap, XML, PanelMap) ->
       true  -> Paste1   = [Lines | Paste],
                Gap1     = ep_copyfit:close_gap(Gap, Tag, Lines, PanelMap),
                panel(Paste1, Gap1, MoreXML, PanelMap); 
-      false -> top_off(Paste, Lines, Gap, Xml, PanelMap)
+      false -> top_off(Paste, Tag, Lines, Gap, Xml, PanelMap)
    end.
 
 
@@ -164,14 +164,15 @@ panel(Paste, Gap, XML, PanelMap) ->
 %%             into XML and appended to yet-to-processed XML  
 
 -spec top_off(Paste         :: list(),
+              Tag           :: atom(),
               Lines         :: list(),
               Gap           :: integer(),
               Xml           :: list(),
               PanelMap      :: map()) -> map().
 
-top_off(Paste, Lines, Gap, Xml, PanelMap) ->
+top_off(Paste, Tag, Lines, Gap, Xml, PanelMap) ->
    io:format("top-off/5 - Lines: ~p~n~n", [Lines]),
-   WillFit  = ep_copyfit:will_fit(Gap, PanelMap),
+   WillFit  = ep_panel:will_fit(Tag, Lines, PanelMap),
    case WillFit > 0 of
       true   -> Spill  = Xml,   % backfill/N
                 Gap1   = Gap,

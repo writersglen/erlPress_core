@@ -8,15 +8,16 @@
 %%%   License:      MIT
 %%%   File:         ep_sample_text.erl
 %%%   Description:  Sample text blocks 
+%%%
+%%%   ep_sample_text.erl functions provide test copy for test functions 
 %%% @end
-
 %%% ==========================================================================
 
 -module (ep_sample_text).
 
 -export ([times_14/0, helvetica_10/0, the_road_not_taken/0]).
--export ([code_listing/0, ul/0, cl/0, article/0]).
--export([erlpress/0]).
+-export ([code_listing/0, ul/0, ol/0, cl/0, article/0]).
+-export([thanks/0, erlpress/0]).
 
 %% @doc  Display Times-Roman 14pt text
 %% NOTE: Must apply ep_block:default_14/0 for this to 
@@ -89,12 +90,21 @@ ul() ->
 </ul>
 <p>More copy</p>".
 
+ol() ->
+"<p>This is a test of an <b>ordered list</b> with a bold phrase.</p>
+<ol>
+<li>Display Adobe Type I fonts</li>
+<li>Position and copyfit text</li>
+<li>Justify, kern, and rotate text</li>
+<li>Specify and position images and graphic elements</li>
+<li>Support checklists</li>
+</ol>
+<p>More copy</p>".
 
 cl() ->
 "<h3>Roadmap:</h3>
 <cl>
 <li>Extend and debug Markdown parsing</li>
-<li>Ordered lists</li>
 <li>Footnotes</li>
 <li>Tables</li>
 <li>Articles and beads</li>
@@ -123,6 +133,17 @@ which is more than <em>Microsoft Word</em> can do. AWAY is
 correctly kerned! Erlang terms <code>{like, this}</code>
 are typeset in <em>courier.</em></p>".
 
+thanks() ->
+"<h3>Profound thanks to...</h3>
+<ul>
+<li>Joe Armstrong</li>
+<li>Carl Wright</li>
+<li>Hugh Watkins</li>
+<li>Patrice Bruno</li>
+<li>Frank Muller</li>
+<li>Jesse Gumm</li>
+</ul>
+<p>...and all who have made Erlang great.</p>".
 
 
 erlpress() ->
@@ -142,7 +163,6 @@ erlpress() ->
 <h3>Roadmap:</h3>
 <cl>
 <li>Extend and debug Markdown parsing</li>
-<li>Ordered lists</li>
 <li>Footnotes</li>
 <li>Tables</li>
 <li>Articles and beads</li>

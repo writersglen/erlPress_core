@@ -19,7 +19,7 @@
 -export ([justify_report_hv/1, ragged_report_hv/1, preformatted_report_hv/1]).
 -export([centered_report_hv/1, ragged_left_report_hv/1]).
 
--export([report_hv_fontsize/1, report_hv_max_linespace/1]).
+-export([report_hv_faces/1, report_hv_fontsize/1, report_hv_max_linespace/1]).
 -export([report_hv_leading/1, report_hv_justify/1, report_hv_no_indent/1]).
 -export([report_hv_indent/1]).
 
