@@ -1,3 +1,0 @@
-[
-{p,["This is normal text with ",{em,["emphasized terms"]},". It implements the TeX\nhyphenation algorithm.\nIt includes ",{em,["cursive text"]}," and an Erlang term, ",{code,["{person, \"Joe\"}"]},". \nThe variable ",{code,["X"]},", is immediately followed by\na comma. The justification algorithm does proper ",{em,["kerning"]},",\nwhich is more than ",{em,["Microsoft Word"]}," can do. AWAY is\ncorrectly kerned! Erlang terms ",{code,["{like, this}"]},"\nare typeset in ",{code,["courier"]},"."]}
-].

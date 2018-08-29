@@ -1,1 +1,0 @@
-/usr/bin/c++   -O3 -DNDEBUG   CMakeFiles/api_test.dir/cplusplus.cpp.o CMakeFiles/api_test.dir/harness.c.o CMakeFiles/api_test.dir/main.c.o  -o api_test -rdynamic ../src/libcmark.so.0.28.3 -Wl,-rpath,/home/lloyd/ep/src/content/cmark_parse/cmark/build/src 
