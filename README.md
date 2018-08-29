@@ -56,12 +56,20 @@ Notes toward a programmer's guide can be found in the guide directory.
 Directories
 ===========
 
-. tests     -- erlPress_core feature tests
-. guide     -- Notes toward a programmer's guide -- WARNING: under constuction
-. content   -- Markdown input -- WARNING: under construction
-. fonts     -- Font modules; mostly from erlguten
-. typespecs -- Type styling a specifications
-. copyfit   -- Copyfitting routines and primatives
-. lib       -- Useful libraries 
+. src/
+  tests     -- erlPress_core feature tests
+  guide     -- Notes toward a programmer's guide -- WARNING: under constuction
+  content   -- Markdown input -- WARNING: under construction
+  fonts     -- Font modules; mostly from erlguten
+  typespecs -- Type styling a specifications
+  copyfit   -- Copyfitting routines and primatives
+  lib       -- Useful libraries 
 
 
+==============
+3rd Party Libs
+==============
+
+. CMARK: CommonMark parsing and rendering library and program in C
+  to convert cmark_nodes to ERLANG terms strings:
+  https://github.com/skaee/cmark
