@@ -15,7 +15,7 @@
 
 To review current erlPpress_core functionality, display [ep_show_n_tell](pdf/galleys/ep_show_n_tell.pdf).
 
-See [Prograpmmer Guide](src/guides/prograpmmer_guide.txt) for API details.
+See [Prograpmmer Guide](src/guide/programmer_guide.txt) for API details.
 
 **erlPress_core**, is a work-in-progress. Should you find deficiencies and rough-edges, we'd love to hear abouat them. The **MIT license** encourages evolution toward world-class print-media design and development applications ranging from business cards to books.
 
@@ -36,7 +36,7 @@ See features: ep_show_n_tell.pdf in pdf directory ([source](src/tests/ep_show_n_
 
 # Programmer Guide
 
-Notes toward a programmer's guide can be found in the guide [directory](src/guides/prograpmmer_guide.txt).
+Notes toward a programmer's guide can be found in the guide [directory](src/guide/programmer_guide.txt).
 
 
 # Directories
