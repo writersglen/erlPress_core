@@ -13,7 +13,7 @@
 
 **erlPress_core** is the base library for many as-yet-to_be-developed Erlang applications for creative print media publishing tools.
 
-To review current erlPpress_core functionality, display [ep_show_n_tell](pdf/galleys/ep_show_n_tell.pdf).
+To review current erlPpress_core functionality, display ep_show_n_tell.pdf in pdf/galleys/ep_show_n_tell.pdf).
 
 See [Programmer Guide](src/guide/programmer_guide.txt) for API details.
 
