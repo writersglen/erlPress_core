@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/cmark.h
+stdio.h
+-
+cmark_export.h
+-
+cmark_version.h
+-
+
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/cplusplus.cpp
+cstdlib
+-
+cmark.h
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/cmark.h
+cplusplus.h
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/cplusplus.h
+harness.h
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/harness.h
+
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/cplusplus.h
+harness.h
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/harness.h
+
+/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/api_test/harness.h
+
+src/cmark_export.h
+
+src/cmark_version.h
+

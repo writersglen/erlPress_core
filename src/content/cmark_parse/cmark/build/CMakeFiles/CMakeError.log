@@ -1,0 +1,20 @@
+Performing C SOURCE FILE Test HAVE_FLAG_ADDRESS_SANITIZER failed with the following output:
+Change Dir: /home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dd8ed/fast"
+make[2]: Entering directory '/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_dd8ed.dir/build.make CMakeFiles/cmTC_dd8ed.dir/build
+make[3]: Entering directory '/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dd8ed.dir/src.c.o
+/usr/bin/cc    -DHAVE_FLAG_ADDRESS_SANITIZER -Werror -faddress-sanitizer   -faddress-sanitizer -o CMakeFiles/cmTC_dd8ed.dir/src.c.o   -c /home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-faddress-sanitizer'
+cc: error: unrecognized command line option '-faddress-sanitizer'
+CMakeFiles/cmTC_dd8ed.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_dd8ed.dir/src.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_dd8ed.dir/src.c.o] Error 1
+make[3]: Leaving directory '/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_dd8ed/fast' failed
+make[2]: *** [cmTC_dd8ed/fast] Error 2
+make[2]: Leaving directory '/home/lloyd/erlPress_core/src/content/cmark_parse/cmark/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }

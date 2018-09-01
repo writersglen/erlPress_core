@@ -17,7 +17,7 @@ To review current erlPpress_core functionality, display [ep_show_n_tell](pdf/gal
 
 See [Programmer Guide](src/guide/programmer_guide.txt) for API details.
 
-**erlPress_core**, is a work-in-progress. Should you find deficiencies or rough-edges, please let us know. The **MIT license** encourages evolution toward world-class print-media design and development applications ranging from business cards to books.
+**erlPress_core**, is a work-in-progress. Should you find deficiencies or rough-edges, please let us know. The **MIT license** encourages evolution toward world-class print-media applications ranging from business cards to books.
 
 Imagine:
 
@@ -51,8 +51,8 @@ Notes toward a programmer's guide can be found in the guide [directory](src/guid
   * content   -- Markdown input -- WARNING: under construction
   * fonts     -- Font modules; mostly from erlguten
   * typespecs -- Type styling a specifications
-  * layout    -- layut functions
-  * copyfit   -- Copyfitting routines and primatives
+  * layout    -- layout functions
+  * copyfit   -- Copyfitting routines and primitives
   * lib       -- Useful libraries
 
 # Helper/Utility Directories
