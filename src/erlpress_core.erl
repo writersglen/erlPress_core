@@ -1,4 +1,4 @@
--module(ep_c).
+-module(erlpress_core).
 
 %% API exports
 -export([]).
