@@ -1,4 +1,4 @@
-{application, erlpress_core,
+{application, erlPress_core,
  [{description, "An OTP library"},
   {vsn, "0.1.0"},
   {registered, []},
