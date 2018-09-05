@@ -1,4 +1,4 @@
--module(erlPress_core).
+-module(erlpress_core).
 
 %% API exports
 -export([]).
