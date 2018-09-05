@@ -16,3 +16,6 @@ _build
 .idea
 *.iml
 rebar3.crashdump
+priv/cmark
+*~
+src/content/cmark_parse/cmark/build/
