@@ -6,7 +6,7 @@
 OPTS         ?=
 ERL          ?=$(shell which erl || echo no)
 EMAKE        ?=$(shell basename $(MAKE))
-CMAKE        ?=$(shell which cmake || echo no)
+# CMAKE        ?=$(shell which cmake || echo no)
 PROJECT      ?=$(shell basename `pwd` | sed -e 's|\-.*||')
 REBAR        ?=./rebar
 REBAR_CONFIG :=rebar.config
@@ -18,9 +18,9 @@ ifeq ($(ERL),no)
 $(error "Erlang is not available on this system")
 endif
 
-ifeq ($(CMAKE),no)
-$(error "CMAKE is not available on this system")
-endif
+# ifeq ($(CMAKE),no)
+# $(error "CMAKE is not available on this system")
+# endif
 
 # ----------------------------------------------------
 # PHONY
