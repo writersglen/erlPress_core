@@ -1379,12 +1379,13 @@ pdf_handle_info(I, {keywords, Keywords}) ->
     I#info{keywords = Keywords}.
 
 
+%% @private
+-spec convert(module() | undefined, string()) -> string().
 convert(undefined, S) ->
     eg_convert:mac2pdf(S);
+
 convert(Mod, S) ->
     case Mod:encoding() of
-        "FontSpecific" ->
-            S;
-        _ ->
-            eg_convert:pdf2mac(S)
+        "FontSpecific" -> S;
+        _ -> eg_convert:pdf2mac(S)
     end.
