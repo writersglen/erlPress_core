@@ -28,67 +28,70 @@
 
 -module(eg_pdf_op).
 
--export([arc/4,
-         begin_text/0,
-         bezier/4, bezier/8, bezier_c/3, bezier_v/2, bezier_y/2,
-         break_text/0,
-         circle/2,
-         color/1,
-         ellipse/2,
-         end_text/0,
-         get_string_width/3,
-         grid/2,
-         image/1, image/2, image/3,
-         image1/2,
-         kernedtext/1,
-         line/1, line/2, line/4,
-         lines/1,
-         mirror_xaxis/1, mirror_yaxis/1,
-         move_to/1,
-         path/1,
-         poly/1,
-         rectangle/2, rectangle/3, rectangle/4, rectangle/5,
-         restore_state/0,
-         rotate/1,
-         round_rect/3,
-         round_top_rect/3,
-         save_state/0,
-         scale/2,
-         set_char_space/1,
-         set_dash/1, set_dash/2,
-         set_fill_color/1, set_fill_color_CMYK/4, set_fill_color_RGB/3,
-         set_fill_gray/1,
-         set_font/2,
-         set_font_by_alias/2,
-         set_image/3,
-         set_line_cap/1,
-         set_line_join/1,
-         set_line_width/1,
-         set_miter_limit/1,
-         set_stroke_color/1, set_stroke_color_CMYK/4, set_stroke_color_RGB/3,
-         set_stroke_gray/1,
-         set_text_leading/1,
-         set_text_pos/2,
-         set_text_rendering/1,
-         set_text_rise/1,
-         set_text_scale/1,
-         set_word_space/1,
-         skew/2,
-         text/1,
-         text_rotate/1,
-         text_rotate_position/3,
-         text_transform/6,
-         textbr/1,
-         transform/6,
-         translate/2,
+-export([
+    arc/4,
+    begin_text/0,
+    bezier/4, bezier/8, bezier_c/3, bezier_v/2, bezier_y/2,
+    break_text/0,
+    circle/2,
+    color/1,
+    ellipse/2,
+    end_text/0,
+    get_string_width/3,
+    grid/2,
+    image/1, image/2, image/3,
+    image1/2,
+    kernedtext/1,
+    line/1, line/2, line/4,
+    lines/1,
+    mirror_xaxis/1, mirror_yaxis/1,
+    move_to/1,
+    path/1,
+    poly/1,
+    rectangle/2, rectangle/3, rectangle/4, rectangle/5,
+    restore_state/0,
+    rotate/1,
+    round_rect/3,
+    round_top_rect/3,
+    save_state/0,
+    scale/2,
+    set_char_space/1,
+    set_dash/1, set_dash/2,
+    set_fill_color/1, set_fill_color_CMYK/4, set_fill_color_RGB/3,
+    set_fill_gray/1,
+    set_font/2,
+    set_font_by_alias/2,
+    set_image/3,
+    set_line_cap/1,
+    set_line_join/1,
+    set_line_width/1,
+    set_miter_limit/1,
+    set_stroke_color/1, set_stroke_color_CMYK/4, set_stroke_color_RGB/3,
+    set_stroke_gray/1,
+    set_text_leading/1,
+    set_text_pos/2,
+    set_text_rendering/1,
+    set_text_rise/1,
+    set_text_scale/1,
+    set_word_space/1,
+    skew/2,
+    text/1,
+    text_rotate/1,
+    text_rotate_position/3,
+    text_transform/6,
+    textbr/1,
+    transform/6,
+    translate/2
+]).
 
-	 %% internal erlguten utility functions
-	 i2s/1,
-	 a2s/1,
-	 n2s/1,
-	 f2s/1,
-	 flatten/1
-	]).
+%% internal erlguten utility functions
+-export([
+    a2s/1,
+    f2s/1,
+    flatten/1,
+    i2s/1,
+    n2s/1
+]).
 
 -define(MPO, 0.552284749).   %% MultiPlier Object :-)
 
@@ -140,15 +143,19 @@ set_text_pos(X, Y) -> [n2s([X, Y]), " Td "].
 set_text_leading(L) -> [n2s(L), " TL "].
 
 
--spec set_text_rendering(fill | strike | fill_then_stroke | integer()) -> string().
+-spec set_text_rendering(fill | strike | fill_then_stroke | integer()) -> iolist().
 set_text_rendering(fill)->
     set_text_rendering(0);
+
 set_text_rendering(stroke) ->
     set_text_rendering(1);
+
 set_text_rendering(fill_then_stroke) ->
     set_text_rendering(2);
+
 set_text_rendering(MODE) when is_integer(MODE)->
     [i2s(MODE)," Tr\n"].
+
 
 set_char_space(CS) -> [n2s(CS), " Tc "].
 
@@ -159,23 +166,26 @@ set_text_scale(SC) -> [i2s(SC), " Tz "].
 set_text_rise(RISE) -> [i2s(RISE), " Ts "].
 
 set_font_by_alias(FontAlias, Size) ->
-    	    [" /",FontAlias, " ",i2s(Size)," Tf "].
+            [" /",FontAlias, " ",i2s(Size)," Tf "].
 
 set_font(Name, Size) ->
     case eg_font_map:handler(Name) of
-	undefined ->
-	    set_font("Times-Roman", Size);
-	M ->
-	    [" /F", i2s(M:index()), " ",i2s(Size)," Tf "]
+        undefined ->
+            set_font("Times-Roman", Size);
+        M ->
+            [" /F", i2s(M:index()), " ",i2s(Size)," Tf "]
     end.
 
-%% -- This function is a bit expensive, but will stick to the public interface.
+%% @doc NOTE: This function is a bit expensive, but will stick to the
+%% public interface.
 get_string_width(Fontname, PointSize, Str)->
     {richText, Inline} = eg_richText:str2richText(Fontname, PointSize, 0,
                                                   default, true, Str),
-    trunc(lists:foldl(fun(A, Accu) -> eg_richText:width(A) + Accu end,
-                      0, Inline)
-          / 1000).
+    W = lists:foldl(
+        fun(A, Accu) -> eg_richText:width(A) + Accu end,
+        0,
+        Inline),
+    trunc(W / 1000).
 
 %% Graphics operators
 
@@ -227,19 +237,23 @@ lines(LineList) ->
 poly([{X1, Y1} | PolyList]) ->
     [move_to({X1, Y1}) | poly1(PolyList)].
 
+
+%% @private
 poly1(PolyList) ->
     lists:map ( fun(A) -> line_append(A) end, PolyList ).
 
-%% Grid assumes sorted XLists and YList, minimum value first
-grid(XList, YList)->
+
+%% @doc Grid assumes sorted XLists and YList, minimum value first
+-spec grid(list(number()), list(number())) -> iolist().
+grid(XList, YList) ->
     XMin = hd(XList),
-    XMax = lists:nth(length(XList),XList),
+    XMax = lists:nth(length(XList), XList),
     YMin = hd(YList),
-    YMax = lists:nth(length(YList),YList),
-    [
-     lines([{{XMin,Y}, {XMax,Y}}|| Y <- YList ]),
-     lines([{{X,YMin}, {X,YMax}}|| X <- XList ])
+    YMax = lists:nth(length(YList), YList),
+    [lines([{{XMin, Y}, {XMax, Y}} || Y <- YList]),
+     lines([{{X, YMin}, {X, YMax}} || X <- XList])
     ].
+
 
 %% @doc Bezier paths should be stroked/closed/filled with separate command.
 -spec bezier(number(), number(), number(), number(),
@@ -251,18 +265,22 @@ bezier(X1, Y1, X2, Y2, X3, Y3, X4, Y4)->
 bezier(Point1, Point2, Point3, Point4) ->
     [move_to(Point1), bezier_c(Point2, Point3, Point4)].
 
+
 bezier_c({X1, Y1}, {X2, Y2}, {X3, Y3})->
     [n2s([X1, Y1, X2, Y2, X3, Y3]), " c\n"].
 
-bezier_v({X2, Y2}, {X3, Y3})-> 
+
+bezier_v({X2, Y2}, {X3, Y3})->
     [n2s([X2, Y2, X3, Y3]), " v\n"].
+
 
 bezier_y({X1, Y1}, {X3, Y3})->
     [n2s([X1, Y1, X3, Y3]), " y\n"].
-    
+
 
 arc(_X1, _Y1, _X2, _Y2)->
     tobedone.
+
 
 circle({X,Y}, R)->
     ellipse({X,Y}, {R,R}).
@@ -278,16 +296,19 @@ ellipse({X, Y}, {RX, RY}) ->
     ].
 
 
-%% If Stroke Type is not appended in arguments, explicit
+%% @doc If Stroke Type is not appended in arguments, explicit
 %% stroke command "path(StrokeType)" has to be executed.
-rectangle({X,Y},{WX,WY})->
-    rectangle(X,Y,WX,WY).
-      
-rectangle({X,Y},{WX,WY}, StrokeType) ->
-    rectangle(X,Y,WX,WY,StrokeType).
+rectangle({X, Y}, {WX, WY}) ->
+    rectangle(X, Y, WX, WY).
 
-rectangle(X,Y,WX,WY) ->
-    [n2s([X,Y,WX,WY])," re "].
+
+rectangle({X, Y}, {WX, WY}, StrokeType) ->
+    rectangle(X, Y, WX, WY, StrokeType).
+
+
+rectangle(X, Y, WX, WY) ->
+    [n2s([X, Y, WX, WY]), " re "].
+
 
 rectangle(X, Y, WX, WY, StrokeType) ->
     [rectangle(X, Y, WX, WY), path(StrokeType)].
@@ -322,6 +343,7 @@ round_top_rect({X, Y}, {W, H}, R) ->
 -spec set_line_width(number()) -> iolist().
 set_line_width(W) -> [n2s(W), " w\n"].
 
+
 -spec set_line_cap(line_cap_t()) -> string().
 set_line_cap(flat_cap)   -> " 0 J\n";
 set_line_cap(round_cap)  -> " 1 J\n";
@@ -329,7 +351,7 @@ set_line_cap(square_cap) -> " 2 J\n";
 set_line_cap(Mode)       -> n2s(Mode) ++ " J\n".
 
 
--spec set_line_join(line_join_t) -> string().
+-spec set_line_join(line_join_t()) -> string().
 set_line_join(miter_join) -> " 0 j\n";
 set_line_join(round_join) -> " 1 j\n";
 set_line_join(bevel_join) -> " 2 j\n";
@@ -357,8 +379,10 @@ set_dash(_)                 -> set_dash([],0).    %% Fall back to solid line
 %% @doc Push graphics state
 save_state() -> "\nq\n".
 
+
 %% @doc Pop graphics state
 restore_state() -> "\nQ\n".
+
 
 %% @doc Change geometry with 3x3 matrix A B / C D / E F
 -spec transform(number(), number(), number(), number(), number(), number()) -> iolist().
@@ -372,8 +396,10 @@ transform(A, B, C, D, E, F) ->
 text_transform(A, B, C, D, E, F) ->
     [n2s([A, B, C, D, E, F]), " Tm\n"].
 
+
 translate(X, Y) ->
     transform(1, 0, 0, 1, X, Y).
+
 
 scale(ScaleX, ScaleY) when is_integer(ScaleX), is_integer(ScaleY)->
     transform(ScaleX, 0, 0, ScaleY, 0, 0).
@@ -400,11 +426,12 @@ text_rotate(Angle) ->
     S = math:sin(RadianAngle),
     text_transform(C, S, -S, C, 0, 0).
 
+
 text_rotate_position(X, Y, 90)->  " 0 1 -1 0 " ++ n2s(X) ++ " " ++ n2s(Y) ++ " Tm\n";
 text_rotate_position(X, Y, 180)-> " 1 0 0 1 " ++ n2s(X) ++ " " ++ n2s(Y) ++ " Tm\n";
 text_rotate_position(X, Y, 270)-> " 0 -1 1 0 " ++ n2s(X) ++ " " ++ n2s(Y) ++ " Tm\n";
 text_rotate_position(X, Y, Angle)->
-    RadianAngle = Angle * math:pi()/180, 
+    RadianAngle = Angle * math:pi()/180,
     C = math:cos( RadianAngle ),
     S = math:sin( RadianAngle ),
     text_transform(C, S, -S, C, X, Y).
@@ -437,12 +464,12 @@ set_stroke_color_CMYK(C,M,Y,K)->
 
 
 %% @doc Set color, value range 0 - 1
--spec set_fill_color_RGB(number(), number(), number()) -> ok.
+-spec set_fill_color_RGB(number(), number(), number()) -> iolist().
 set_fill_color_RGB(R, G, B) ->
     [n2s([R, G, B]), " rg\n"].
 
 
--spec set_stroke_color_RGB(number(), number(), number()) -> ok.
+-spec set_stroke_color_RGB(number(), number(), number()) -> iolist().
 set_stroke_color_RGB(R, G, B) ->
     [n2s([R, G, B]), " RG\n"].
 
@@ -632,7 +659,7 @@ color(yellow2)              -> {16#EE, 16#EE, 16#00};
 color(yellow3)              -> {16#CD, 16#CD, 16#00};
 color(yellow4)              -> {16#8B, 16#8B, 16#00};
 color({R, G, B})            -> {R, G, B}.
-			   
+
 
 %% @doc Grayscale fill color; 0.0-Black 1.0-White)
 set_fill_gray(Gray) ->
@@ -645,9 +672,11 @@ set_stroke_gray(Gray) ->
 
 
 %% @doc create the PDF operator to draw an image
-set_image(Width, Height, IMGName)->
-    [ n2s([Width, 0, 0, Height, 0, 0]), " cm\n", %% scale
-		  " /", IMGName, " Do\n" ].      %% Draw image
+set_image(Width, Height, IMGName) ->
+    [n2s([Width, 0, 0, Height, 0, 0]),
+     " cm\n", %% scale
+     " /", IMGName, %% Draw image
+     " Do\n"].
 
 
 %% image1(...) (and therefore image(...) ) appear to be non-working
@@ -660,70 +689,90 @@ set_image(Width, Height, IMGName)->
 %% Pos is {X,Y}
 %% Size is {width, W} | {height, H} | {W,H}
 
-image(FilePath)->
+image(FilePath) ->
     save_state(),
-    image1(FilePath, {size,{undefined,undefined}}),
+    image1(FilePath, {size, {undefined, undefined}}),
     restore_state().
-    
-image(FilePath,Size)->
+
+
+image(FilePath, Size) ->
     save_state(),
-    image1(FilePath, Size),
-    restore_state().
-    
-image(FilePath, {X,Y}, Size) when is_integer(X), is_integer(Y)->
-    save_state(),
-    translate(X,Y),
     image1(FilePath, Size),
     restore_state().
 
-image1(FilePath, {width, W})->
-    image1(FilePath, {size,{W,undefined}});
+
+image(FilePath, {X, Y}, Size) when is_integer(X), is_integer(Y) ->
+    save_state(),
+    translate(X, Y),
+    image1(FilePath, Size),
+    restore_state().
+
+
+image1(FilePath, {width, W}) ->
+    image1(FilePath, {size, {W, undefined}});
 image1(FilePath, {height, H}) ->
-    image1(FilePath, {size,{undefined,H}});
-image1(FilePath, {W, H}) when is_integer(W), is_integer(H)->
-    image1(FilePath, {size,{W,H}});
-image1(_FilePath, {size, _Size})->
+    image1(FilePath, {size, {undefined, H}});
+image1(FilePath, {W, H}) when is_integer(W), is_integer(H) ->
+    image1(FilePath, {size, {W, H}});
+image1(_FilePath, {size, _Size}) ->
 %%    PID ! {image, FilePath, Size}.
     to_be_done.
 
+
 %% ----------------------------------------------------------------------------
 %% Internals
+%%
 
 %% @private
 -spec escapePdfText(iolist()) -> iolist().
 escapePdfText([]) ->
     [];
-escapePdfText([$(|Rest]) -> 
-    [$\\,$( | escapePdfText(Rest)];
-escapePdfText([$)|Rest]) -> 
-    [$\\,$) | escapePdfText(Rest)];
-escapePdfText([$\\ | Rest]) -> 
-    [$\\,$\\ | escapePdfText(Rest)];
-escapePdfText([C | Rest]) when is_list(C)-> 
-    [ escapePdfText(C) |
-      escapePdfText(Rest)];
-escapePdfText([C | Rest]) ->  
-    [ C | escapePdfText(Rest)].
+
+escapePdfText([$( | Rest]) ->
+    [$\\, $( | escapePdfText(Rest)];
+
+escapePdfText([$) | Rest]) ->
+    [$\\, $) | escapePdfText(Rest)];
+
+escapePdfText([$\\ | Rest]) ->
+    [$\\, $\\ | escapePdfText(Rest)];
+
+escapePdfText([C | Rest]) when is_list(C) ->
+    [escapePdfText(C) |
+     escapePdfText(Rest)];
+
+escapePdfText([C | Rest]) ->
+    [C | escapePdfText(Rest)].
+
 
 -spec i2s(integer()) -> string().
 i2s(I) ->
     integer_to_list(I).
 
+
+-spec a2s(atom()) -> string().
 a2s(A) ->
     atom_to_list(A).
 
+
+-spec n2s(list(number()) | number()) -> string().
 n2s(A) when is_float(A)   -> f2s(A);
 n2s(A) when is_integer(A) -> i2s(A);
 n2s([])                   -> [];
-n2s([H|T])                -> [n2s(H)," "|n2s(T)].
+n2s([H | T])              -> [n2s(H), " " | n2s(T)].
 
+
+-spec f2s(number()) -> string().
 f2s(I) when is_integer(I) ->
     i2s(I);
-f2s(F) ->    
+f2s(F) ->
     remove_leading_blanks(flatten(io_lib:format("~8.2f", [F]))).
 
-remove_leading_blanks([$\s|T]) -> remove_leading_blanks(T);
-remove_leading_blanks(X)       -> X.
+
+%% @private
+remove_leading_blanks([$\s | T]) -> remove_leading_blanks(T);
+remove_leading_blanks(X)         -> X.
+
 
 flatten(L) ->
     binary_to_list(list_to_binary(L)).
