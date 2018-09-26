@@ -21,7 +21,10 @@
 
 -module(eg_lib).
 
--export([find_files/3, find_files/5]).
+-export([
+    find_files/3,
+    find_files/5
+]).
 
 -include_lib("kernel/include/file.hrl").
 
@@ -37,55 +40,66 @@
 %%   find_files(Dir, RegExp, Recursive, Fun/2, Acc0)
 %%      applies Fun(File, Acc) -> Acc. to each file
 
-find_files(Dir, Re, Flag) -> 
+-spec find_files(file:name_all(), string(), boolean()) -> list(string()).
+find_files(Dir, Re, Flag) ->
     Re1 = xmerl_regexp:sh_to_awk(Re),
     lists:reverse(find_files(Dir, Re1, Flag,
-                             fun(File, Acc) ->[File|Acc] end, [])).
+                             fun(File, Acc) -> [File | Acc] end, [])).
+
 
 find_files(Dir, Reg, Recursive, Fun, Acc) ->
     case file:list_dir(Dir) of
-	{ok, Files} -> 
-	    find_files(Files, Dir, Reg, Recursive, Fun, Acc);
-	{error, _}  -> 
-	    Acc
+        {ok, Files} ->
+            find_files(Files, Dir, Reg, Recursive, Fun, Acc);
+        {error, _} ->
+            Acc
     end.
 
-find_files([File|T], Dir, Reg, Recursive, Fun, Acc0) ->
-    FullName = Dir ++  [$/|File],
+
+%% @private
+-spec find_files(list(file:name_all()), Dir :: file:name_all(), Reg :: any(),
+                 Recursive :: boolean(), Fun :: fun((string(), any()) -> any()),
+                 Acc0 :: any()) -> any().
+find_files([File | T], Dir, Reg, Recursive, Fun, Acc0) ->
+    FullName = Dir ++ [$/ | File],
     case file_type(FullName) of
-	regular ->
-	    case re:run(FullName, Reg) of
-		{match,_}  ->
-		    Acc = Fun(FullName, Acc0),
-		    find_files(T, Dir, Reg, Recursive, Fun, Acc);
-		_ ->
-		    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
-	    end;
-	directory -> 
-	    case Recursive of
-		true ->
-		    Acc1 = find_files(FullName, Reg, Recursive, Fun, Acc0),
-		    find_files(T, Dir, Reg, Recursive, Fun, Acc1);
-		false ->
-		    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
-	    end;
-	error -> 
-	    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
+        regular ->
+            case re:run(FullName, Reg) of
+                {match, _} ->
+                    Acc = Fun(FullName, Acc0),
+                    find_files(T, Dir, Reg, Recursive, Fun, Acc);
+                _ ->
+                    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
+            end;
+        directory ->
+            case Recursive of
+                true ->
+                    Acc1 = find_files(FullName, Reg, Recursive, Fun, Acc0),
+                    find_files(T, Dir, Reg, Recursive, Fun, Acc1);
+                false ->
+                    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
+            end;
+        error ->
+            find_files(T, Dir, Reg, Recursive, Fun, Acc0)
     end;
+
 find_files([], _, _, _, _, A) ->
     A.
 
+
+%% @private
+-spec file_type(file:name_all()) -> regular | directory | error.
 file_type(File) ->
     case file:read_file_info(File) of
-	{ok, Facts} ->
-	    case Facts#file_info.type of
-		regular -> 
-		    regular;
-		directory -> 
-		    directory;
-		_ -> 
-		    error
-	    end;
-	_ ->
-	    error
+        {ok, Facts} ->
+            case Facts#file_info.type of
+                regular ->
+                    regular;
+                directory ->
+                    directory;
+                _ ->
+                    error
+            end;
+        _ ->
+            error
     end.

@@ -26,9 +26,10 @@
 
 -module(eg_embed).
 
--export([embed/1, 
-	 parse_pfb/1
-	]).
+-export([
+    embed/1,
+    parse_pfb/1
+]).
 
 
 %% The format of a PBF is specified in 5040.Download_Fonts.pdf
@@ -46,7 +47,7 @@
 
 embed(F) ->
     P = parse_pfb(F),
-    O = lists:map(fun({_,_,B}) -> B end, P),
+    O = lists:map(fun({_, _, B}) -> B end, P),
     file:write_file(F ++ ".synth", O).
 
 %% Parse_pfb -> [{Type, Len, Bin}]
@@ -57,20 +58,19 @@ parse_pfb(F) ->
     {ok, Bin} = file:read_file(F),
     parse(Bin).
 
-parse(<<128,3>>) ->
+
+-spec parse(binary()) -> list(tuple()).
+parse(<<128, 3>>) ->
     [];
+
 parse(B) ->
     {B1, B2} = split_binary(B, 6),
     [128, Type, N1, N2, N3, N4] = binary_to_list(B1),
-    Len = N1 + N2*256 + N3*256*256 + N4*256*256*256,
+    Len = N1 + N2 * 256 + N3 * 256 * 256 + N4 * 256 * 256 * 256,
     %% io:format("Chunk: ~p length=~p~n",[Type, Len]),
     case Len of
-	0 -> [];
-	_ ->
-	    {B3, B4} = split_binary(B2, Len),
-	    [{Type, Len, B3}|parse(B4)]
+        0 -> [];
+        _ ->
+            {B3, B4} = split_binary(B2, Len),
+            [{Type, Len, B3} | parse(B4)]
     end.
-
-
-
-

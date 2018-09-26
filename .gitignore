@@ -1,4 +1,6 @@
+rebar.lock
 .rebar3
+
 _*
 .eunit
 *.o
