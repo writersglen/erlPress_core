@@ -819,21 +819,21 @@ badness(Line, Len0, Q) ->
 %% @doc R = strechyness of blank
 %% @private
 badness(R, Q) ->
-    Max = Q#q.maxSpaceStretch/100,
-    Min = Q#q.minSpaceStretch/100,
-    B = if 
-        R < 0.1 ->
-        -100000;
-        R < Min ->
-        Alpha = -100000/(Min*Min*Min*Min),
-        Beta = -1,
-        T = (Min-R),
-        Alpha*T*T*T*T + Beta;
-       true ->
-        %% R > 1
-        T = (R - 1)/(Max - 1),
-        T*T
-    end,
+    Max = Q#q.maxSpaceStretch / 100,
+    Min = Q#q.minSpaceStretch / 100,
+    B = if
+            R < 0.1 ->
+                -100000;
+            R < Min ->
+                Alpha = -100000 / (Min * Min * Min * Min),
+                Beta = -1,
+                T = (Min - R),
+                Alpha * T * T * T * T + Beta;
+            true ->
+                %% R > 1
+                T = (R - 1) / (Max - 1),
+                T * T
+        end,
     %% dbg_io("Nominal size of blank=~p actual=~p Min=~p Max=~p B=~p~n",
     %% [Nominal,Need, Min, Max, B]),
     B.

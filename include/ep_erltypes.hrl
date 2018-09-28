@@ -46,7 +46,8 @@
     | right_justified | ragged_left | ragged_force_split | simple_hyphenate
     | preformatted | centered.
 
--type paper_stock() :: a4 | avery_labels | envelope_no10 | legal | letter | atom(). |
+-type paper_stock() :: a4 | avery_labels | avery_labels_5164
+    | avery_labels_8168 | envelope_no10 | legal | letter | atom().
 
 -type page_format() :: a0 | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 | b0 |
     b1 | b2 | b3 | b4 | b5 | b6 | b7 | b8 | b9 | b10 | avery_5164 |
@@ -72,8 +73,14 @@
 
 -type stroke() :: stroke.
 
-%% A pair of coords which defines a point.
+%% A pair of integers or floats which defines a point or size.
 -type xy() :: {number(), number()}.
+
+%% A pair of integers which defines a point or size.
+-type integer_xy() :: {integer(), integer()}.
+
+%% same as integer_xy() just for clarity
+-type points_xy() :: {points(), points()}.
 
 %% A pair of points which defines a box or a line.
 -type xy1_xy2() :: {xy(), xy()}.

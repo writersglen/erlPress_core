@@ -46,18 +46,16 @@ stock_size_inches(Stock) ->
    {_Type, Dimensions} = lists:keyfind(Stock, 1, StockList),
    Dimensions.
    
+
 %% @doc Return paper stock dimensions in picas
-
--spec stock_size_picas(Stock :: atom()) -> tuple().
-
+-spec stock_size_picas(Stock :: atom()) -> integer_xy().
 stock_size_picas(Stock) ->
    Dimensions = stock_size_inches(Stock),
    ep_metrics:to_picas(Dimensions).
 
+
 %% @doc Return paper stock dimensions in points
-
--spec stock_size_points(Stock :: paper_stock()) -> xy().
-
+-spec stock_size_points(Stock :: paper_stock()) -> integer_xy().
 stock_size_points(Stock) ->
    Dimensions = stock_size_inches(Stock),
    ep_metrics:to_points(Dimensions).
