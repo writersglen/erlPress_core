@@ -73,7 +73,7 @@
 ]).
 
 -include("eg.hrl").
--include("eg_erltypes.hrl").
+-include("ep_erltypes.hrl").
 
 %% -define(DEBUG, true).
 

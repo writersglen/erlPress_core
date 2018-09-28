@@ -158,7 +158,7 @@ max_linespace(cdoc, Tag)                   -> ep_cdoc_sty:cdoc_max_linespace(Tag
 %% @doc Return leading 
 
 -spec leading(TypeStyle  :: tuple(),
-              Tag        :: atom()) -> tuple().
+              Tag        :: atom()) -> leading().
 
 leading(justify_report, Tag)      -> ep_report_sty:report_leading(Tag);
 leading(ragged_report, Tag)       -> ep_report_sty:report_leading(Tag);

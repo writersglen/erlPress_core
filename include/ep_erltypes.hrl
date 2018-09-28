@@ -3,7 +3,9 @@
 %%
 
 -type pdf_server_pid() :: pid().
--type pagesize_t() :: {integer(), integer(), integer(), integer()}.
+
+%% X, Y, Width, Height
+-type xywh() :: {integer(), integer(), integer(), integer()}.
 
 -type rgb8_t() :: {byte(), byte(), byte()}.
 
@@ -42,3 +44,25 @@
 -type line_split_t() :: justified | spill | left_justified | ragged
     | right_justified | ragged_left | ragged_force_split | simple_hyphenate
     | preformatted | centered.
+
+-type paper_stock() :: a4 | avery_labels | envelope_no10 | legal | letter | atom().
+-type pageformat() :: atom().
+-type leading() :: number().
+
+%%
+%% Path Drawing and Filling Types
+%%
+
+-type line_cap_t() :: flat_cap | round_cap | square_cap | integer().
+-type line_join_t() :: miter_join | round_join | bevel_join | integer().
+-type dash_t() :: solid | dash | dot | dashdot | string().
+
+-type path_t() :: close | stroke | close_strike | fill | fill_even_odd
+    | fill_stroke | fill_then_stroke | fill_stroke_even_odd | close_fill_stroke
+    | close_fill_stroke_even_odd | endpath.
+
+%% A pair of coords which defines a point.
+-type xy() :: {number(), number()}.
+
+%% A pair of points which defines a box or a line.
+-type xy1_xy2() :: {xy(), xy()}.

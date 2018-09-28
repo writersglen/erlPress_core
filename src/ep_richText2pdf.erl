@@ -35,14 +35,14 @@
 ]).
 
 -include("eg.hrl").
--include("eg_erltypes.hrl").
+-include("ep_erltypes.hrl").
 
 
 -record(pdf, {
     color = default :: rgb8_t() | default,
-    xy = {-1, -1} :: {integer(), integer()},
+    xy = {-1, -1} :: xy(),
     face = {none, none} :: {module(), atom() | points()},
-    tw = -1 :: integer(),
+    tw = -1 :: number(),
     inTJ = false :: boolean(),
     code = [] :: list()
 }).
@@ -258,18 +258,20 @@ init_rotation_matrix(X, Y, Rot, P) ->
 add_move(X, Y, P) ->
     P1 = close_tj(P),
     case P1#pdf.xy of
-    {-1, -1} ->
-        %% dbg_io("Here aaa*********~n"),
-        C = "1 0 0 1 " ++ eg_pdf_op:n2s(X) ++ " " ++
-                eg_pdf_op:n2s(Y) ++ " Tm ",
-        add_code(C, P1#pdf{xy={X,Y}});
-    {X, Y} ->
-        add_code("0 0 TD ", P1);
-    {OldX, OldY} ->
-        Dx = X - OldX,
-        Dy = Y - OldY,
-        C = eg_pdf_op:n2s(Dx) ++ "  " ++ eg_pdf_op:n2s(Dy) ++ " TD ",
-        add_code(C, P1#pdf{xy={X,Y}})
+        {-1, -1} ->
+            %% dbg_io("Here aaa*********~n"),
+            C = lists:flatten(["1 0 0 1 ",
+                               eg_pdf_op:n2s(X), " ",
+                               eg_pdf_op:n2s(Y), " Tm "]),
+            add_code(C, P1#pdf{xy = {X, Y}});
+        {X, Y} ->
+            add_code("0 0 TD ", P1);
+        {OldX, OldY} ->
+            Dx = X - OldX,
+            Dy = Y - OldY,
+            C = lists:flatten([eg_pdf_op:n2s(Dx), "  ",
+                               eg_pdf_op:n2s(Dy), " TD "]),
+            add_code(C, P1#pdf{xy = {X, Y}})
     end.
 
 

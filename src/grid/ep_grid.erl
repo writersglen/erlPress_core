@@ -15,11 +15,12 @@
 
 -module (ep_grid).
 
--export ([create/2, grid/3]).
+-export ([
+    create/2,
+    grid/3
+]).
 
-% -compile(export_all).
-
--include("../../include/ep.hrl").
+-include("ep.hrl").
 
 %% ***********************************************************
 %% create 
@@ -44,14 +45,15 @@ create(XList, YList) ->
 
 -spec grid(PDF     :: identifier(),
            Job     :: map(),
-           GridMap :: map()) -> ok.
+           GridMap :: #{xlist => list(), ylist => list()}) -> ok.
 
 grid(PDF, Job, GridMap) ->
-    {PaperStock, PagePosition} = ep_job:stock_position(Job),
-    XList       = maps:get(xlist, GridMap),
-    YList       = maps:get(ylist, GridMap),
-    YList1      = [ep_lib:v_flip(Y, PaperStock) ||
-                        Y <- YList],
+    {PaperStock, _PagePosition} = ep_job:stock_position(Job),
+
+    XList = maps:get(xlist, GridMap),
+    YList = maps:get(ylist, GridMap),
+    YList1 = [ep_lib:v_flip(Y, PaperStock) || Y <- YList],
+
     eg_pdf:save_state(PDF),
     eg_pdf:set_line_width(PDF, 1),
     eg_pdf:set_dash(PDF, solid),

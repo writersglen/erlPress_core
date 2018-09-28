@@ -127,7 +127,7 @@ make(BaseDir, FurtherPath) ->
 %% @doc Just run pdf_afm_qdh:all() to build the font tables
 %% @private
 all_afms(Path, FurtherPath) ->
-    {ok, F} = file:open(Path ++ FurtherPath, read),
+    {ok, F} = file:open(Path ++ FurtherPath, [read]),
     L = read_locations(F, []),
     file:close(F),
     find_atms(L, [], Path).

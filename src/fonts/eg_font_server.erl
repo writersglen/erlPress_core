@@ -27,22 +27,23 @@
 
 -include("eg.hrl").
 
--export([start/0, 
-	 stop/0, 
-	 char_width/2, 
-	 data/1, 
-	 info/1, 
-	 kern/2]).
+-export([
+    char_width/2,
+    data/1,
+    info/1,
+    kern/2,
+    start/0,
+    stop/0
+]).
 
-%% ============================================================================
 
 start() ->
     case lists:member(fonts, ets:all()) of
-	true ->
-	    true;
-	false ->
-	    fonts = ets:new(fonts, [named_table, set, public]),
-	    true
+        true ->
+            true;
+        false ->
+            fonts = ets:new(fonts, [named_table, set, public]),
+            true
     end.
 
 stop() ->
@@ -77,43 +78,37 @@ stop() ->
 
 info(Index) ->
     case ets:lookup(fonts, {info, Index}) of
-	[{_,I}] ->
-	    I;
-	[] ->
-	    exit({font_server_info, Index})
+        [{_, I}] ->
+            I;
+        [] ->
+            exit({font_server_info, Index})
     end.
+
 
 data(Fontname) ->
     case ets:lookup(fonts, {allData, Fontname}) of
-	[{_,I}] ->
-	    {ok, I};
-	[] ->
-	    error
+        [{_, I}] ->
+            {ok, I};
+        [] ->
+            error
     end.
+
 
 char_width(N, Char) ->
     case ets:lookup(fonts, {width, N, Char}) of
-	[{_, W}] ->
-	    W;
-	[] ->
-	    io:format("Cannot figure out width of:~p ~p~n", [N, Char]),
-	    io:format("Possible \n in code etc~n"),
-	    1000
+        [{_, W}] ->
+            W;
+        [] ->
+            io:format("Cannot figure out width of:~p ~p~n", [N, Char]),
+            io:format("Possible \n in code etc~n"),
+            1000
     end.
+
 
 kern(N, KP) ->
     case ets:lookup(fonts, {kern, N, KP}) of
-	[{_, W}] ->
-	    W;
-	[] ->
-	    0
+        [{_, W}] ->
+            W;
+        [] ->
+            0
     end.
-
-
-
-
-
-
-
-
-

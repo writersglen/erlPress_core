@@ -117,8 +117,3 @@ needs(Tag, Lines, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Leading   = ep_typespec:leading(TypeStyle, Tag),
     Leading * length(Lines).
-
-
-
-
-

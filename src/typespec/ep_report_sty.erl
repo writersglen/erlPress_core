@@ -25,6 +25,7 @@
 -export([report_preformatted/1, report_centered/1, report_ragged_left/1]).
 -export([report_no_indent/1, report_indent/1]).
 
+-include("ep_erltypes.hrl").
 
 %% ***********************************************************************
 %% Type style - report
@@ -130,7 +131,7 @@ report_fontsize(Tag) ->
 
 %% @doc Return leading 
 
--spec report_leading(Tag :: atom()) -> tuple().
+-spec report_leading(Tag :: atom()) -> leading().
 
 report_leading(Tag) ->
   FontSize = report_fontsize(Tag),

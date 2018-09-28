@@ -95,19 +95,7 @@
 
 -define(MPO, 0.552284749).   %% MultiPlier Object :-)
 
--export_type([path_t/0, xy_t/0, xy_xy_t/0,
-              line_cap_t/0, line_join_t/0, dash_t/0]).
-
--type line_cap_t() :: flat_cap | round_cap | square_cap | integer().
--type line_join_t() :: miter_join | round_join | bevel_join | integer().
--type dash_t() :: solid | dash | dot | dashdot | string().
-
--type path_t() :: close | stroke | close_strike | fill | fill_even_odd
-    | fill_stroke | fill_then_stroke | fill_stroke_even_odd | close_fill_stroke
-    | close_fill_stroke_even_odd | endpath.
--type xy_t() :: {number(), number()}.
--type xy_xy_t() :: {xy_t(), xy_t()}.
-
+-include("ep_erltypes.hrl").
 
 %% Text commands
 
@@ -203,16 +191,16 @@ path(close_fill_stroke_even_odd) -> " b* ";
 path(endpath)                    -> " n ".
 
 
--spec move_to(xy_t()) -> iolist().
+-spec move_to(xy()) -> iolist().
 move_to({X, Y}) -> [n2s([X, Y]), " m "].
 
 
--spec line({xy_t(), xy_t()}) -> iolist().
+-spec line({xy(), xy()}) -> iolist().
 line({FromP, ToP}) ->
     [move_to(FromP), line_append(ToP), " S\n"].
 
 
--spec line(xy_t(), xy_t()) -> iolist().
+-spec line(xy(), xy()) -> iolist().
 line({X1, Y1}, {X2, Y2}) ->
     line({{X1, Y1}, {X2, Y2}}).
 
@@ -223,17 +211,17 @@ line(X1, Y1, X2, Y2) ->
 
 
 %% @private
--spec line_append(xy_t()) -> iolist().
+-spec line_append(xy()) -> iolist().
 line_append({X1, Y1}) ->
     [n2s([X1, Y1]), " l "].
 
 
--spec lines(list(xy_xy_t())) -> iolist().
+-spec lines(list(xy1_xy2())) -> iolist().
 lines(LineList) ->
     lists:map(fun(A) -> line(A) end, LineList).
 
 %% @doc Poly paths should be stroked/closed/filled with separate command.
--spec poly(list(xy_t())) -> iolist().
+-spec poly(list(xy())) -> iolist().
 poly([{X1, Y1} | PolyList]) ->
     [move_to({X1, Y1}) | poly1(PolyList)].
 
@@ -261,7 +249,7 @@ grid(XList, YList) ->
 bezier(X1, Y1, X2, Y2, X3, Y3, X4, Y4)->
     bezier({X1, Y1}, {X2, Y2}, {X3, Y3}, {X4, Y4}).
 
--spec bezier(xy_t(), xy_t(), xy_t(), xy_t()) -> iolist().
+-spec bezier(xy(), xy(), xy(), xy()) -> iolist().
 bezier(Point1, Point2, Point3, Point4) ->
     [move_to(Point1), bezier_c(Point2, Point3, Point4)].
 
@@ -286,7 +274,7 @@ circle({X,Y}, R)->
     ellipse({X,Y}, {R,R}).
 
 
--spec ellipse(xy_t(), xy_t()) -> iolist().
+-spec ellipse(xy(), xy()) -> iolist().
 ellipse({X, Y}, {RX, RY}) ->
     [move_to({X + RX, Y}),
      bezier_c({X + RX, Y + RY * ?MPO}, {X + RX * ?MPO, Y + RY}, {X, Y + RY}),
@@ -314,7 +302,7 @@ rectangle(X, Y, WX, WY, StrokeType) ->
     [rectangle(X, Y, WX, WY), path(StrokeType)].
 
 
--spec round_rect(xy_t(), xy_t(), number()) -> iolist().
+-spec round_rect(xy(), xy(), number()) -> iolist().
 round_rect({X, Y}, {W, H}, R) ->
     [move_to({X + R, Y}),
      line_append({X + W - R, Y}),
@@ -328,7 +316,7 @@ round_rect({X, Y}, {W, H}, R) ->
     ].
 
 
--spec round_top_rect(xy_t(), xy_t(), number()) -> iolist().
+-spec round_top_rect(xy(), xy(), number()) -> iolist().
 round_top_rect({X, Y}, {W, H}, R) ->
     [move_to({X, Y}),
      line_append({X + W, Y}),

@@ -21,6 +21,8 @@
 -export([stock_s/1, stock_w/1, desktop_printer_stock/0]).
 -export([standard_sizes/0]).
 
+-include("ep_erltypes.hrl").
+
 
 %% ****************************************************************
 %% @doc Standard paper stock  
@@ -54,7 +56,7 @@ stock_size_picas(Stock) ->
 
 %% @doc Return paper stock dimensions in points
 
--spec stock_size_points(Stock :: atom()) -> tuple().
+-spec stock_size_points(Stock :: paper_stock()) -> xy().
 
 stock_size_points(Stock) ->
    Dimensions = stock_size_inches(Stock),

@@ -38,7 +38,7 @@
 ]).
 
 -include("eg.hrl").
--include("eg_erltypes.hrl").
+-include("ep_erltypes.hrl").
 
 %% -define(DEBUG, true).
 -ifdef(DEBUG).
@@ -135,7 +135,8 @@ text2para_widths(Txt, ParaShape, Widths, Rules) ->
         ragged_force_split -> text2para_ragged(Txt1, Widths, [], ParaShape);
         simple_hyphenate   -> text2para_ragged(Txt1, Widths, [], ParaShape);
         preformated        -> text2para_ragged(Txt1, Widths, [], ParaShape);
-        justified          -> justify(Txt1, Widths, Rules)
+        justified          -> justify(Txt1, Widths, Rules);
+        Other              -> erlang:error({unsupported_paragraph_shape, Other})
     end.
 
 

@@ -41,6 +41,7 @@ pdf2mac(List) when is_list(List) ->
     [pdf2mac_ch(X) || X <- List].
 
 
+%% @private
 mac2pdf_ch(8#101) -> 8#101;
 mac2pdf_ch(8#256) -> 8#306;
 mac2pdf_ch(8#347) -> 8#301;
@@ -460,4 +461,3 @@ pdf2mac_ch(8#172) -> 8#172;
 pdf2mac_ch(8#060) -> 8#060;
 pdf2mac_ch(8#240) -> 8#040;
 pdf2mac_ch(X)     -> X.
-

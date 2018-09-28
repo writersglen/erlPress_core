@@ -22,6 +22,8 @@
 -export([impose_box/3, impose_text/2]). 
 -export([v_flip/2, within/3]).
 
+-include("ep_erltypes.hrl").
+
 %%% *********************************************************      
 %%% Create page id
 %%% *********************************************************      
@@ -136,38 +138,46 @@ months() ->
 %% @doc Given placement of page on paper stock, translate coordinate 
 %%      of point
 
--spec impose_xy(XY         :: tuple(), 
-                PageXY     :: tuple(),
-                PaperStock :: atom()) -> integer().
+-spec impose_xy(XY         :: xy(),
+                PageXY     :: xy(),
+                PaperStock :: atom()) -> xy().
 
 impose_xy(XY, PageXY, PaperStock) ->
     {X, Y}          = XY,
     {PageX, _PageY} = PageXY,
     X1              = X + PageX,
     Y1              = v_flip(Y, PaperStock),
-    {X1, Y1}. 
+    {X1, Y1}.
 
-impose_line(Line, PageXY, PaperStock) ->    
-   Pt1  = impose_xy(element(1, Line), PageXY, PaperStock),
-   Pt2  = impose_xy(element(2, Line), PageXY, PaperStock),
-   {Pt1, Pt2}.
-    
+
+-spec impose_line(xy1_xy2(), xy(), paper_stock()) -> xy1_xy2().
+impose_line(Line, PageXY, PaperStock) ->
+    Pt1 = impose_xy(element(1, Line), PageXY, PaperStock),
+    Pt2 = impose_xy(element(2, Line), PageXY, PaperStock),
+    {Pt1, Pt2}.
+
+
+-spec impose_lines(list(xy1_xy2()), xy(), paper_stock()) -> xy1_xy2().
 impose_lines(Lines, PageXY, PaperStock) ->
-   List  = [impose_line(Line, PageXY, PaperStock) || Line <- Lines],
-   lists:reverse(List).
+    List = [impose_line(Line, PageXY, PaperStock) || Line <- Lines],
+    lists:reverse(List).
 
+
+-spec impose_box(any(), any(), paper_stock()) -> xy().
 impose_box(Position, Size, PaperStock) ->
-   {X, Y} = Position,
-   {_Width, Height} = Size,
-   Y1 = v_flip(Y, PaperStock),
-   Y2 = Y1 - Height,
-   {X, Y2}.
+    {X, Y} = Position,
+    {_Width, Height} = Size,
+    Y1 = v_flip(Y, PaperStock),
+    Y2 = Y1 - Height,
+    {X, Y2}.
 
+
+-spec impose_text(xy(), paper_stock()) -> xy().
 impose_text(Position, PaperStock) ->
-   {X, Y} = Position,
-   Y1 = v_flip(Y, PaperStock),
-   Y2 = Y1,
-   {X, Y2}.
+    {X, Y} = Position,
+    Y1 = v_flip(Y, PaperStock),
+    Y2 = Y1,
+    {X, Y2}.
 
    
 

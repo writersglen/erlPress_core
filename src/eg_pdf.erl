@@ -96,7 +96,7 @@
 ]).
 
 -include("eg.hrl").
--include("eg_erltypes.hrl").
+-include("ep_erltypes.hrl").
 
 
 %% @doc Set up Info, Catalog and Pages
@@ -223,7 +223,7 @@ set_keywords(PID, Keywords) ->
 
 %% @doc pagesize returns: bounding box {Xleft, Ybottom, Xright, Ytop}
 %%         full pages are always = {0, 0, Width, Height}
--spec pagesize(atom()) -> pagesize_t().
+-spec pagesize(atom()) -> xywh().
 pagesize(a0) -> pagesize(2380, 3368);
 pagesize(a1) -> pagesize(1684, 2380);
 pagesize(a2) -> pagesize(1190, 1684);
@@ -257,7 +257,7 @@ pagesize(tabloid)   -> pagesize(792, 1224).
 
 
 %% @doc create a full page bounding box for a page of size Width x Height
--spec pagesize(integer(), integer()) -> pagesize_t().
+-spec pagesize(integer(), integer()) -> xywh().
 pagesize(Width, Height) -> {0, 0, Width, Height}.
 
 
@@ -391,11 +391,11 @@ path(PID, Type) -> append_stream(PID, eg_pdf_op:path(Type)).
 move_to(PID, P) -> append_stream(PID, eg_pdf_op:move_to(P)).
 
 
--spec line(pdf_server_pid(), eg_pdf_op:xy_xy_t()) -> ok.
+-spec line(pdf_server_pid(), xy1_xy2()) -> ok.
 line(PID, From_To) -> append_stream(PID, eg_pdf_op:line(From_To)).
 
 
--spec line(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec line(pdf_server_pid(), xy(), xy()) -> ok.
 line(PID, From, To) -> line(PID, {From, To}).
 
 
@@ -403,11 +403,11 @@ line(PID, From, To) -> line(PID, {From, To}).
 line(PID, X1, Y1, X2, Y2) -> line(PID, {{X1, Y1}, {X2, Y2}}).
 
 
--spec lines(pdf_server_pid(), list(eg_pdf_op:xy_xy_t())) -> ok.
+-spec lines(pdf_server_pid(), list(xy1_xy2())) -> ok.
 lines(PID, LineList) -> append_stream(PID, eg_pdf_op:lines(LineList)).
 
 %% @doc Poly paths should be stroked/closed/filled with separate command.
--spec poly(pdf_server_pid(), list(eg_pdf_op:xy_t())) -> ok.
+-spec poly(pdf_server_pid(), list(xy())) -> ok.
 poly(PID, Points) -> append_stream(PID, eg_pdf_op:poly(Points)).
 
 
@@ -418,8 +418,7 @@ grid(PID, XList, YList) -> append_stream(PID, eg_pdf_op:grid(XList, YList)).
 %% @doc This moves to X1,Y1 point as its start and then creates a cubic Bezier
 %% curve to X4,Y4 using the points in between as the control points. Bezier
 %% paths should be stroked/closed/filled with a separate command.
--spec bezier(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t(),
-             eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec bezier(pdf_server_pid(), xy(), xy(), xy(), xy()) -> ok.
 bezier(PID, {X1, Y1}, {X2, Y2}, {X3, Y3}, {X4, Y4}) ->
     append_stream(PID, eg_pdf_op:bezier({X1, Y1}, {X2, Y2}, {X3, Y3}, {X4, Y4})).
 
@@ -437,8 +436,7 @@ bezier(PID, X1, Y1, X2, Y2, X3, Y3, X4, Y4) ->
 %% @doc This takes the current point as its start and then creates a cubic
 %% Bezier curve to Point3 using the points in between as the control points.
 %% Bezier paths should be stroked/closed/filled with a separate command.
--spec bezier_c(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t(),
-               eg_pdf_op:xy_t()) -> ok.
+-spec bezier_c(pdf_server_pid(), xy(), xy(), xy()) -> ok.
 bezier_c(PID, Point1, Point2, Point3) ->
     append_stream(PID, eg_pdf_op:bezier_c(Point1, Point2, Point3)).
 
@@ -446,7 +444,7 @@ bezier_c(PID, Point1, Point2, Point3) ->
 %% @doc This takes the current point as its start and then creates a cubic
 %% Bezier curve to Point2 using the current point and Point1 as the control
 %% points. Bezier paths should be stroked/closed/filled with a separate command.
--spec bezier_v(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec bezier_v(pdf_server_pid(), xy(), xy()) -> ok.
 bezier_v(PID, Point1, Point2) ->
     append_stream(PID, eg_pdf_op:bezier_v(Point1, Point2)).
 
@@ -454,17 +452,17 @@ bezier_v(PID, Point1, Point2) ->
 %% @doc This takes the current point as its start and then creates a cubic
 %% Bezier curve to Point3 using the Point1 and Point3 as the control points.
 %% Bezier paths should be stroked/closed/filled with a separate command.
--spec bezier_y(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec bezier_y(pdf_server_pid(), xy(), xy()) -> ok.
 bezier_y(PID, Point1, Point3) ->
     append_stream(PID, eg_pdf_op:bezier_y(Point1, Point3)).
 
 
--spec circle(pdf_server_pid(), eg_pdf_op:xy_t(), number()) -> ok.
+-spec circle(pdf_server_pid(), xy(), number()) -> ok.
 circle(PID, {X, Y}, R) ->
     append_stream(PID, eg_pdf_op:circle({X, Y}, R)).
 
 
--spec ellipse(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec ellipse(pdf_server_pid(), xy(), xy()) -> ok.
 ellipse(PID, {X, Y}, {RX, RY})->
     append_stream(PID, eg_pdf_op:ellipse({X, Y}, {RX, RY})).
 
@@ -472,7 +470,7 @@ ellipse(PID, {X, Y}, {RX, RY})->
 %% @doc Stroke a rectangle area. If Stroke Type is not appended in arguments,
 %% explicit stroke command "path(StrokeType)" has to be executed.
 %% X, Y designate the lower left corner of the rectangle.
--spec rectangle(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t()) -> ok.
+-spec rectangle(pdf_server_pid(), xy(), xy()) -> ok.
 rectangle(PID, {X, Y}, {WX, WY}) ->
     rectangle(PID, X, Y, WX, WY).
 
@@ -480,8 +478,7 @@ rectangle(PID, {X, Y}, {WX, WY}) ->
 %% @doc Stroke a rectangle area. If Stroke Type is not appended in arguments,
 %% explicit stroke command "path(StrokeType)" has to be executed.
 %% X, Y designate the lower left corner of the rectangle.
--spec rectangle(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t(),
-                eg_pdf_op:path_t()) -> ok.
+-spec rectangle(pdf_server_pid(), xy(), xy(), eg_pdf_op:path_t()) -> ok.
 rectangle(PID, {X, Y}, {WX, WY}, StrokeType) ->
     rectangle(PID, X, Y, WX, WY, StrokeType).
 
@@ -503,14 +500,12 @@ rectangle(PID, X, Y, WX, WY, Option) ->
     append_stream(PID, eg_pdf_op:rectangle(X, Y, WX, WY, Option)).
 
 
--spec round_rect(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t(),
-                 number()) -> ok.
+-spec round_rect(pdf_server_pid(), xy(), xy(), number()) -> ok.
 round_rect(PID, Point, Size, Radius)->
     append_stream(PID, eg_pdf_op:round_rect(Point, Size, Radius)).
 
 
--spec round_top_rect(pdf_server_pid(), eg_pdf_op:xy_t(), eg_pdf_op:xy_t(),
-                     number()) -> ok.
+-spec round_top_rect(pdf_server_pid(), xy(), xy(), number()) -> ok.
 round_top_rect(PID, Point, Size, Radius)->
     append_stream(PID, eg_pdf_op:round_top_rect(Point, Size, Radius)).
 
@@ -684,7 +679,7 @@ image(PID, FilePath) ->
     end.
 
 
--spec image(pdf_server_pid(), file:name_all(), eg_pdf_op:xy_t()) -> ok | {error, _}.
+-spec image(pdf_server_pid(), file:name_all(), xy()) -> ok | {error, _}.
 image(PID, FilePath, Size) ->
     save_state(PID),
     case image1(PID, FilePath, Size) of
@@ -695,7 +690,7 @@ image(PID, FilePath, Size) ->
     end.
 
 
--spec image(pdf_server_pid(), file:name_all(), eg_pdf_op:xy_t(),
+-spec image(pdf_server_pid(), file:name_all(), xy(),
             img_size_t()) -> ok | {error, _}.
 image(PID, FilePath, {X, Y}, Size) ->
     save_state(PID),
