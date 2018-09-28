@@ -74,14 +74,18 @@
 
 -include("../include/eg.hrl").
 
+-export_type([richText/0, any_inline/0, word/0, space/0, nl/0, fixed_str/0,
+              opaque/0, milli_points/0, points/0]).
+
 -type richText() :: {richText, [any_inline()]}.
 -type any_inline() :: word() | opaque() | space() | nl() | fixed_str().
--type word() :: {word, Width :: thousendth_pt(), Face :: #face{}, string()}.
--type space() :: {space, Width :: thousendth_pt(), Face :: #face{}}.
+-type word() :: {word, Width :: milli_points(), Face :: #face{}, string()}.
+-type space() :: {space, Width :: milli_points(), Face :: #face{}}.
 -type nl() :: {nl, Face :: #face{}}.
--type fixed_str() :: {fixedStr, Width :: thousendth_pt(), _, _}.
--type opaque() :: {opaque, Width :: thousendth_pt(), _}.
--type thousendth_pt() :: integer().
+-type fixed_str() :: {fixedStr, Width :: milli_points(), _, _}.
+-type opaque() :: {opaque, Width :: milli_points(), _}.
+-type milli_points() :: integer().
+-type points() :: integer().
 
 
 %% -define(DEBUG, true).
@@ -320,7 +324,7 @@ color({nl,F})           -> F#face.color;
 color({fixedStr,_,F,_}) -> F#face.color.
 
 
--spec pointSize(any_inline()) -> thousendth_pt().
+-spec pointSize(any_inline()) -> milli_points().
 pointSize({word, _, F, _})     -> F#face.pointSize;
 pointSize({opaque, _, _F})     -> unknown;
 pointSize({space, _, F})       -> F#face.pointSize;

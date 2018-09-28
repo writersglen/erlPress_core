@@ -26,57 +26,47 @@
 %% Purpose: Line breaking algorithm
 %%==========================================================================
 
-
-
 -module(ep_line_break).
 
-%% TODO: Make sure we exit the split para recursion if the paragraph is too
-%% short
-
+%% TODO: Make sure we exit the split para recursion if the paragraph is too short
 %% para_break ONLY computes the break points
 
-% -export([break_richText/2,
-%	 break_richText/3
-%	]).
-
-
--export([ make_partitions/2
-        , break_richText/2
-        , break_richText/3 ]).
-
+-export([
+    break_richText/2,
+    break_richText/3,
+    make_partitions/2
+]).
 
 -include("../include/eg.hrl").
 %% -define(DEBUG, true).
 
 -ifdef(DEBUG).
-dbg_io(Str) -> dbg_io(Str,[]).
-dbg_io(Str,Args) ->
-    ok.
-display_lines(Lines) ->
-    lists:foreach(fun(I) ->
-		    dbg_io("~s~n",[r2s(I)])
-	    end, Lines).
-r2s(Toks) -> eg_richText:richText2str({richText, Toks}).
+    dbg_io(Str) -> dbg_io(Str, []).
+    dbg_io(Str, Args) ->
+        ok.
+    display_lines(Lines) ->
+        lists:foreach(fun(I) ->
+            dbg_io("~s~n", [r2s(I)])
+                      end, Lines).
+    r2s(Toks) -> eg_richText:richText2str({richText, Toks}).
 -else.
-%dbg_io(_) -> ok.
-dbg_io(_,_) -> ok.
+    %dbg_io(_) -> ok.
+    dbg_io(_, _) -> ok.
 -endif.
 
 -define(en_GB, eg_hyphen_rules_en_GB).
 
-%% ----------------------------------------------------------------------------
-%% @doc Default to english (Great Britain) style linebreaks
-%%      RT: RichText
-%%      TW: {Justification, Widths}
-%% @end------------------------------------------------------------------------
+-type line_split_t() :: justified | spill | left_justified | ragged
+    | right_justified | ragged_left | ragged_force_split | simple_hyphenate
+    | preformatted | centered.
 
+
+%% @doc Default to english (Great Britain) style linebreaks
+%%      RT: RichText, TW: {Justification, Widths}
 break_richText(RT, TW) ->
     break_richText(RT, TW, ?en_GB).
 
-%% ----------------------------------------------------------------------------
-%% @spec break_richText(RT::richText(),{Type, Widths}, Rules) ->  
-%%                      {Lines, Widths, Spill}
-%% @doc  Type    = justified | ragged | preformatted | centered | 
+%% @doc  Type    = justified | ragged | preformatted | centered |
 %%                 ragged_force_split | simple_hyphenate
 %%       Rules   = is a the module name of the eg_hyphen_rules_*.erl file to use
 %%                 to determine how to hyphenate, this argument is only used
@@ -102,273 +92,296 @@ break_richText(RT, TW) ->
 %%       if the initial split position guess is badly of e.g. a variable width
 %%       font used with the string "1111111111111...XXX", when the string and
 %%       __line width__ is very long.
-%% @end -----------------------------------------------------------------------
-
-
-break_richText({richText, T}, {justified, W}, Rules) -> 
+-spec break_richText(RT :: eg_richText:richText(), {line_split_t(), _Widths}, _Rules) ->
+    {_Lines, _Widths, _Spill}.
+break_richText({richText, T}, {justified, W}, Rules) ->
     text2para_widths(T, justified, W, Rules);
 
-%% next two phrases added by LRP
-
-break_richText({richText, T}, {spill, W}, Rules) -> 
+break_richText({richText, T}, {spill, W}, Rules) ->
+    %% added by LRP
     text2para_widths(T, spill, W, Rules);
 
-break_richText({richText, T}, {left_justified, W}, Rules) -> 
+break_richText({richText, T}, {left_justified, W}, Rules) ->
+    %% added by LRP
     text2para_widths(T, ragged, W, Rules);
 
-break_richText({richText, T}, {right_justified, W}, Rules) -> 
+break_richText({richText, T}, {right_justified, W}, Rules) ->
     text2para_widths(T, ragged, W, Rules);
 
-break_richText({richText, T}, {ragged, W}, Rules) -> 
+break_richText({richText, T}, {ragged, W}, Rules) ->
     text2para_widths(T, ragged, W, Rules);
 
-break_richText({richText, T}, {ragged_left, W}, Rules) -> 
+break_richText({richText, T}, {ragged_left, W}, Rules) ->
     text2para_widths(T, ragged, W, Rules);
 
-break_richText({richText, T}, {ragged_force_split, W}, Rules) -> 
+break_richText({richText, T}, {ragged_force_split, W}, Rules) ->
     text2para_widths(T, ragged_force_split, W, Rules);
 
-break_richText({richText, T}, {simple_hyphenate, W}, Rules) -> 
+break_richText({richText, T}, {simple_hyphenate, W}, Rules) ->
     text2para_widths(T, simple_hyphenate, W, Rules);
 
-break_richText({richText, T}, {preformatted, W}, _) -> 
+break_richText({richText, T}, {preformatted, W}, _) ->
     break_on_nl(T, W, []);
 
-break_richText({richText, T}, {centered, W}, _) -> 
+break_richText({richText, T}, {centered, W}, _) ->
     break_on_nl(T, W, []).
 
 
-%% ParaShape = ragged | ragged_force_split | justified | simple_hyphenate
+%% @doc ParaShape = ragged | ragged_force_split | justified | simple_hyphenate
+%% @private
 text2para_widths(Txt, ParaShape, Widths, Rules) ->
     Txt1 = replace_nls_with_spaces(Txt),
     %% debug("text2", Txt1),
     case ParaShape of
-	ragged             -> text2para_ragged(Txt1, Widths, [], ParaShape);
-	ragged_force_split -> text2para_ragged(Txt1, Widths, [], ParaShape);
-	simple_hyphenate   -> text2para_ragged(Txt1, Widths, [], ParaShape);
-	preformated        -> text2para_ragged(Txt1, Widths, [], ParaShape);
-	justified          -> justify(Txt1, Widths, Rules)
+        ragged             -> text2para_ragged(Txt1, Widths, [], ParaShape);
+        ragged_force_split -> text2para_ragged(Txt1, Widths, [], ParaShape);
+        simple_hyphenate   -> text2para_ragged(Txt1, Widths, [], ParaShape);
+        preformated        -> text2para_ragged(Txt1, Widths, [], ParaShape);
+        justified          -> justify(Txt1, Widths, Rules)
     end.
 
+
+%% @private
+-spec replace_nls_with_spaces(list()) -> list().
 replace_nls_with_spaces(L) ->
-    lists:map(fun(I) ->
-		      case eg_richText:is_nl(I) of
-			  true  -> eg_richText:clone_space(I);
-			  false -> I
-		      end
-	      end, L).
+    lists:map(
+        fun(I) ->
+            case eg_richText:is_nl(I) of
+                true -> eg_richText:clone_space(I);
+                false -> I
+            end
+        end, L).
 
 
-%% Toks = inLine()
-%%XXX only occures with initial Widths = [] ???
-text2para_ragged(Toks, [], L, _SplitType) -> 
+%% @doc Toks = inLine()
+%% XXX only occures with initial Widths = [] ???
+%% @private
+text2para_ragged(Toks, [], L, _SplitType) ->
     {finalise_ragged(L), [], Toks};
+
 text2para_ragged([], Widths, L, _SplitType) ->
     {finalise_ragged(L), Widths, []};
 
-%% reuse last Widths value if there are fewer than the number of lines created
 text2para_ragged(Lines, [W], L, SplitType) ->
+    %% reuse last Widths value if there are fewer than the number of lines created
     {Line, Rest} = first_break_line(Lines, W, SplitType),
-    text2para_ragged(Rest, [W], [Line|L], SplitType);
-text2para_ragged(Lines, [H|T], L, SplitType) ->
-    {Line, Rest} = first_break_line(Lines, H, SplitType),
-    text2para_ragged(Rest, T, [Line|L], SplitType).
+    text2para_ragged(Rest, [W], [Line | L], SplitType);
 
-%% build return lines of richText()
+text2para_ragged(Lines, [H | T], L, SplitType) ->
+    {Line, Rest} = first_break_line(Lines, H, SplitType),
+    text2para_ragged(Rest, T, [Line | L], SplitType).
+
+
+%% @doc build return lines of richText()
+-spec finalise_ragged(list()) -> list().
+%% @private
 finalise_ragged(Final) ->
     lists:map(fun({_Cost,_Len,Line}) -> {richText, Line} end, 
-	      lists:reverse(Final)).
+          lists:reverse(Final)).
 
 
-%% get the first line of length Len from Toks
+%% @doc get the first line of length Len from Toks
 %% return: {Line::inLine(), RestToks}
+%% @private
 first_break_line(Toks, Len, SplitType) ->
     Toks1 = remove_leading_spaces(Toks),
     %% eg_pdf:get_string_width(...) calcs use trunc(Val / 1000) to get length in
     %% pt, so a line in 1000th pt is shorter than Len if < (Len+1)*1000
     first_break_line(Toks1, 0, (Len+1)*1000, [], SplitType).
 
-%% Len = 1000th pt
-first_break_line(All=[H|T], Sum, Len, L, SplitType) ->
+
+%% @doc Len = 1000th pt
+%% @private
+first_break_line(All = [H | T], Sum, Len, L, SplitType) ->
     Sum1 = Sum + eg_richText:width(H),
     case Sum1 < Len of
-	true -> 
-	    first_break_line(T, Sum1, Len, [H|L], SplitType);
-	%% a single word >= Len
-	false when L == [] ->
-	    case SplitType of
-		%% word to big - allowed to leak outside aloted space
-		ragged ->
-		    %%XXX first rm is redundant ???
-		    {{Sum1, Len, remove_leading_spaces([H])}, 
-		     remove_leading_spaces(T)};
-		%% force split word to confirm to Len
-		ragged_force_split ->
-		    {HeadTok, RTok} = force_split(H, Len, SplitType),
-		    Sum2 = Sum + eg_richText:width(HeadTok),
-		    Line = {Sum2 ,Len, [HeadTok]},
-		    RestToks = RTok ++ T,
-		    {Line, RestToks};
-		%% force split word to confirm to Len, but add hyphen
-		simple_hyphenate ->
-		    {HeadTok, RTok} = force_split(H, Len, SplitType),
-		    Sum2 = Sum + eg_richText:width(HeadTok),
-		    Line = {Sum2 ,Len, [HeadTok]},
-		    RestToks = RTok ++ T,
-		    {Line, RestToks}
-	    end;
-	false ->
-	    {{Sum, Len, lists:reverse(remove_leading_spaces(L))}, 
-	     remove_leading_spaces(All)}
+        true ->
+            first_break_line(T, Sum1, Len, [H | L], SplitType);
+        %% a single word >= Len
+        false when L == [] ->
+            case SplitType of
+                %% word to big - allowed to leak outside aloted space
+                ragged ->
+                    %%XXX first rm is redundant ???
+                    {{Sum1, Len, remove_leading_spaces([H])},
+                     remove_leading_spaces(T)};
+                %% force split word to confirm to Len
+                ragged_force_split ->
+                    {HeadTok, RTok} = force_split(H, Len, SplitType),
+                    Sum2 = Sum + eg_richText:width(HeadTok),
+                    Line = {Sum2, Len, [HeadTok]},
+                    RestToks = RTok ++ T,
+                    {Line, RestToks};
+                %% force split word to confirm to Len, but add hyphen
+                simple_hyphenate ->
+                    {HeadTok, RTok} = force_split(H, Len, SplitType),
+                    Sum2 = Sum + eg_richText:width(HeadTok),
+                    Line = {Sum2, Len, [HeadTok]},
+                    RestToks = RTok ++ T,
+                    {Line, RestToks}
+            end;
+        false ->
+            {{Sum, Len, lists:reverse(remove_leading_spaces(L))},
+             remove_leading_spaces(All)}
     end;
+
 first_break_line([], Sum, Len, L, _SplitType) ->
     {{Sum, Len, lists:reverse(remove_leading_spaces(L))}, []}.
 
 
-%% ----------------------------------------------------------------------------
-%% @spec  force_split(Tok::inline(), Len::integer(), 
-%%                    SplitType::ragged_force_split | simple_hyphenate) -> 
-%%        {HeadTok, RestTok::[inline()] | []}
 %% @doc   Tok = word() as space() and nl() have already been removed
 %%        Len = 1000th pt
-%% @end------------------------------------------------------------------------
-
+%% @private
+-spec force_split(Tok :: eg_richText:any_inline(), Len :: integer(),
+                  SplitType :: line_split_t())
+                 -> {_HeadTok, RestTok :: [eg_richText:any_inline()] | []}
 force_split(Tok, Len, SplitType) ->
     {word, Width, Face, Str} = Tok,
     StrLen = length(Str),
     GLen = guess_head_length(StrLen, Len, Width),
-    #face{font = Font, pointSize = PointSize} = Face, 
-    {HLen,HyphenStr} = 
-	case SplitType of
-	    ragged_force_split -> 
-		{force_split(Str, StrLen, Len, GLen, Font, PointSize), ""};
-	    simple_hyphenate ->
-		{hyphen_split(Str, StrLen, Len, GLen, Font, PointSize), "-"}
-	end,
+    #face{font = Font, pointSize = PointSize} = Face,
+    {HLen, HyphenStr} =
+    case SplitType of
+        ragged_force_split ->
+            {force_split(Str, StrLen, Len, GLen, Font, PointSize), ""};
+        simple_hyphenate ->
+            {hyphen_split(Str, StrLen, Len, GLen, Font, PointSize), "-"}
+    end,
 
     {HStr0, RStr} = lists:split(HLen, Str),
     HStr = HStr0 ++ HyphenStr, % add hyphen if used
     HTok = {word, eg_richText:width_of(Font, PointSize, HStr), Face, HStr},
     RTok = case RStr of
-	       [] -> []; % this occures e.g. when Str is a to big letter
-	       _ ->
-		   [{word, eg_richText:width_of(Font, PointSize, RStr), 
-		     Face, RStr}]
-	   end,
+               [] -> []; % this occures e.g. when Str is a to big letter
+               _ ->
+                   [{word, eg_richText:width_of(Font, PointSize, RStr),
+                     Face, RStr}]
+           end,
     {HTok, RTok}.
 
-%% initial guess (length in no. of chars) - how many chars in the front
+
+%% @doc initial guess (length in no. of chars) - how many chars in the front
 %% of Str can fit on the row of length Len, with the font and font size
 %% as set in Face ?
+%% @private
 guess_head_length(StrLen, Len, Width) ->
     Min = 0,
     Max = StrLen,
     Guess = trunc(StrLen * (Len / safe_width(Width))),
-    
+
     %% don't start with the Min or Max values as xxx_split(...) will then 
     %% imidiatly stop in a base case
-    if Guess >= Max -> 
-	    Max - 1;
-       Guess =< Min ->
-	    Min + 1;
-       true ->
-	    Guess
+    if Guess >= Max ->
+        Max - 1;
+        Guess =< Min ->
+            Min + 1;
+        true ->
+            Guess
     end.
 
-%% 
+%
+%% @private
 safe_width(Val) ->
-    if Val >= 1 ->
-	    Val;
-       %% text with point size close to 0 (-> Val = 0) or negative
-       true ->
-	    1 %XXX throw exception ???
-    end.
+    erlang:max(Val, 1).
+%%    if Val >= 1 -> Val; %% text with point size close to 0 (-> Val = 0) or negative
+%%       true -> 1 %XXX throw exception ???
+%%    end.
 
 
-%% return: integer() >= 1, number of initial Str letters to use 
+%% @doc return: integer() >= 1, number of initial Str letters to use
 %% split even if a single letter is > Len (doesn't fit in Len)
 force_split(_Str, _StrLen, _Len, GLen, _Font, _PointSize) when GLen =< 0 ->
     1;
+
 force_split(_Str, StrLen, _Len, GLen, _Font, _PointSize) when GLen >= StrLen ->
     StrLen;
+
 force_split(Str, StrLen, Len, GLen, Font, PointSize) ->
     case fits(Str, Len, GLen, Font, PointSize) of
-	false -> % to long
-	    force_split(Str, StrLen, Len, GLen-1, Font, PointSize);
-	
-	true -> % fits
-	    case fits(Str, Len, GLen+1, Font, PointSize) of
-		true ->
-		    force_split(Str, StrLen, Len, GLen+1, Font, PointSize);
-		false ->
-		    GLen
-	    end
+        false -> % to long
+            force_split(Str, StrLen, Len, GLen - 1, Font, PointSize);
+
+        true -> % fits
+            case fits(Str, Len, GLen + 1, Font, PointSize) of
+                true ->
+                    force_split(Str, StrLen, Len, GLen + 1, Font, PointSize);
+                false ->
+                    GLen
+            end
     end.
 
-%% return true if the GLen first chars in Str fit in Len 
+
+%% @doc return true if the GLen first chars in Str fit in Len
 %% Len = 1000th pt
 fits(Str, Len, GLen, Font, PointSize) ->
     HStr = lists:sublist(Str, GLen),
 
-%   NOTE: Caution -- Can't find misc:ceiling/1 in earlier versions of erlguten,
-%         but did find a version of celiing eg_pdf_image which I"ve
-%         moved to ep_utils
-%    HWLen = misc:ceiling(eg_richText:width_of(Font, PointSize, HStr)),
+    %%NOTE: Caution -- Can't find misc:ceiling/1 in earlier versions of erlguten,
+    %%    but did find a version of celiing eg_pdf_image which I"ve
+    %%    moved to ep_utils
+    %%    HWLen = misc:ceiling(eg_richText:width_of(Font, PointSize, HStr)),
 
     HWLen = ep_utils:ceiling(eg_richText:width_of(Font, PointSize, HStr)),
     HWLen =< Len.
 
 
-%% return: integer() >= 1, number of initial Str letters to use 
+%% @doc return: integer() >= 1, number of initial Str letters to use
 %% split even if a single letter (+ hyphen) is > Len (doesn't fit in Len)
+%% @private
 hyphen_split(_Str, _StrLen, _Len, GLen, _Font, _PointSize) when GLen =< 0 ->
     1;
+
 hyphen_split(_Str, StrLen, _Len, GLen, _Font, _PointSize) when GLen >= StrLen ->
     StrLen;
+
 hyphen_split(Str, StrLen, Len, GLen, Font, PointSize) ->
     case fits(Str ++ "-", Len, GLen, Font, PointSize) of
-	false -> % to long
-	    hyphen_split(Str, StrLen, Len, GLen-1, Font, PointSize);
-	
-	true -> % fits
-	    case fits(Str ++ "-", Len, GLen+1, Font, PointSize) of
-		true ->
-		    hyphen_split(Str, StrLen, Len, GLen+1, Font, PointSize);
-		false ->
-		    GLen
-	    end
+        false -> % to long
+            hyphen_split(Str, StrLen, Len, GLen - 1, Font, PointSize);
+
+        true -> % fits
+            case fits(Str ++ "-", Len, GLen + 1, Font, PointSize) of
+                true ->
+                    hyphen_split(Str, StrLen, Len, GLen + 1, Font, PointSize);
+                false ->
+                    GLen
+            end
     end.
 
-%% ----------------------------------------------------------------------------
 
-remove_leading_spaces(X=[H|T]) ->
+%% @private
+remove_leading_spaces(X = [H | T]) ->
     case eg_richText:is_space(H) of
-	true  -> remove_leading_spaces(T);
-	false -> X
+        true -> remove_leading_spaces(T);
+        false -> X
     end;
+
 remove_leading_spaces([]) -> [].
 
 
-%% break_on_nl
-break_on_nl(Toks, [], L)     -> {lists:reverse(L), [], {richText, Toks}};
-break_on_nl([], T, L)        -> 
-   {lists:reverse(L), T, []}; break_on_nl(Toks, [H|T], L)  ->
+%% @doc break_on_nl
+%% @private
+break_on_nl(Toks, [], L) -> {lists:reverse(L), [], {richText, Toks}};
+
+break_on_nl([], T, L) ->
+    {lists:reverse(L), T, []}; break_on_nl(Toks, [H | T], L) ->
     T1 = if T == [] -> [H];
-            true    -> T
+             true -> T
          end,
     {Line, Toks1} = collect_line(Toks, []),
-    break_on_nl(Toks1, T1, [{richText, Line}|L]).
+    break_on_nl(Toks1, T1, [{richText, Line} | L]).
 
-collect_line([H|T], L) ->
+
+%% @private
+collect_line([H | T], L) ->
     case eg_richText:is_nl(H) of
-	true  -> {lists:reverse(L), T};
-	false -> collect_line(T, [H|L])
+        true -> {lists:reverse(L), T};
+        false -> collect_line(T, [H | L])
     end;
+
 collect_line([], L) ->
     {lists:reverse(L), []}.
 
-
-%%------------------------------------------------------------------------
 
 %% OLD AND BROKEN doc ?! (see modern version further down)
 
@@ -392,92 +405,105 @@ collect_line([], L) ->
 
 %% Iternate [{Cost,Text,Widths,Broken}]
 
-%% ----------------------------------------------------------------------------
-%% @spec  justify(Text::[word()|space()], Widths::[pt()], Rules) -> 
-%%        impossible | {Lines, Widths, {richText, Spill}}
 %% @doc   Lines  =
 %%        Widths =
 %%        Spill  = 
 %%        Rules  = is a the module name of the eg_hyphen_rules_*.erl file to use
 %%                 to determine how to hyphenate 
-%% 
-%% XXX same return val as break_richText(...)    
-%% @end------------------------------------------------------------------------
-
-
+%% XXX same return val as break_richText(...)
+-spec justify(Text :: [eg_richText:word()|eg_richText:space()],
+              Widths :: [eg_richText:points()], Rules) ->
+                 impossible | {Lines, Widths, {richText, Spill}}.
+%% @private
 justify(Text, Widths, Rules) ->
     %% dbg_io("justify Text=~p widths=~p~n",[Text,Widths]),
-
-    case iterate([{0,Text,Widths,[],Rules}], none, 20) of
-	{_Cost, Lines, Widths1, Spill, Rules} ->
-	    Lines1 = lists:map(fun(I) -> {richText, I} end, Lines),
-	    {Lines1, Widths1, {richText, Spill}};
-	none ->
-	    impossible
+    case iterate([{0, Text, Widths, [], Rules}], none, 20) of
+        {_Cost, Lines, Widths1, Spill, Rules} ->
+            Lines1 = lists:map(fun(I) -> {richText, I} end, Lines),
+            {Lines1, Widths1, {richText, Spill}};
+        none ->
+            impossible
     end.
 
+
+%% @private
 iterate([], Best, _Max) ->
     Best;
+
 iterate(L, Best, Max) ->
     L1 = next_generation(L),
-    L2 = lists:sort(fun({I,_,_,_,_}, {J,_,_,_,_}) -> I < J end, L1), 
+    L2 = lists:sort(fun({I, _, _, _, _}, {J, _, _, _, _}) -> I < J end, L1),
     L3 = trim(Max, L2),
     {Best1, L4} = finalise(L3, Best, []),
     iterate(L4, Best1, Max).
 
-next_generation([])    -> [];
-next_generation([H|T]) -> next(H) ++ next_generation(T).
 
-%% next({Cost, RichText, Widths*, Before, Rules})
+%% @private
+next_generation([])      -> [];
+next_generation([H | T]) -> next(H) ++ next_generation(T).
 
-next({Cost, Text, [H|T], Before, Rules}) ->    
+
+%% @doc next({Cost, RichText, Widths*, Before, Rules})
+next({Cost, Text, [H | T], Before, Rules}) ->
     L = break_line(Text, H, Rules),
     T1 = if T == [] ->
-                 [H];
-            true ->
+        [H];
+             true ->
                  T
          end,
-    lists:map(fun({Cost1, {Line, Text1}}) ->
-		      {Cost+Cost1*Cost1, Text1, T1, [Line|Before], Rules}
-	      end, L).
+    lists:map(
+        fun({Cost1, {Line, Text1}}) ->
+            {Cost + Cost1 * Cost1, Text1, T1, [Line | Before], Rules}
+        end, L).
 
-%% finalising an item means we move it out of the iterator
+%% @doc finalising an item means we move it out of the iterator
 %% into the final value
-
 %% the first two cases are when we terminate normally
-finalise([{Cost,More,[],Partition,Rules}|T], none, L) ->
+%% @private
+finalise([{Cost, More, [], Partition, Rules} | T], none, L) ->
     finalise(T, {Cost, lists:reverse(Partition), [], More, Rules}, L);
-finalise([{Cost,More,[],Partition,Rules}|T], Best={C,_,_,_,_}, L) ->
-    if 
-	Cost < C ->
-	    finalise(T, {Cost, lists:reverse(Partition),[], More, Rules}, L);
-	true ->
-	    finalise(T, Best, L)
+
+finalise([{Cost, More, [], Partition, Rules} | T], Best = {C, _, _, _, _}, L) ->
+    if
+        Cost < C ->
+            finalise(T, {Cost, lists:reverse(Partition), [], More, Rules}, L);
+        true ->
+            finalise(T, Best, L)
     end;
-%% these two cases are when we manage to fit the paragraph
-finalise([{Cost,[],Ws,Partition,Rules}|T], none, L) ->
+
+finalise([{Cost, [], Ws, Partition, Rules} | T], none, L) ->
+    %% when we manage to fit the paragraph
     finalise(T, {Cost, lists:reverse(Partition), Ws, [], Rules}, L);
-finalise([{Cost,[],Ws,Partition,Rules}|T], Best={C,_,_,_,_}, L) ->
-    if 
-	Cost < C ->
-	    finalise(T, {Cost, lists:reverse(Partition),Ws,[],Rules}, L);
-	true ->
-	    finalise(T, Best, L)
+
+finalise([{Cost, [], Ws, Partition, Rules} | T], Best = {C, _, _, _, _}, L) ->
+    %% when we manage to fit the paragraph
+    if
+        Cost < C ->
+            finalise(T, {Cost, lists:reverse(Partition), Ws, [], Rules}, L);
+        true ->
+            finalise(T, Best, L)
     end;
-finalise([H|T], Best, L) ->
-    finalise(T, Best, [H|L]);
+
+finalise([H | T], Best, L) ->
+    finalise(T, Best, [H | L]);
+
 finalise([], Best, L) ->
     {Best, L}.
 
+
+%% @private
 trim(0, _L)      -> [];
-trim(N, [H | T]) -> [H | trim(N-1, T)];
+trim(N, [H | T]) -> [H | trim(N - 1, T)];
 trim(_N, [])     -> [].
 
 %% ----------------------------------------------------------------------------
 
--record(q,{minSpaceStretch,maxSpaceStretch}).
+-record(q, {
+    minSpaceStretch,
+    maxSpaceStretch
+}).
 
-%% break_line(Toks, Len, Rules) -> [{Cost,Before,After}] sorted by Cost
+%% @doc break_line(Toks, Len, Rules) -> [{Cost,Before,After}] sorted by Cost
 %%  Toks  = Before = After = [inline()]
 %%  Len   = width of paragraph in points
 %%  Rules = is a the module name of the eg_hyphen_rules_*.erl file to use
@@ -491,21 +517,23 @@ trim(_N, [])     -> [].
 %%    1) change all NL's into spaces
 %%    2) compute the first before such that length(Before--Spaces) > Len
 %%    3) Iterate 
-
+%% @private
 break_line(Toks, Len, Rules) ->
     %% just make a quick check to see if the entire line fits
     L = case eg_richText:lineWidth(Toks) of
-	    K when K < Len*1000 ->
-		[{0,{Toks,[]}}];
-	    _ ->
-		Q = #q{maxSpaceStretch=150, minSpaceStretch=70},
-		break_line(Toks, Len, Q, Rules)
-	end,
+            K when K < Len * 1000 ->
+                [{0, {Toks, []}}];
+            _ ->
+                Q = #q{maxSpaceStretch = 150, minSpaceStretch = 70},
+                break_line(Toks, Len, Q, Rules)
+        end,
     %% dbg_io("break_line|~s|~n=~p~n",
     %% [r2s(Toks),lists:map(fun({Cost, {L1,L2}}) -> 
     %% {Cost, r2s(L1),r2s(L2)} end, L)]),
     L.
 
+
+%% @private
 break_line(Toks, Len, Q, Rules) ->
     %% dbg_io("break_line Len=~p measure=~p PointSize=~p~n",
     %% [Len,Measure,PointSize]),
@@ -515,60 +543,67 @@ break_line(Toks, Len, Q, Rules) ->
     L = break_before(lists:reverse(Before), After, Len, Q, [], Rules),
     filter_candidates(L, Len, Q).
 
-%% worse_break_line(Toks, Len) -> {Before, After}
+%% @doc worse_break_line(Toks, Len) -> {Before, After}
 %%   Find the worse possible break of a line when the
 %%   line has so much data that the size of all the characters excluding the
 %%   spaces is greater than the required length.
-
-%%   
+%%
 %% Split Toks into {Before, After} when the length of
 %% all the data in Before (excluding spaces) is greater than Len.
 %% split *only* at a space. After splitting the After will begin with
 %% a space (or be [])
+%% @private
+worse_break_line(Toks, Len) -> worse_break_line(Toks, Len * 1000, []).
 
-worse_break_line(Toks, Len) -> worse_break_line(Toks, Len*1000, []).
 
-worse_break_line(All=[H|T], Len, L) ->
+%% @private
+worse_break_line(All = [H | T], Len, L) ->
     %% len is the length of the line in milli points
     case eg_richText:is_space(H) of
-	true ->
-	    case eg_richText:widthExcludingSpaces(L) of
-		Len1 when Len1 > Len ->
-		    {lists:reverse(L), All};
-		_ ->
-		    worse_break_line(T, Len, [H|L])
-	    end;
-	false ->
-	    worse_break_line(T, Len, [H|L])
+        true ->
+            case eg_richText:widthExcludingSpaces(L) of
+                Len1 when Len1 > Len ->
+                    {lists:reverse(L), All};
+                _ ->
+                    worse_break_line(T, Len, [H | L])
+            end;
+        false ->
+            worse_break_line(T, Len, [H | L])
     end;
+
 worse_break_line([], _Len, L) ->
     {lists:reverse(L), []}.
 
+
+%% @private
 filter_candidates(Partitions, Len, Q) ->
-    P1 = lists:map(fun({Before, []}) ->
-			   %% If After is zero and the line fits then it is a 
-			   %% perfect fit
-			   case eg_richText:lineWidth(Before) of
-			       K when K < Len*1000 ->
-				   {0, {Before,[]}};
-			       _ ->
-				   {badness(Before, Len, Q), {Before, []}}
-			   end;
-		      ({Before, After}) ->
-			   {badness(Before, Len, Q), {Before, After}};
-		      (X) ->
-			   dbg_io("uugh=~p~n",[X]),
-			   aaaa
-		   end, Partitions),
+    P1 = lists:map(
+        fun({Before, []}) ->
+            %% If After is zero and the line fits then it is a
+            %% perfect fit
+            case eg_richText:lineWidth(Before) of
+                K when K < Len * 1000 ->
+                    {0, {Before, []}};
+                _ ->
+                    {badness(Before, Len, Q), {Before, []}}
+            end;
+           ({Before, After}) ->
+               {badness(Before, Len, Q), {Before, After}};
+           (X) ->
+               dbg_io("uugh=~p~n", [X]),
+               aaaa
+        end, Partitions),
     %% dbg_io("P1=~p~n",[lists:map(fun({C,{I,J}}) -> 
     %% {C,r2s(I),r2s(J)} end, P1)]),
-    P2 = lists:filter(fun({-1000000, _}) -> false;
-			 ({_,{[],_}}) -> false;
-			 (_) -> true end, P1),
+    P2 = lists:filter(
+        fun({-1000000, _}) -> false;
+           ({_, {[], _}}) -> false;
+           (_) -> true
+        end, P1),
     %% dbg_io("P2=~p~n",[P2]),
-    lists:sort(fun({I,_},{J,_}) -> I*I < J*J end, P2).
+    lists:sort(fun({I, _}, {J, _}) -> I * I < J * J end, P2).
 
-%% break_before(Before, After, Len, Q, .. , Rules)
+%% @doc break_before(Before, After, Len, Q, .. , Rules)
 %%   This breaks up the before sequence by moving objects onto the
 %%   after sequence. This makes the line gapper and gappier.
 %%   The before segment has the words in reverse order
@@ -608,131 +643,144 @@ filter_candidates(Partitions, Len, Q) ->
 %% There are two invarients in this loop
 %% 1) Before does not begin with a space
 %% 2) After  does begin with a space
-
+%% @private
 break_before([], After, _Len, _Q, L, _) ->
-    check_after_invarient(After),
+    check_after_invariant(After),
     L;
+
 break_before(Before, After, Len, Q, L0, Rules) ->
-    check_before_invarient(Before),
-    check_after_invarient(After),
+    check_before_invariant(Before),
+    check_after_invariant(After),
     %% Before is in reverse order
     %% dbg_io("Break_before:~s~n",[r2s(Before)]),
     B = badness(Before, Len, Q),
     %% dbg_io("Badness=~p~n", [B]),
     case B of
-	%% stop when the line is very loose
-	Finite when Finite > 40, length(L0) > 10 ->
-	    L0;
-	_ ->
-	    %% Given Bn.....B0
-	    %% Split into two segments
-	    %% {Sement, S2} such that Segment contains no blanks
-	    %% then {Bn.....S, ... B0}
-	    {Segment, Before1} = extract_segment(Before, []),
-	    %% Segment is the list of things that can be
-	    %% shifted into the After space
-	    %% Segment is in normal order
-	    %% Before1 *begins* with a space or is []
-	    %% dbg_io("Segment=~p~n",[Segment]),
-	    Ps = make_partitions(Segment, Rules),
-	    %% dbg_io("partitions=~p~n",[Ps]),
-	    %% Ps = [{Bs,As}]
-	    %% Now the final {B,A} pairs
-	    %% are formed from
-	    %% {Bs++Before1, As++After}
-	    %% 
-	    L1 = lists:map(fun({Bs,As}) ->
-				   {lists:reverse(lists:reverse(Bs)++Before1), 
-				    As++After}
-			   end, Ps),
-	    %% After begun with a space which we remove in
-	    %% the final list
-	    L2 = [{lists:reverse(Before), 
-		   remove_leading_spaces(After)}|L1] ++ L0,
-	    After1 = lists:reverse(Segment, After),
-	    case Before1 of
-		[] -> L2;
-		[Space|Before2] ->
-		    break_before(Before2, [Space|After1], Len, Q, L2, Rules)
-	    end
+        %% stop when the line is very loose
+        Finite when Finite > 40, length(L0) > 10 ->
+            L0;
+        _ ->
+            %% Given Bn.....B0
+            %% Split into two segments
+            %% {Sement, S2} such that Segment contains no blanks
+            %% then {Bn.....S, ... B0}
+            {Segment, Before1} = extract_segment(Before, []),
+            %% Segment is the list of things that can be
+            %% shifted into the After space
+            %% Segment is in normal order
+            %% Before1 *begins* with a space or is []
+            %% dbg_io("Segment=~p~n",[Segment]),
+            Ps = make_partitions(Segment, Rules),
+            %% dbg_io("partitions=~p~n",[Ps]),
+            %% Ps = [{Bs,As}]
+            %% Now the final {B,A} pairs
+            %% are formed from
+            %% {Bs++Before1, As++After}
+            %%
+            L1 = lists:map(fun({Bs, As}) ->
+                {lists:reverse(lists:reverse(Bs) ++ Before1),
+                 As ++ After}
+                           end, Ps),
+            %% After begun with a space which we remove in
+            %% the final list
+            L2 = [{lists:reverse(Before),
+                   remove_leading_spaces(After)} | L1] ++ L0,
+            After1 = lists:reverse(Segment, After),
+            case Before1 of
+                [] -> L2;
+                [Space | Before2] ->
+                    break_before(Before2, [Space | After1], Len, Q, L2, Rules)
+            end
     end.
 
-check_before_invarient(Before=[H|_]) ->
+%% @private
+check_before_invariant(Before = [H| _]) ->
     case eg_richText:is_space(H) of
-	true ->
-	    dbg_io("Invarient broken before begines with a space:"
-		      "~p~n",[Before]),
+    true ->
+        dbg_io("Invarient broken before begines with a space:"
+              "~p~n",[Before]),
             ok;
-	false ->
-	    true
+    false ->
+        true
     end.
 
-check_after_invarient([]) -> true;
-check_after_invarient(After=[H|_]) ->
+
+%% @private
+check_after_invariant([]) -> true;
+
+check_after_invariant(After = [H| _]) ->
     case eg_richText:is_space(H) of
-	true -> true;
-	false -> dbg_io("invarient broken after begins:~p~n",[After])
+    true -> true;
+    false -> dbg_io("invarient broken after begins:~p~n",[After])
     end.	    
     
 %% ----------------------------------------------------------------------------
-%% make_partitions(M, Rules) -> [{Before, After}]
+%% @doc make_partitions(M, Rules) -> [{Before, After}]
 %%    M is a list of inlines that does not contain a space or a newline
 %%    it must be split by hyphenating all words in M in all possible
 %%    ways. M is in normal order.
 %%    Rules is a the module name of the eg_hyphen_rules_*.erl file to use
 %%    to determine how to hyphenate
-
 make_partitions(M, Rules) ->  make_partitions(M, Rules, [], []).
 
-make_partitions([H|T], Rules, Before, Final) ->
+
+%% @private
+make_partitions([H | T], Rules, Before, Final) ->
     case eg_richText:is_word(H) of
-	true ->
-	    Ps = all_hyphenations(H, Rules),
-	    L1 = lists:map(fun({X1,X2}) ->
-				   {lists:reverse([X1|Before]), [X2|T]}
-			   end, Ps),
-	    make_partitions(T, Rules, [H|Before], L1 ++ Final);
-	false ->
-	    make_partitions(T, Rules, [H|Before], Final)
+        true ->
+            Ps = all_hyphenations(H, Rules),
+            L1 = lists:map(fun({X1, X2}) ->
+                {lists:reverse([X1 | Before]), [X2 | T]}
+                           end, Ps),
+            make_partitions(T, Rules, [H | Before], L1 ++ Final);
+        false ->
+            make_partitions(T, Rules, [H | Before], Final)
     end;
+
 make_partitions([], _Rules, _, Final) ->
     Final.
 
-%% extract segment x y S a b c -> {[x,y], [S,a,b,c]}
- 
-extract_segment(A=[H|T], L) ->
+
+%% @doc extract segment x y S a b c -> {[x,y], [S,a,b,c]}
+%% @private
+extract_segment(A = [H | T], L) ->
     case eg_richText:is_space(H) of
-	true ->
-	    {lists:reverse(L), A};
-	false ->
-	    extract_segment(T, [H|L])
+        true ->
+            {lists:reverse(L), A};
+        false ->
+            extract_segment(T, [H | L])
     end;
+
 extract_segment([], L) ->
     {lists:reverse(L), []}.
 
-%% all_hyphenations(Word, Rules) -> [{Word1, Word2}].
-
+%% @doc all_hyphenations(Word, Rules) -> [{Word1, Word2}].
+%% @private
 all_hyphenations(Word, Rules) ->
     %% extract the string from the word
     Str = eg_richText:string(Word),
     {Str1, Tail} = remote_trailing_stuff(Str, []),
     Ps = eg_hyphenate:partitions(Str1, Rules),
-    lists:map(fun({A,B}) ->
-		      StrA = A ++ "-",
-		      StrB = B ++ Tail,
-		      Word1 = eg_richText:clone_word(Word, StrA),
-		      Word2 = eg_richText:clone_word(Word, StrB),
-		      {Word1, Word2}
-	      end, Ps).
+    lists:map(
+        fun({A, B}) ->
+            StrA = A ++ "-",
+            StrB = B ++ Tail,
+            Word1 = eg_richText:clone_word(Word, StrA),
+            Word2 = eg_richText:clone_word(Word, StrB),
+            {Word1, Word2}
+        end, Ps).
 
-remote_trailing_stuff([H|T], L) when H >= $a, H =< $z ->
-    remote_trailing_stuff(T, [H|L]);
-remote_trailing_stuff([H|T], L) when H >= $A, H =< $Z ->
-    remote_trailing_stuff(T, [H|L]);
+
+%% @private
+remote_trailing_stuff([H | T], L) when H >= $a, H =< $z ->
+    remote_trailing_stuff(T, [H | L]);
+remote_trailing_stuff([H | T], L) when H >= $A, H =< $Z ->
+    remote_trailing_stuff(T, [H | L]);
 remote_trailing_stuff(X, L) ->
     {lists:reverse(L), X}.
 
-%% The badness of the line
+
+%% @doc The badness of the line
 %% ActualWidth = size of line with zero spaces
 %% Len         = Required length of the line
 %% NBlanks     = #places to distribute the blanks 
@@ -740,55 +788,56 @@ remote_trailing_stuff(X, L) ->
 %% To compute the badness of a line
 %%   we compute the actual length (including blanks)
 %%   and the size of the blanks themselves
-
-
+%% @private
 badness(Line, Len0, Q) ->
     %% dbg_io("Badness of:~s~n",[r2s(Line)]),
     %% DataWidth = width of line (not including blanks)
-    DataWidth= eg_richText:widthExcludingSpaces(Line),
+    DataWidth = eg_richText:widthExcludingSpaces(Line),
     Len = Len0 * 1000,
     %% dbg_io("Data Width=~p Len=~p Str=~s~n",[DataWidth, Len,r2s(Line)]),
-    B = if 
-	    Len - DataWidth < 1 ->
-		%% It won't fit at all this is a catastrophy
-		%% give a large negative badness
-		-1000000;
-	    true ->
-		%% It will fit
-		%% We compute how much to stretch or shrink
-		%% the blanks in the line
-		%% Len          = required width
-		%% DataWidth    = width of data alone, i.e. no blanks
-		Width = spaces_width(Line),
-		%% Width   = The "natural width" of all the spaces
-		if Width < 1 ->
-			-1000000;
-		   true ->
-			R = (Len - DataWidth)/Width,
-			%% dbg_io("R=~p~n",[R]),
-			badness(R, Q)
-		end
-	end,
+    B = if
+            Len - DataWidth < 1 ->
+                %% It won't fit at all this is a catastrophy
+                %% give a large negative badness
+                -1000000;
+            true ->
+                %% It will fit
+                %% We compute how much to stretch or shrink
+                %% the blanks in the line
+                %% Len          = required width
+                %% DataWidth    = width of data alone, i.e. no blanks
+                Width = spaces_width(Line),
+                %% Width   = The "natural width" of all the spaces
+                if Width < 1 ->
+                    -1000000;
+                    true ->
+                        R = (Len - DataWidth) / Width,
+                        %% dbg_io("R=~p~n",[R]),
+                        badness(R, Q)
+                end
+        end,
     %% dbg_io("Badness=~p~n",[B]),
     B.
-	    
-%% R = strechyness of blank
+
+
+%% @doc R = strechyness of blank
+%% @private
 badness(R, Q) ->
     Max = Q#q.maxSpaceStretch/100,
     Min = Q#q.minSpaceStretch/100,
     B = if 
-	    R < 0.1 ->
-		-100000;
-	    R < Min ->
-		Alpha = -100000/(Min*Min*Min*Min),
-		Beta = -1,
-		T = (Min-R),
-		Alpha*T*T*T*T + Beta;
-	   true ->
-		%% R > 1
-		T = (R - 1)/(Max - 1),
-		T*T
-	end,
+        R < 0.1 ->
+        -100000;
+        R < Min ->
+        Alpha = -100000/(Min*Min*Min*Min),
+        Beta = -1,
+        T = (Min-R),
+        Alpha*T*T*T*T + Beta;
+       true ->
+        %% R > 1
+        T = (R - 1)/(Max - 1),
+        T*T
+    end,
     %% dbg_io("Nominal size of blank=~p actual=~p Min=~p Max=~p B=~p~n",
     %% [Nominal,Need, Min, Max, B]),
     B.
@@ -799,7 +848,7 @@ badness(R, Q) ->
 %% spaces_info(inline()) ->
 %%   {NBlanks, Width}
 
+%% @private
 spaces_width(Toks) ->
     Toks1 = lists:filter(fun(I) -> eg_richText:is_space(I) end, Toks),
     eg_richText:lineWidth(Toks1).
-
