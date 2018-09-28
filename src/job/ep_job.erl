@@ -42,8 +42,8 @@
 
 
 -type job() :: #{
-    title => iolist() | undefined(),
-    published => iolist() | undefined(),
+    title => iolist() | undefined,
+    published => iolist() | undefined,
     path => file:filename(),
     directory => file:filename(),
     author => string() | undefined,

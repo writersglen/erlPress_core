@@ -30,7 +30,9 @@
 -export([default_helvetica/1, default_face/0]).
 -export([get_face/3]).
 -export([face_map/2]).
--export ([get_font/3]). 
+-export ([get_font/3]).
+
+-include("ep_erltypes.hrl").
 
 
 %% ***************************************************************
