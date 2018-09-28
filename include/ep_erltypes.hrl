@@ -7,8 +7,8 @@
 %% X, Y, Width, Height
 -type xywh() :: {integer(), integer(), integer(), integer()}.
 
--type rgb8_t() :: {byte(), byte(), byte()}.
--type color() :: atom().
+-type rgb_color() :: {byte(), byte(), byte()}.
+-type color() :: atom() | rgb_color().
 
 -type img_size_t() :: {max, undefined | number(), undefined | number()}
     | {width | height, number()} | {size, tuple()}
@@ -46,8 +46,14 @@
     | right_justified | ragged_left | ragged_force_split | simple_hyphenate
     | preformatted | centered.
 
--type paper_stock() :: a4 | avery_labels | envelope_no10 | legal | letter | atom().
--type pageformat() :: atom().
+-type paper_stock() :: a4 | avery_labels | envelope_no10 | legal | letter | atom(). |
+
+-type page_format() :: a0 | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 | b0 |
+    b1 | b2 | b3 | b4 | b5 | b6 | b7 | b8 | b9 | b10 | avery_5164 |
+    avery_8168 | book1 | book4 | book3 | book4 | book5 | book6 | book7 |
+    bookmark | business_card | envelope_no10 | invoice | ledger | legal |
+    letter | postcard1 | postcard2 | postcard3 | report | tabloid.
+
 -type leading() :: number().
 -type direction() :: up | down | left | right.
 -type edge() :: top | right | bottom | left.
@@ -71,3 +77,22 @@
 
 %% A pair of points which defines a box or a line.
 -type xy1_xy2() :: {xy(), xy()}.
+
+%%
+%% Job Types
+%%
+
+-type job() :: #{
+    title => iolist() | undefined,
+    published => iolist() | undefined,
+    path => file:filename(),
+    directory => file:filename(),
+    author => string() | undefined,
+    subject => string() | undefined,
+    description => string() | undefined,
+    keywords => any(),
+    start_date => any(),
+    deadline => any(),
+    paper_stock => paper_stock(),
+    page_format => page_format()
+}.

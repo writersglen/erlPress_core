@@ -319,7 +319,7 @@ cms(X) -> round((X * 72.21) / 2.54).
 %% @spec color(Color::atom() | {R,G,B}) -> {R,G,B}
 %% @doc  R,G,B = 0-255
 %%      This may be useful to lookup the rgb value of the color names
--spec color(atom() | rgb8_t()) -> rgb8_t().
+-spec color(atom() | rgb_color()) -> rgb_color().
 color(Color) ->
     eg_pdf_op:color(Color).
 
@@ -637,12 +637,12 @@ set_stroke_color_RGB(PID, R, G, B) ->
     append_stream(PID, eg_pdf_op:set_stroke_color_RGB(R, G, B)).
 
 
--spec set_fill_color(pdf_server_pid(), atom() | rgb8_t()) -> ok.
+-spec set_fill_color(pdf_server_pid(), atom() | rgb_color()) -> ok.
 set_fill_color(PID, Color)->
     append_stream(PID, eg_pdf_op:set_fill_color(Color)).
 
 
--spec set_stroke_color(pdf_server_pid(), atom() | rgb8_t()) -> ok.
+-spec set_stroke_color(pdf_server_pid(), atom() | rgb_color()) -> ok.
 set_stroke_color(PID, Color) ->
     append_stream(PID, eg_pdf_op:set_stroke_color(Color)).
 

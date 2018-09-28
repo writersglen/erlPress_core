@@ -41,21 +41,6 @@
 -include("ep_erltypes.hrl").
 
 
--type job() :: #{
-    title => iolist() | undefined,
-    published => iolist() | undefined,
-    path => file:filename(),
-    directory => file:filename(),
-    author => string() | undefined,
-    subject => string() | undefined,
-    description => string() | undefined,
-    keywords => any(),
-    start_date => any(),
-    deadline => any(),
-    paper_stock => paper_stock(),
-    page_format => pageformat()
-}.
-
 %%% *********************************************************      
 %%% Create job 
 %%% *********************************************************      
@@ -143,7 +128,7 @@ page_formats() ->
 
 %% @doc Return specified page format
 
--spec page_format(Job :: job()) -> pageformat().
+-spec page_format(Job :: job()) -> page_format().
 
 page_format(Job) ->
    maps:get(page_format, Job).

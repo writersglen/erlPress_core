@@ -462,20 +462,20 @@ set_stroke_color_RGB(R, G, B) ->
     [n2s([R, G, B]), " RG\n"].
 
 
--spec set_fill_color(atom | eg_pdf:rgb8_t()) -> iolist().
+-spec set_fill_color(atom | eg_pdf:rgb_color()) -> iolist().
 set_fill_color(Color) ->
     {R, G, B} = color(Color),
     set_fill_color_RGB(R / 255, G / 255, B / 255).
 
 
--spec set_stroke_color(atom | eg_pdf:rgb8_t()) -> iolist().
+-spec set_stroke_color(atom | eg_pdf:rgb_color()) -> iolist().
 set_stroke_color(Color) ->
     {R, G, B} = color(Color),
     set_stroke_color_RGB(R / 255, G / 255, B / 255).
 
 
 %% HTML standard
--spec color(atom() | eg_pdf:rgb8_t()) -> eg_pdf:rgb8_t().
+-spec color(atom() | eg_pdf:rgb_color()) -> eg_pdf:rgb_color().
 color(white)                -> {16#FF, 16#FF, 16#FF};
 color(silver)               -> {16#C0, 16#C0, 16#C0};
 color(gray)                 -> {16#80, 16#80, 16#80};

@@ -39,7 +39,7 @@
 
 
 -record(pdf, {
-    color = default :: rgb8_t() | default,
+    color = default :: rgb_color() | default,
     xy = {-1, -1} :: xy(),
     face = {none, none} :: {module(), atom() | points()},
     tw = -1 :: number(),
@@ -306,7 +306,7 @@ ensure_color(Color, P) ->
 
 
 %% @private
--spec set_color(default | rgb8_t()) -> string().
+-spec set_color(default | rgb_color()) -> string().
 set_color(default) ->
     set_color({0, 0, 0});
 
