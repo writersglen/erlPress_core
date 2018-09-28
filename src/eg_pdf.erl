@@ -15,8 +15,6 @@
          code_change/3, start_link/1]).
 
 
--include("../include/eg.hrl").
-
 -export([
     add_start_xref/2,
     add_trailer/4,
@@ -97,19 +95,8 @@
     xref/2
 ]).
 
--export_type([pagesize_t/0, rgb8_t/0, pdf_server_pid/0]).
-
--type pdf_server_pid() :: pid().
--type pagesize_t() :: {integer(), integer(), integer(), integer()}.
--type rgb8_t() :: {byte(), byte(), byte()}.
-
--type img_size_t() :: {max, undefined | number(), undefined | number()}
-    | {width | height, number()} | {size, tuple()}
-    | {integer(), integer()}.
-
--type val_t() :: {name | string, string()} | dict_val_t() | ptr_val_t().
--type ptr_val_t() :: {ptr, number(), number()}.
--type dict_val_t() :: {dict, list({string(), val_t()})}.
+-include("eg.hrl").
+-include("eg_erltypes.hrl").
 
 
 %% @doc Set up Info, Catalog and Pages

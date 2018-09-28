@@ -37,9 +37,10 @@
     make_partitions/2
 ]).
 
--include("../include/eg.hrl").
-%% -define(DEBUG, true).
+-include("eg.hrl").
+-include("eg_erltypes.hrl").
 
+%% -define(DEBUG, true).
 -ifdef(DEBUG).
     dbg_io(Str) -> dbg_io(Str, []).
     dbg_io(Str, Args) ->
@@ -56,9 +57,6 @@
 
 -define(en_GB, eg_hyphen_rules_en_GB).
 
--type line_split_t() :: justified | spill | left_justified | ragged
-    | right_justified | ragged_left | ragged_force_split | simple_hyphenate
-    | preformatted | centered.
 
 
 %% @doc Default to english (Great Britain) style linebreaks
@@ -234,7 +232,7 @@ first_break_line([], Sum, Len, L, _SplitType) ->
 %% @private
 -spec force_split(Tok :: eg_richText:any_inline(), Len :: integer(),
                   SplitType :: line_split_t())
-                 -> {_HeadTok, RestTok :: [eg_richText:any_inline()] | []}
+                 -> {_HeadTok, RestTok :: [eg_richText:any_inline()] | []}.
 force_split(Tok, Len, SplitType) ->
     {word, Width, Face, Str} = Tok,
     StrLen = length(Str),
@@ -405,15 +403,12 @@ collect_line([], L) ->
 
 %% Iternate [{Cost,Text,Widths,Broken}]
 
-%% @doc   Lines  =
-%%        Widths =
-%%        Spill  = 
-%%        Rules  = is a the module name of the eg_hyphen_rules_*.erl file to use
+%% @doc   Rules  = is a the module name of the eg_hyphen_rules_*.erl file to use
 %%                 to determine how to hyphenate 
 %% XXX same return val as break_richText(...)
--spec justify(Text :: [eg_richText:word()|eg_richText:space()],
-              Widths :: [eg_richText:points()], Rules) ->
-                 impossible | {Lines, Widths, {richText, Spill}}.
+-spec justify(Text :: [word() | space()],
+              Widths :: [points()], _Rules) ->
+                 impossible | {_Lines, _Widths, {richText, _Spill}}.
 %% @private
 justify(Text, Widths, Rules) ->
     %% dbg_io("justify Text=~p widths=~p~n",[Text,Widths]),

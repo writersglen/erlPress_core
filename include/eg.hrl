@@ -118,6 +118,9 @@
     color,
     breakable :: boolean()
 }).
+%% emit corresponding type specs in eg_typespec.hrl if eg.hrl was included
+-define(FACE_RECORD_DEFINED, 1).
+
 
 % This is used to pass font choices for different tags into eg_table
 -record(table, {

@@ -25,7 +25,7 @@
 
 -module(eg_font_server).
 
--include("../include/eg.hrl").
+-include("eg.hrl").
 
 -export([start/0, 
 	 stop/0, 

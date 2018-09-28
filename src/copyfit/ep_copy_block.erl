@@ -17,8 +17,6 @@
 
 -export([text/2]).
 
-% -compile([export_all]).
-
 %% NOTE: These parameters are for testing purposes
 
 -define(OUTFILE, "text_test").
@@ -37,21 +35,19 @@
 
 
 %% @doc Typeset and display a block of text 
-
 -spec text(Copy     :: list(),
            PanelMap :: map()) -> list().
 
-
 text(Copy, PanelMap) ->
-   XML  = ep_xml_lib:parse_xml(Copy),
-   Gap  = ep_copyfit:gap(PanelMap),
-   {Paste, Gap1, XML1, PanelMap1} = text([], Gap, XML, PanelMap),
-   text(Paste, Gap1, XML1, PanelMap1).
+    XML = ep_xml_lib:parse_xml(Copy),
+    Gap = ep_copyfit:gap(PanelMap),
+    {Paste, Gap1, XML1, PanelMap1} = text([], Gap, XML, PanelMap),
+    text(Paste, Gap1, XML1, PanelMap1).
 
 
 text([], Gap, XML, PanelMap) ->
-   copyfit_text([], Gap, XML, PanelMap);
- 
+    copyfit_text([], Gap, XML, PanelMap);
+
 text(Paste, Gap, [], PanelMap) ->
     {Paste, Gap, PanelMap};
 
@@ -73,24 +69,18 @@ text(Paste, Gap, XML, PanelMap) ->
 
 
 copyfit_text(Paste, Gap, XML, PanelMap) ->
-   [X | MoreXML]        = XML,
-   Xml                  = element(2, X),
-   Tag                  = ep_copyfit:get_tag(Xml),
-   Lines                = ep_copyfit:get_lines(Tag, Xml, PanelMap),
-   SpaceAvailable       = Gap >= 0,
-   CopyAvailable        = length(XML) > 1,
-   case SpaceAvailable of
-      true  -> Gap1     = ep_copyfit:close_gap(Gap, Tag, Lines, PanelMap),
-               Paste1   = [{Tag, Lines} | Paste],
-               case CopyAvailable of
-                  true  -> copyfit_text(Paste1, Gap1, MoreXML, PanelMap);
-                  false -> {Paste1, Gap1, [], PanelMap}
-               end;
-      false -> {Paste,  Gap, MoreXML, PanelMap}
-   end.
-
-
-
-
-
-
+    [X | MoreXML] = XML,
+    Xml            = element(2, X),
+    Tag            = ep_copyfit:get_tag(Xml),
+    Lines          = ep_copyfit:get_lines(Tag, Xml, PanelMap),
+    SpaceAvailable = Gap >= 0,
+    CopyAvailable  = length(XML) > 1,
+    case SpaceAvailable of
+        true -> Gap1 = ep_copyfit:close_gap(Gap, Tag, Lines, PanelMap),
+            Paste1 = [{Tag, Lines} | Paste],
+            case CopyAvailable of
+                true -> copyfit_text(Paste1, Gap1, MoreXML, PanelMap);
+                false -> {Paste1, Gap1, [], PanelMap}
+            end;
+        false -> {Paste, Gap, MoreXML, PanelMap}
+    end.

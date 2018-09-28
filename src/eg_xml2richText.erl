@@ -32,7 +32,7 @@
     normalise_xml/3
 ]).
 
--include("../include/eg.hrl").
+-include("eg.hrl").
 
 %% -define(DEBUG, true).
 

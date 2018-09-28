@@ -25,36 +25,43 @@
 %% Purpose: Convert internal form of line to PDF
 %%==========================================================================
 
-
 -module(ep_richText2pdf).
 
-%% There is a bug in this code: Blanks *inside*
-%% strings are subject to expansion caused by the Tw operator
+%%% @doc There is a bug in this code: Blanks *inside*
+%%% strings are subject to expansion caused by the Tw operator.
 
--export([richText2pdf/9]).
+-export([
+    richText2pdf/9
+]).
+
+-include("eg.hrl").
+-include("eg_erltypes.hrl").
 
 
--record(pdf, {color = default,
-	      xy    = {-1,-1},
-	      face  = {none,none},
-	      tw    = -1,
-	      inTJ  = false,
-	      code  = []}).
+-record(pdf, {
+    color = default :: rgb8_t() | default,
+    xy = {-1, -1} :: {integer(), integer()},
+    face = {none, none} :: {module(), atom() | points()},
+    tw = -1 :: integer(),
+    inTJ = false :: boolean(),
+    code = [] :: list()
+}).
 
 %% -define(DEBUG, true).
 
 -ifdef(DEBUG).
-dbg_io(Str) -> dbg_io(Str,[]).
-dbg_io(Str,Args) ->
-    io:format("eg_richText2pdf: ~p " ++ Str, [self()] ++ Args),
-    ok.
+    dbg_io(Str) -> dbg_io(Str, []).
+    dbg_io(Str, Args) ->
+        io:format("eg_richText2pdf: ~p " ++ Str, [self()] ++ Args),
+        ok.
 -else.
-%dbg_io(_) -> ok.
-dbg_io(_,_) -> ok.
+    %dbg_io(_) -> ok.
+    dbg_io(_, _) -> ok.
 -endif.
 
 %% ============================================================================
 
+%% @doc
 %% returns: Code
 %% usage  : * add pdf content to PDF using eg_pdf:append_stream(PDF, Code)
 %%          * note that this must be wrapped in eg_pdf:begin_text(PDF) and
@@ -63,285 +70,347 @@ dbg_io(_,_) -> ok.
 %%            source, which may only be used inside a 'text object' (chp 5.3 
 %%            in pdf reference manual 1.4 and 1.7)
 richText2pdf(PID, X, Y0, Type, Rot, Lines, Leading, Widths, Offsets) ->
-
     Y = Y0 - Leading,
     P = start(),
     P2 = case Type of
-	     justified ->
-               
-		 {_Cos, _Sin, P1} = init_rotation_matrix(X, Y0, Rot, P),
-		 make_justified(PID, X, Y, Leading, Lines, Offsets, Widths, P1);
-	     Style when Style == left_justified;
+             justified ->
+
+                 {_Cos, _Sin, P1} = init_rotation_matrix(X, Y0, Rot, P),
+                 make_justified(PID, X, Y, Leading, Lines, Offsets, Widths, P1);
+             Style when Style == left_justified;
                         Style == ragged;
-			Style == right_justified;
+                        Style == right_justified;
                         Style == ragged_left;
                         Style == preformatted;
-			Style == centered ->
-		 {_Cos, _Sin, P1} = init_rotation_matrix(X, Y0, Rot, P),
-		 make_para(PID, X, Y, Leading, Lines, Offsets, Widths, Style, P1)
-    end,
+                        Style == centered ->
+                 {_Cos, _Sin, P1} = init_rotation_matrix(X, Y0, Rot, P),
+                 make_para(PID, X, Y, Leading, Lines, Offsets, Widths, Style, P1)
+         end,
     finalise(P2).
 
 
+%% @private
 make_justified(_PID, _X, _Y, _Leading, [], _, _, P) -> P;
 
-make_justified(PID, X, Y, _Leading, [H], [O|_], [W|_], P) -> 
-    line2pdf(PID, X+O,Y,H,W,last_line_justified, P);
+make_justified(PID, X, Y, _Leading, [H], [O | _], [W | _], P) ->
+    line2pdf(PID, X + O, Y, H, W, last_line_justified, P);
 
-make_justified(PID, X, Y, Leading, [H | T], [O | _O1] = O0, [W | _W1] = W0, P) -> 
+make_justified(PID, X, Y, Leading, [H | T], [O | _O1] = O0, [W | _W1] = W0, P) ->
 
     {O2, W2} = last_offset_width(O0, W0),
-             
+
 %        line2pdf(PID, X,     Y, {richText, Line}, Len, Style, P) ->
-    P1 = line2pdf(PID, X + O, Y, H,                W,   justified, P),
-    make_justified(PID, X, Y-Leading, Leading, T, O2, W2, P1).
+    P1 = line2pdf(PID, X + O, Y, H, W, justified, P),
+    make_justified(PID, X, Y - Leading, Leading, T, O2, W2, P1).
 
 
+%% @private
 make_para(_PID, _X, _Y, _Leading, [], _, _, _, P) -> P;
-make_para(PID, X, Y, _Leading, [H], [O | _], [W | _], Style, P) -> 
-    line2pdf(PID, X+O,Y,H,W,Style, P);
-make_para(PID, X, Y, Leading, [H|T], [O | _O1] = O0, [W | _W1] = W0, Style, P) -> 
-    {O2, W2} = last_offset_width(O0, W0),
-    P1 = line2pdf(PID, X+O,Y,H,W,Style,P),
-    make_para(PID, X, Y-Leading, Leading, T, O2, W2, Style, P1).
 
-last_offset_width([O|O1],[W|W1]) ->
+make_para(PID, X, Y, _Leading, [H], [O | _], [W | _], Style, P) ->
+    line2pdf(PID, X + O, Y, H, W, Style, P);
+
+make_para(PID, X, Y, Leading, [H | T], [O | _O1] = O0, [W | _W1] = W0, Style, P) ->
+    {O2, W2} = last_offset_width(O0, W0),
+    P1 = line2pdf(PID, X + O, Y, H, W, Style, P),
+    make_para(PID, X, Y - Leading, Leading, T, O2, W2, Style, P1).
+
+
+%% @private
+last_offset_width([O | O1], [W | W1]) ->
     O2 = if O1 == [] -> [O];
-            true     -> O1
+             true -> O1
          end,
     W2 = if W1 == [] -> [W];
-            true     -> W1
+             true -> W1
          end,
     {O2, W2}.
-    
+
+
+%% @private
+-spec line2pdf(pdf_server_pid(),
+               X :: number(), Y :: number(), eg_richText:richText(),
+               Len :: integer(), any(), any()) -> any().
 line2pdf(PID, X, Y, {richText, Line}, Len, Style, P) ->
-    TotWidth = eg_richText:lineWidth(Line)/1000,
-    NS       = eg_richText:numberOfSpaces(Line),
+    TotWidth = eg_richText:lineWidth(Line) / 1000,
+    NS = eg_richText:numberOfSpaces(Line),
     case Style of
-	justified ->
-	    Tw = if 
-		     NS > 0 ->
-			 Width = (Len - TotWidth)/NS,
-			 Width;
-		     NS == 0 ->
-			 0
-		 end,
-	    %% dbg_io("Line=~p~n",[Line]),
-	    %% dbg_io("NS=~p Tw=~p Len=~p TotWidth=~p~n",
-	    %% [NS,Tw,Len,TotWidth]),
-	    make_line(PID, X, Y, Line, Tw, P);
-	last_line_justified ->
-	    %% The last line of a justfied para has to be handled with care
-	    %% It might happen that the line needs to be squashed ...
-	    if 
-		TotWidth > Len ->
-		    line2pdf(PID, X, Y, {richText, Line}, Len, justified, P);
-		true ->
-		    line2pdf(PID, X, Y, {richText, Line}, Len, left_justified, P)
-	    end;
-	left_justified ->
-	    make_line(PID, X, Y, Line, 0, P);
-	ragged ->
-	    make_line(PID, X, Y, Line, 0, P);
-	right_justified ->
-	    Excess = Len - TotWidth,
-	    make_line(PID, X+Excess, Y, Line, 0, P);
-	ragged_left ->
-	    Excess = Len - TotWidth,
-	    make_line(PID, X+Excess, Y, Line, 0, P);
-	preformatted ->
-	    make_line(PID, X, Y, Line, 0, P);
-	centered ->
+        justified ->
+            Tw = if
+                     NS > 0 ->
+                         Width = (Len - TotWidth) / NS,
+                         Width;
+                     NS == 0 ->
+                         0
+                 end,
+            %% dbg_io("Line=~p~n",[Line]),
+            %% dbg_io("NS=~p Tw=~p Len=~p TotWidth=~p~n",
+            %% [NS,Tw,Len,TotWidth]),
+            make_line(PID, X, Y, Line, Tw, P);
+        last_line_justified ->
+            %% The last line of a justfied para has to be handled with care
+            %% It might happen that the line needs to be squashed ...
+            if
+                TotWidth > Len ->
+                    line2pdf(PID, X, Y, {richText, Line}, Len, justified, P);
+                true ->
+                    line2pdf(PID, X, Y, {richText, Line}, Len, left_justified, P)
+            end;
+        left_justified ->
+            make_line(PID, X, Y, Line, 0, P);
+        ragged ->
+            make_line(PID, X, Y, Line, 0, P);
+        right_justified ->
+            Excess = Len - TotWidth,
+            make_line(PID, X + Excess, Y, Line, 0, P);
+        ragged_left ->
+            Excess = Len - TotWidth,
+            make_line(PID, X + Excess, Y, Line, 0, P);
+        preformatted ->
+            make_line(PID, X, Y, Line, 0, P);
+        centered ->
             %% dbg_io("Len = ~p~n",[Len]),
             %% dbg_io("TotWidth = ~p~n",[TotWidth]),
-	    Offset = round(Len - TotWidth) div 2,
-            
+            Offset = round(Len - TotWidth) div 2,
+
             %% dbg_io("Offset = ~p~n",[Offset]),
-	    make_line(PID, X+Offset, Y, Line, 0, P)
+            make_line(PID, X + Offset, Y, Line, 0, P)
     end.
 
+
+%% @private
+-spec make_line(pdf_server_pid(), number(), number(), any(), any(), any()) -> any().
 make_line(PID, X, Y, Line, Tw, P) ->
-    %% dbg_io("make line~p at pos=~p ~p~n",[Line,X,Y]),
     P1 = add_move(X, Y, P),
     make_line(PID, Line, Tw, P1).
 
-make_line(PID,[H|T], Tw, P) ->
+
+%% @private
+make_line(PID, [H | T], Tw, P) ->
     case eg_richText:classify_inline(H) of
-	space ->
-	    {Font,Size} = get_font_info(H),
-	    P1 = ensure_face(PID, Font, Size, P),
-	    P2 = ensure_tw(Tw, P1),
-	    make_line(PID, T, Tw, add_space(Font, P2));
-	word ->
-	    {Font,Size} = get_font_info(H),
-	    Str = eg_richText:string(H),
-	    %% dbg_io("Outputting Word=~p Font=~p oldFont=~p~n",
-	    %% [H,Font,P#pdf.face]),
-	    P1 = ensure_face(PID, Font, Size, P),
-	    P2 = ensure_tw(Tw, P1),
-	    Color = eg_richText:color(H),
-	    P3 = ensure_color(Color, P2),
-	    make_line(PID, T, Tw, add_string(Font, Str, P3));
-	fixedStr ->
-	    {Font,Size} = get_font_info(H),
-	    Str = eg_richText:string(H),
-	    P1 = ensure_face(PID, Font, Size, P),
-	    P2 = ensure_tw(0, P1),
-	    make_line(PID, T, Tw, add_string(Font, Str, P2));
-	_ ->
-	    dbg_io("Don't know how to make a line with a: ~p~n",[H]),
-	    make_line(PID, T, Tw, P)
+        space ->
+            {Font, Size} = get_font_info(H),
+            P1 = ensure_face(PID, Font, Size, P),
+            P2 = ensure_tw(Tw, P1),
+            make_line(PID, T, Tw, add_space(Font, P2));
+        word ->
+            {Font, Size} = get_font_info(H),
+            Str = eg_richText:string(H),
+            %% dbg_io("Outputting Word=~p Font=~p oldFont=~p~n",
+            %% [H,Font,P#pdf.face]),
+            P1 = ensure_face(PID, Font, Size, P),
+            P2 = ensure_tw(Tw, P1),
+            Color = eg_richText:color(H),
+            P3 = ensure_color(Color, P2),
+            make_line(PID, T, Tw, add_string(Font, Str, P3));
+        fixedStr ->
+            {Font, Size} = get_font_info(H),
+            Str = eg_richText:string(H),
+            P1 = ensure_face(PID, Font, Size, P),
+            P2 = ensure_tw(0, P1),
+            make_line(PID, T, Tw, add_string(Font, Str, P2));
+        _ ->
+            dbg_io("Don't know how to make a line with a: ~p~n", [H]),
+            make_line(PID, T, Tw, P)
     end;
+
 make_line(_PID, [], _, P) ->
     P.
 
+
+%% @private
 get_font_info(X) ->
     {eg_richText:font(X), eg_richText:pointSize(X)}.
 
+
+%% @private
 finalise(P) ->
     P1 = close_tj(P),
     lists:reverse(P1#pdf.code).
 
+
+%% @private
 start() -> #pdf{}.
 
+
+%% @private
 init_rotation_matrix(X, Y, 0, P) ->
     %% dbg_io("here=~p~n",[{X,Y,0,P}]),
     C = "1 0 0 1 " ++ eg_pdf_op:n2s(X) ++ " " ++ eg_pdf_op:n2s(Y) ++ " Tm ",
-    P1 = add_code(C, P#pdf{xy={X,Y}}),
-    {1,0,P1};
+    P1 = add_code(C, P#pdf{xy = {X, Y}}),
+    {1, 0, P1};
+
 init_rotation_matrix(X, Y, Rot, P) ->
-    Rads = 3.14159*Rot/180,
+    Rads = 3.14159 * Rot / 180,
     Cos = math:cos(Rads),
     Sin = math:sin(Rads),
-    C = eg_pdf_op:n2s(Cos)  ++ " " ++ eg_pdf_op:n2s(Sin) ++ " " ++ 
-	eg_pdf_op:n2s(-Sin) ++ " " ++ eg_pdf_op:n2s(Cos) ++ " " ++ 
-	eg_pdf_op:n2s(X)    ++ " " ++ eg_pdf_op:n2s(Y)   ++ " Tm ",
-    P1 = add_code(C, P#pdf{xy={X,Y}}),
+    C = lists:flatten([eg_pdf_op:n2s(Cos), " ",
+                       eg_pdf_op:n2s(Sin), " ",
+                       eg_pdf_op:n2s(-Sin), " ",
+                       eg_pdf_op:n2s(Cos), " ",
+                       eg_pdf_op:n2s(X), " ",
+                       eg_pdf_op:n2s(Y), " Tm "]),
+    P1 = add_code(C, P#pdf{xy = {X, Y}}),
     {Cos, Sin, P1}.
 
+
+%% @private
 add_move(X, Y, P) ->
     P1 = close_tj(P),
     case P1#pdf.xy of
-	{-1, -1} ->
-	    %% dbg_io("Here aaa*********~n"),
-	    C = "1 0 0 1 " ++ eg_pdf_op:n2s(X) ++ " " ++
+    {-1, -1} ->
+        %% dbg_io("Here aaa*********~n"),
+        C = "1 0 0 1 " ++ eg_pdf_op:n2s(X) ++ " " ++
                 eg_pdf_op:n2s(Y) ++ " Tm ",
-	    add_code(C, P1#pdf{xy={X,Y}});
-	{X, Y} ->
-	    add_code("0 0 TD ", P1);
-	{OldX, OldY} ->
-	    Dx = X - OldX,
-	    Dy = Y - OldY,
-	    C = eg_pdf_op:n2s(Dx) ++ "  " ++ eg_pdf_op:n2s(Dy) ++ " TD ",
-	    add_code(C, P1#pdf{xy={X,Y}})
+        add_code(C, P1#pdf{xy={X,Y}});
+    {X, Y} ->
+        add_code("0 0 TD ", P1);
+    {OldX, OldY} ->
+        Dx = X - OldX,
+        Dy = Y - OldY,
+        C = eg_pdf_op:n2s(Dx) ++ "  " ++ eg_pdf_op:n2s(Dy) ++ " TD ",
+        add_code(C, P1#pdf{xy={X,Y}})
     end.
 
+
+%% @private
 ensure_face(PID, Font, Pts, P) ->
     case P#pdf.face of
-	{Font, Pts} ->
-	    P;
-	{_, _} ->
-	    P1 = close_tj(P),
-	    P2 = P1#pdf{face={Font,Pts}},
-	    eg_pdf:ensure_font_gets_loaded(PID, Font:fontName()),
-	    Index = Font:index(),
-	    add_code("/F" ++ eg_pdf_op:i2s(Index) ++ " " ++
-                     eg_pdf_op:i2s(Pts) ++ " Tf ", P2)
+        {Font, Pts} ->
+            P;
+        {_, _} ->
+            P1 = close_tj(P),
+            P2 = P1#pdf{face = {Font, Pts}},
+            eg_pdf:ensure_font_gets_loaded(PID, Font:fontName()),
+            Index = Font:index(),
+            C = lists:flatten(["/F",
+                               eg_pdf_op:i2s(Index), " ",
+                               eg_pdf_op:i2s(Pts), " Tf "]),
+            add_code(C, P2)
     end.
 
+
+%% @private
 ensure_color(Color, P) ->
     case P#pdf.color of
-	Color ->
-	    P;
-	_ ->
-	    P1 = close_tj(P),
-	    P2 = P1#pdf{color=Color},
-	    Code = set_color(Color),
-	    add_code(Code, P2)
+        Color ->
+            P;
+        _ ->
+            P1 = close_tj(P),
+            P2 = P1#pdf{color = Color},
+            Code = set_color(Color),
+            add_code(Code, P2)
     end.
 
 
+%% @private
+-spec set_color(default | rgb8_t()) -> string().
 set_color(default) ->
-    set_color({0,0,0});
-set_color({R,G,B}) ->
-    eg_pdf_op:f2s(R) ++ " " ++ eg_pdf_op:f2s(G) ++" " ++
-        eg_pdf_op:f2s(B) ++ " rg ".
+    set_color({0, 0, 0});
 
+set_color({R, G, B}) ->
+    lists:flatten([eg_pdf_op:f2s(R), " ",
+                   eg_pdf_op:f2s(G), " ",
+                   eg_pdf_op:f2s(B), " rg "]).
+
+%% @private
 close_tj(P) ->
     case P#pdf.inTJ of
-	true ->
-	    add_code("] TJ ", P#pdf{inTJ=false});
-	false ->
-	    P
+        true ->
+            add_code("] TJ ", P#pdf{inTJ = false});
+        false ->
+            P
     end.
 
+
+%% @private
 open_tj(P) ->
     case P#pdf.inTJ of
-	false ->
-	    add_code("[", P#pdf{inTJ=true});
-	true ->
-	    P
+        false ->
+            add_code("[", P#pdf{inTJ = true});
+        true ->
+            P
     end.
 
+
+%% @private
 ensure_tw(N, P) ->
     case P#pdf.tw of
-	N -> P;
-	_ ->
-	    P1 = close_tj(P),
-	    add_code(eg_pdf_op:n2s(N) ++ " Tw ", P1#pdf{tw=N})
+        N -> P;
+        _ ->
+            P1 = close_tj(P),
+            add_code(eg_pdf_op:n2s(N) ++ " Tw ", P1#pdf{tw = N})
     end.
 
+
+%% @private
 add_string(Font, Str, P) ->
     %% font etc are set
     P1 = open_tj(P),
     Code = str2pdf(Font, Str),
     add_code(Code, P1).
 
-add_space(Font, P) ->
-    add_string(Font,  " ", P).
 
+%% @private
+add_space(Font, P) ->
+    add_string(Font, " ", P).
+
+
+%% @private
 add_code(Str, P) ->
     C1 = P#pdf.code,
-    P#pdf{code=lists:reverse(Str, C1)}.
+    P#pdf{code = lists:reverse(Str, C1)}.
 
 
-str2pdf(_Font, "")  -> "";
+%% @private
+str2pdf(_Font, "") -> "";
+
 str2pdf(Font, Str) ->
     K = str2TJ(Font, Str),
-    K1 = lists:map(fun({Str1,Kern}) -> {quote_strings(Str1), Kern} end, K),
-    Pdf1 = lists:map(fun({S,I}) -> ["(", S,")",eg_pdf_op:i2s(I)] end, K1),
+    K1 = lists:map(fun({Str1, Kern}) -> {quote_strings(Str1), Kern} end, K),
+    Pdf1 = lists:map(fun({S, I}) -> ["(", S, ")", eg_pdf_op:i2s(I)] end, K1),
     eg_pdf_op:flatten(Pdf1).
-    
-quote_strings([$(|T])  -> [$\\,$(|quote_strings(T)];
-quote_strings([$)|T])  -> [$\\,$)|quote_strings(T)];
-quote_strings([$\\|T]) -> [$\\,$\\|quote_strings(T)];
+
+
+%% @private
+quote_strings([$( | T])  -> [$\\, $( | quote_strings(T)];
+quote_strings([$) | T])  -> [$\\, $) | quote_strings(T)];
+quote_strings([$\\ | T]) -> [$\\, $\\ | quote_strings(T)];
 %%quote_strings([$"|T])  -> [$\\,$"|quote_strings(T)];
-quote_strings([H|T])   -> [H|quote_strings(T)];
-quote_strings([])      -> [].
+quote_strings([H | T])   -> [H | quote_strings(T)];
+quote_strings([])        -> [].
 
 %% str2TJ(Font, Str) -> [{str(),int()}].
 
+%% @private
 str2TJ(Font, Str) ->
     str2TJ(Font, Str, [], []).
 
-str2TJ(Font, [32,H|T], Tmp, L) ->
-    str2TJ(Font, [H|T], [32|Tmp], L);
-str2TJ(Font, [H,32|T], Tmp, L) ->
-    str2TJ(Font, T, [32,H|Tmp], L);
-str2TJ(Font, [H1,H2|T], Tmp,  L) ->
+
+%% @private
+str2TJ(Font, [32, H | T], Tmp, L) ->
+    str2TJ(Font, [H | T], [32 | Tmp], L);
+
+str2TJ(Font, [H, 32 | T], Tmp, L) ->
+    str2TJ(Font, T, [32, H | Tmp], L);
+
+str2TJ(Font, [H1, H2 | T], Tmp, L) ->
     case Font:kern(H1, H2) of
-	0 ->
-	    str2TJ(Font, [H2|T], [H1|Tmp], L); 
-	N ->
-	    Str = lists:reverse([H1|Tmp]),
-	    str2TJ(Font, [H2|T], [], [{Str,-N}|L])
+        0 ->
+            str2TJ(Font, [H2 | T], [H1 | Tmp], L);
+        N ->
+            Str = lists:reverse([H1 | Tmp]),
+            str2TJ(Font, [H2 | T], [], [{Str, -N} | L])
     end;
-str2TJ(Font, [H|T], Tmp, L) ->
-    str2TJ(Font, T, [H|Tmp], L);
-str2TJ( _Font, [], [], L) ->
+
+str2TJ(Font, [H | T], Tmp, L) ->
+    str2TJ(Font, T, [H | Tmp], L);
+
+str2TJ(_Font, [], [], L) ->
     lists:reverse(L);
-str2TJ( _Font, [], Tmp, L) ->
-    lists:reverse([{lists:reverse(Tmp), 0}|L]).
+
+str2TJ(_Font, [], Tmp, L) ->
+    lists:reverse([{lists:reverse(Tmp), 0} | L]).
 
 %% To set the font use /Fn Pt Tf
 %% [(A) 90 (W) 120 (A) 105 (Y again - correctly kerned) ] TJ

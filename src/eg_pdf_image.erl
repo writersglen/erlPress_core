@@ -43,7 +43,7 @@
 -type img_head_t() :: {jpeg_head | png_head,
                        {integer(), integer(), integer(), integer()}}.
 
--include("../include/eg.hrl").
+-include("eg.hrl").
 
 
 %% @spec mk_images(Images, Count, [], []) -> {Free, XObjects, O0s}

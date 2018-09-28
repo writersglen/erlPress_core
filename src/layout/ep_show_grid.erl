@@ -14,7 +14,7 @@
 
 -module (ep_show_grid).
 
--include("../include/eg.hrl").
+-include("eg.hrl").
 
 % -export ([]).
 

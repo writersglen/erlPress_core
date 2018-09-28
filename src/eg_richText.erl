@@ -72,21 +72,8 @@
     widthExcludingSpaces/1
 ]).
 
--include("../include/eg.hrl").
-
--export_type([richText/0, any_inline/0, word/0, space/0, nl/0, fixed_str/0,
-              opaque/0, milli_points/0, points/0]).
-
--type richText() :: {richText, [any_inline()]}.
--type any_inline() :: word() | opaque() | space() | nl() | fixed_str().
--type word() :: {word, Width :: milli_points(), Face :: #face{}, string()}.
--type space() :: {space, Width :: milli_points(), Face :: #face{}}.
--type nl() :: {nl, Face :: #face{}}.
--type fixed_str() :: {fixedStr, Width :: milli_points(), _, _}.
--type opaque() :: {opaque, Width :: milli_points(), _}.
--type milli_points() :: integer().
--type points() :: integer().
-
+-include("eg.hrl").
+-include("eg_erltypes.hrl").
 
 %% -define(DEBUG, true).
 

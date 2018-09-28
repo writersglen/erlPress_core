@@ -101,7 +101,7 @@ xml2bin(In, Out) ->
                     file:write_file(Out, term_to_binary(Tree));
                 E = {error, _X} ->
                     E;
-                {more, _} ->
+                T when is_tuple(T) andalso element(1, T) =:= more ->
                     {error, incomplete}
             end;
         Error ->
