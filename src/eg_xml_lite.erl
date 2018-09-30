@@ -26,6 +26,7 @@
 
 -module(eg_xml_lite).
 
+%% TODO: Replace this with a standard or open-source XML parser
 -export([
     bin2xml/2,
     continue/2,
@@ -137,14 +138,15 @@ parse_all_forms(Str, Line) -> top_parse_loop(Str, Line, []).
 
 
 %% @private
-top_parse_loop(Str, Line, L) ->
+-spec top_parse_loop(string(), any(), list(eg_xmlform())) -> list(eg_xmlform()).
+top_parse_loop(Str, Line, Accum) ->
     case parse_single_form(Str, Line) of
         {ok, Form, Str1, Line1} ->
             case all_blanks(Str1) of
                 true ->
-                    lists:reverse([Form | L]);
+                    lists:reverse([Form | Accum]);
                 false ->
-                    top_parse_loop(Str1, Line1, [Form | L])
+                    top_parse_loop(Str1, Line1, [Form | Accum])
             end;
         E = {error, _Why} ->
             E;

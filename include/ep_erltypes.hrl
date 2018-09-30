@@ -124,3 +124,9 @@
     rot               => number(),
     jump_prompt       => string()
 }.
+
+%%
+%% Custom XML Parser
+%% TODO: Replace with a default or open-source parser
+%%
+-type eg_xmlform() :: _.
