@@ -39,6 +39,8 @@
     xml2bin/2
 ]).
 
+-include("ep_erltypes.hrl").
+
 
 %% ============================================================================
 
@@ -124,8 +126,11 @@ bin2xml(In, Out) ->
 atomize(A = {Atom, _}) when is_atom(Atom) ->
     A;
 
-atomize({Str, Args, List}) ->
-    {list_to_atom(Str), Args, lists:map(fun atomize/1, List)}.
+atomize({Str, Args, List}) when is_list(Str) ->
+    %% FIXME: List to atom on arbitrary text inputs is really bad.
+    %% FIXME: Replace with binary or control the inputs stricter
+    {erlang:list_to_atom(Str),
+     Args, lists:map(fun atomize/1, List)}.
     
 %%----------------------------------------------------------------------
 
@@ -204,11 +209,9 @@ step_parser(Stack, {sTag, _, Tag, Args}) ->
     %% Push new frame onto the stack
     {more, [{Tag, lists:sort(Args), []} | Stack]};
 
-step_parser([{Tag, Args, C} | L], _P = {Flat, _, D}) when Flat == pi;
-                                                          Flat == raw;
-                                                          Flat == cdata;
-                                                          Flat == comment;
-                                                          Flat == doctype ->
+step_parser([{Tag, Args, C} | L], _P = {Flat, _, D})
+    when Flat == pi; Flat == raw; Flat == cdata; Flat == comment;
+         Flat == doctype ->
     {more, [{Tag, lists:sort(Args), [{Flat, D} | C]} | L]};
 
 step_parser([{Tag, Args, C} | L], {empty, _, TagE, ArgsE}) ->
@@ -221,7 +224,7 @@ step_parser([{Tag, Args, C} | L], {eTag, _, Tag}) ->
     pfinish([{Tag, Args, C1} | L]);
 
 step_parser([{STag, _Args, _C} | _L], {eTag, _, Tag}) ->
-    {error, {badendtagfound, Tag, starttagis, STag}};
+    {error, {bad_end_tag_found, Tag, start_tag_is, STag}};
 
 step_parser([], {raw, _, S}) ->
     case all_blanks(S) of
@@ -231,7 +234,8 @@ step_parser([], {raw, _, S}) ->
             {error, {nonblank_data_found_before_first_tag, S}}
     end;
 
-step_parser([], {Tag, _, D}) when Tag == comment; Tag == doctype; Tag == pi ->
+step_parser([], {Tag, _, D})
+    when Tag == comment; Tag == doctype; Tag == pi ->
     {done, {Tag, D}};
 
 step_parser(S, I) ->

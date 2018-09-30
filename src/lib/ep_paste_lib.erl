@@ -58,7 +58,7 @@ paste_elements(PDF, Paste, Gap, PanelMap) ->
 
 
 %% @doc Paste up content element 
--spec paste_up(pdf_server_pid(), Tag :: atom(), Lines :: list(), Gap :: tuple(),
+-spec paste_up(pdf_server_pid(), Tag :: atom(), Lines :: list(), Gap :: points(),
                ep_panel()) -> {_Gap2, ep_panel()}.
 paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
     {Gap1, PanelMap1} = paste_lines(PDF, Tag, Lines, Gap, PanelMap),
@@ -67,7 +67,7 @@ paste_up(PDF, Tag, Lines, Gap, PanelMap) ->
 
 %% @doc Paste lines into panel
 -spec paste_lines(pdf_server_pid(), Tag :: atom(), Lines :: list(),
-                  Gap :: integer(), ep_panel()) -> {_Gap2, ep_panel()}.
+                  Gap :: points(), ep_panel()) -> {_Gap2, ep_panel()}.
 paste_lines(_PDF, br, _Lines, Gap, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Leading   = ep_typespec:leading(TypeStyle, br),
@@ -124,7 +124,7 @@ paste_li_list(PDF, cl, Lines, PanelMap) ->
     paste_li_list(PDF, cl, Rest, PanelMap1).
 
 
--spec paste_li(pdf_server_pid(), atom(), list(), ep_panel()) -> ok.
+-spec paste_li(pdf_server_pid(), atom(), ep_rich_text(), ep_panel()) -> ok.
 paste_li(PDF, Tag, Lines, PanelMap) ->
     {Widths, Offsets}  = ep_xml_lib:line_specs(Tag, PanelMap),
     Code               = pdf_code(PDF, Tag, [Lines], Widths, Offsets, PanelMap),
@@ -168,7 +168,7 @@ maybe_paste_item_symbol(PDF, Tag, PanelMap) ->
     end.
 
 
--spec maybe_paste_index(pdf_server_pid(), atom(), integer(), ep_panel()) -> ep_panel().
+-spec maybe_paste_index(pdf_server_pid(), atom(), pos_integer(), ep_panel()) -> ok.
 maybe_paste_index(PDF, Tag, Index, PanelMap) ->
     case Tag of
         ol -> paste_index(PDF, Tag, Index, PanelMap);
@@ -198,7 +198,7 @@ paste_dot(PDF, PanelMap) ->
     ok.
 
 
--spec paste_index(pdf_server_pid(), atom(), integer(), ep_panel()) -> ep_panel().
+-spec paste_index(pdf_server_pid(), atom(), integer(), ep_panel()) -> ok.
 paste_index(PDF, Tag, Index, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Size = ep_typespec:fontsize(TypeStyle, Tag),
@@ -233,7 +233,7 @@ ol_indent(_Index, Indent) ->
     Indent + Gutter.
 
 
--spec paste_checkbox(pdf_server_pid(), atom(), ep_panel()) -> ep_panel().
+-spec paste_checkbox(pdf_server_pid(), atom(), ep_panel()) -> ok.
 paste_checkbox(PDF, Tag, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Size = ep_typespec:fontsize(TypeStyle, Tag) * 0.80,

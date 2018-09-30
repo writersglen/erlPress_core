@@ -129,7 +129,7 @@ last_offset_width([O | O1], [W | W1]) ->
 
 %% @private
 -spec line2pdf(pdf_server_pid(),
-               X :: number(), Y :: number(), eg_richText:richText(),
+               X :: number(), Y :: number(), eg_richText:ep_rich_text(),
                Len :: integer(), any(), any()) -> any().
 line2pdf(PID, X, Y, {richText, Line}, Len, Style, P) ->
     TotWidth = eg_richText:lineWidth(Line) / 1000,

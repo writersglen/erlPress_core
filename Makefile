@@ -1,85 +1,36 @@
-# -*- MakeFile -*-
-
-# ----------------------------------------------------
-# SETTINGS
-# ----------------------------------------------------
 OPTS         ?=
-ERL          ?=$(shell which erl || echo no)
-EMAKE        ?=$(shell basename $(MAKE))
-# CMAKE        ?=$(shell which cmake || echo no)
-PROJECT      ?=$(shell basename `pwd` | sed -e 's|\-.*||')
-REBAR        ?=./rebar
-REBAR_CONFIG :=rebar.config
+ERL          ?= $(shell which erl || echo "'erl' not found, please install or use ERL=... env variable when running Make")
+PROJECT      ?= $(shell basename `pwd` | sed -e 's|\-.*||')
+REBAR        ?= rebar3
+REBAR_CONFIG := rebar.config
 
-# ----------------------------------------------------
-# PREREQUISITES
-# ----------------------------------------------------
-ifeq ($(ERL),no)
-$(error "Erlang is not available on this system")
-endif
+.PHONY: all
+all: compile
 
-# ifeq ($(CMAKE),no)
-# $(error "CMAKE is not available on this system")
-# endif
+.PHONY: compile
+compile:
+	$(REBAR) compile
 
-# ----------------------------------------------------
-# PHONY
-# ----------------------------------------------------
-.PHONY: all 					\
-				clean 				\
-				compile 			\
-				distclean 		\
-				flymake 			\
-				get-deps			\
-			  help          \
-				shell 				\
-				update-deps		\
-				xref
-
-# ----------------------------------------------------
-# MAIN
-# ----------------------------------------------------
-all: $(REBAR) get-deps flymake
-	@$(REBAR) -C $(REBAR_CONFIG) compile skip_deps=true
-
-# ----------------------------------------------------
-# SHELL
-# ----------------------------------------------------
+# Compiles and opens a pretty shell with all module search paths
+.PHONY: shell
 shell:
-	@./start.sh ${OPTS}
+	rebar3 shell
 
-# ----------------------------------------------------
-# REBAR
-# ----------------------------------------------------
-./rebar:
-	@echo " fetching 'rebar'..."
-	@erl -noshell -s inets start -s ssl start \
-	-eval 'httpc:request(get, {"https://github.com/rebar/rebar/wiki/rebar", []}, [], [{stream, "$(PWD)/rebar"}]), init:stop().'
-	@chmod +x $(REBAR)
-
-get-deps:
-	@$(REBAR) -C $(REBAR_CONFIG) check-deps >/dev/null || $(REBAR) -C $(REBAR_CONFIG) get-deps && $(REBAR) -C $(REBAR_CONFIG) compile
-
-update-deps:
-	@$(REBAR) -C $(REBAR_CONFIG) check-deps >/dev/null || $(REBAR) -C $(REBAR_CONFIG) update-deps && $(REBAR) compile
-
-# ----------------------------------------------------
-# XREF check
-# ----------------------------------------------------
+# Runs a XREF check on sources
+.PHONY: xref
 xref: all
-	@$(REBAR) -C $(REBAR_CONFIG) $@ skip_deps=true
+	$(REBAR) xref
 
-# ----------------------------------------------------
-# CLEANUP
-# ----------------------------------------------------
-flymake:
-	@rm -f $(PWD)/src/*flymake* $(PWD)/src/*/*flymake* $(PWD)/deps/*/src/*flymake*
+.PHONY: dialyzer
+dialyzer:
+	$(REBAR) dialyzer
 
+.PHONY: clean
 clean:
-	@if test -f $(REBAR); then $(REBAR) -C $(REBAR_CONFIG) $@ skip_deps=true; else break; fi
-	@rm -f erl_crash.dump
-	@rm -f *~ */*~ */*/*~ */*/*/*~ */*/*/*/*~
+	rm -f erl_crash.dump; rebar3 clean
 
+# TODO REVIEW THIS, outdated paths and rebar2 is used here
+.PHONY: distclean
 distclean: clean
 	@if test -f $(REBAR); then $(REBAR) -C $(REBAR_CONFIG) delete-deps; rm -f $(REBAR); else break; fi
 	@rm -f $(PWD)/src/content/copy_samples/*.md.erlang
@@ -87,13 +38,9 @@ distclean: clean
 	@rm -rf .rebar $(PWD)/deps/*/.rebar $(REBAR)
 	@cd $(PWD)/src/content/cmark_parse/cmark; make $@
 
-# ----------------------------------------------------
-# HELP
-# ----------------------------------------------------
+.PHONY: help
 help:
-	@echo "$(EMAKE) all           : (re)build the project"
-	@echo "$(EMAKE) clean         : clean-up object files"
-	@echo "$(EMAKE) distclean     : clean-up everything"
-	@echo "$(EMAKE) shell [OPTS=] : start an Erlang shell"
-	@echo "$(EMAKE) update-deps   : grab and build all dependencies"
-	@echo "$(EMAKE) xref          : xref check"
+	@echo "$(MAKE) all           : (re)build the project"
+	@echo "$(MAKE) clean         : clean-up object files"
+	@echo "$(MAKE) shell [OPTS=] : start an Erlang shell"
+	@echo "$(MAKE) xref          : xref check"

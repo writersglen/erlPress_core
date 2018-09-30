@@ -70,7 +70,7 @@ break_richText(RT, TW) ->
 %%                 to determine how to hyphenate, this argument is only used
 %%                 when Type = justified 
 %%       Widths  = [integer()] = lengths of the lines
-%%       Lines   = [richText()], RT split into lines 
+%%       Lines   = [ep_rich_text()], RT split into lines
 %%       Widths' = remaining Widths values
 %%
 %%       justified    = Optimally break each line depending upon the widths
@@ -90,7 +90,7 @@ break_richText(RT, TW) ->
 %%       if the initial split position guess is badly of e.g. a variable width
 %%       font used with the string "1111111111111...XXX", when the string and
 %%       __line width__ is very long.
--spec break_richText(RT :: eg_richText:richText(), {line_split_t(), _Widths}, _Rules) ->
+-spec break_richText(RT :: eg_richText:ep_rich_text(), {line_split_t(), _Widths}, _Rules) ->
     {_Lines, _Widths, _Spill}.
 break_richText({richText, T}, {justified, W}, Rules) ->
     text2para_widths(T, justified, W, Rules);
@@ -171,7 +171,7 @@ text2para_ragged(Lines, [H | T], L, SplitType) ->
     text2para_ragged(Rest, T, [Line | L], SplitType).
 
 
-%% @doc build return lines of richText()
+%% @doc build return lines of ep_rich_text()
 -spec finalise_ragged(list()) -> list().
 %% @private
 finalise_ragged(Final) ->

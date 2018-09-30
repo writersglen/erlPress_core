@@ -26,7 +26,7 @@
 %% encapsulates operations on text() and inline() objects
 
 %% ADT 
-%%   +deftype richText() = {richText, [inLine()]
+%%   +deftype ep_rich_text() = {richText, [inLine()]
 %%   +deftype inLine()   = Word | FixedString | Opaque | Space | NL
 %%   +deftype Word       = {word, Width, Face, Str},
 %%   +deftype FixedStr   = {fixedStr, Width, Face, Str},
@@ -124,7 +124,7 @@ str2richText(Str, Pts) ->
 
 %% @doc   convert string to "word" sequence containing word font/size info
 -spec str2richText(Font :: string(), _Point, _Voff, _Color, _Break,
-                   Str :: string()) -> richText().
+                   Str :: string()) -> ep_rich_text().
 str2richText(Font, Point, Voff, Color, Break, Str) ->
     valid_bool(Break),
     F  = fontHandler(Font),

@@ -28,7 +28,7 @@
     -type face() :: tuple().
 -endif.
 
--type richText() :: {richText, [any_inline()]}.
+-type ep_rich_text() :: {richText, [any_inline()]}.
 -type any_inline() :: word() | opaque() | space() | nl() | fixed_str().
 -type word() :: {word, Width :: milli_points(), Face :: face(), string()}.
 -type space() :: {space, Width :: milli_points(), Face :: face()}.
@@ -129,4 +129,7 @@
 %% Custom XML Parser
 %% TODO: Replace with a default or open-source parser
 %%
--type eg_xmlform() :: _.
+-type eg_xmlform() :: {atom(), Attrs :: proplists:proplist(),
+                       Nested :: list(eg_xmlform())}.
+-type eg_xml() :: list(eg_xmlform()).
+
