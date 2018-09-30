@@ -114,10 +114,7 @@ report_faces(Tag) ->
 
 
 %% @doc Return font size 
-
--spec report_fontsize(Tag :: atom()) -> tuple().
-
-
+-spec report_fontsize(Tag :: atom()) -> number().
 report_fontsize(Tag) ->
   case Tag of
     br -> report_fontsize(p);
@@ -132,7 +129,6 @@ report_fontsize(Tag) ->
 %% @doc Return leading 
 
 -spec report_leading(Tag :: atom()) -> leading().
-
 report_leading(Tag) ->
   FontSize = report_fontsize(Tag),
   case Tag of

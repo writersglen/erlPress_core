@@ -86,10 +86,10 @@
 -type xy1_xy2() :: {xy(), xy()}.
 
 %%
-%% Job Types
+%%----------------------
 %%
 
--type job() :: #{
+-type ep_job() :: #{
     title => iolist() | undefined,
     published => iolist() | undefined,
     path => file:filename(),
@@ -102,4 +102,25 @@
     deadline => any(),
     paper_stock => paper_stock(),
     page_format => page_format()
+}.
+
+-type ep_panel_id() :: {PageNumber :: integer(),
+                        PanelIndex :: integer(),
+                        PanelName :: string() | atom()}.
+-type ep_panel() :: #{
+    id                => ep_panel_id(),
+    position          => xy(),
+    size              => xy(),
+    radius            => number(),
+    content_cursor    => number(),
+    border            => number(),
+    border_style      => atom(),
+    border_color      => color(),
+    background_color  => color(),
+    margin            => points(),
+    typestyle         => atom(),
+    li_fill           => color(),
+    indent            => points(),
+    rot               => number(),
+    jump_prompt       => string()
 }.

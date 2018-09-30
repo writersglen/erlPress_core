@@ -11,59 +11,90 @@
 %%% @end
 %%% *********************************************************      
 
--module (ep_page).
+-module(ep_page).
 
--export([create/3]).
--export([project_id/1, format/1, page_no/1, section/1, page_grid/1]).
--export([page_inches/1, page_picas/1, page_points/1]).
--export([put_format/2, put_page_no/2, inc_page_no/1, reset_page_no/1]).
--export([put_section/2, put_page_grid/2]).
--export([page_dimensions/0, default_tag_map/1]).
+-export([
+    create/3,
+    default_tag_map/1,
+    format/1,
+    inc_page_no/1,
+    page_dimensions/0,
+    page_grid/1,
+    page_inches/1,
+    page_no/1,
+    page_picas/1,
+    page_points/1,
+    project_id/1,
+    put_format/2,
+    put_page_grid/2,
+    put_page_no/2,
+    put_section/2,
+    reset_page_no/1,
+    section/1
+]). % a..z
+
+-include("ep_erltypes.hrl").
+
+-type ep_page() :: #{
+    project_id => string(),
+    paper_stock => paper_stock(),
+    page_format => page_format(),
+    page_xy => xy(),
+    page_number => integer(),
+    section => _,
+    page_grid => _,
+    output_file => file:fd()
+}.
 
 
 %%% *********************************************************      
 %%% Create page nap
 %%% *********************************************************      
 
-%% NOTE: ep-impose:place_pages/3 returns a list to cover
+%% @doc NOTE: ep-impose:place_pages/3 returns a list to cover
 %%       cases in which more than one page fits on paper stock
-
+-spec create(ep_job(), integer(), file:fd()) -> ep_page().
 create(ProjectMap, PageNumber, OFile) ->
-   PaperStock = maps:get(paper_stock, ProjectMap),
-   PageFormat = maps:get(page_format, ProjectMap),
-   PageXY   = ep_impose:place_pages(PaperStock, PageFormat, 1),
-   #{ paper_stock   => PaperStock 
-    , page_format   => PageFormat  
-    , page_xy       => PageXY 
-    , page_number   => PageNumber 
-    , section       => undefined
-    , page_grid     => undefined
-    , output_file   => OFile
-   }.
+    PaperStock = maps:get(paper_stock, ProjectMap),
+    PageFormat = maps:get(page_format, ProjectMap),
+    PageXY = ep_impose:place_pages(PaperStock, PageFormat, 1),
+    #{    paper_stock   => PaperStock
+        , page_format   => PageFormat
+        , page_xy       => PageXY
+        , page_number   => PageNumber
+        , section       => undefined
+        , page_grid     => undefined
+        , output_file   => OFile
+    }.
 
 
 %%% *********************************************************      
 %%% Get page attributes 
 %%% *********************************************************      
 
-project_id(Page) ->
-   maps:get(project_id, Page).
+-spec project_id(ep_page()) -> any().
+project_id(#{project_id := PI}) -> PI.
 
-format(Page) ->
-   maps:get(format, Page).
 
-page_no(Page) ->
-   maps:get(page_no, Page).
+-spec format(ep_page()) -> page_format().
+format(#{format := F}) -> F.
 
-section(Page) ->
-   maps:get(section, Page).
 
-page_grid(Page) ->
-   maps:get(page_grid, Page).
+-spec page_no(ep_page()) -> integer().
+page_no(#{page_no := PN}) -> PN.
 
+
+-spec section(ep_page()) -> any().
+section(#{section := S}) -> S.
+
+
+-spec page_grid(ep_page()) -> any().
+page_grid(#{page_grid := PG}) -> PG.
+
+
+-spec page_inches(string()) -> {string(), xy()}.
 page_inches(Format) ->
-   Map = maps:from_list(page_dimensions()),
-   Dim = maps:get(Format, Map),
+   Dim = proplists:get_value(Format, page_dimensions()),
    {Format, Dim}.
 
 page_picas(Format) ->
@@ -213,21 +244,21 @@ page_dimensions() ->
 
 
 
-default_tag_map(Pts) -> 
+default_tag_map(Pts) ->
     {[p],
-     [{default,eg_richText:mk_face("Times-Roman", Pts, true, default, 0)},
-      {em,     eg_richText:mk_face("Times-Italic", Pts, true, default, 0)},
+     [{default, eg_richText:mk_face("Times-Roman", Pts, true, default, 0)},
+      {em, eg_richText:mk_face("Times-Italic", Pts, true, default, 0)},
 
       %% XXX !!! the font ZapfChancery-MediumItalic is not availible
-      {red,    eg_richText:mk_face("ZapfChancery-MediumItalic", Pts, true, 
-				   {1,0,0},0)},
-      {blue,   eg_richText:mk_face("ZapfChancery-MediumItalic", Pts, true, 
-				   {0,0,1},0)},
+      {red, eg_richText:mk_face("ZapfChancery-MediumItalic", Pts, true,
+                                {1, 0, 0}, 0)},
+      {blue, eg_richText:mk_face("ZapfChancery-MediumItalic", Pts, true,
+                                 {0, 0, 1}, 0)},
 
-      {code,   eg_richText:mk_face("Courier", Pts, false, default, 0)},
-      {b,      eg_richText:mk_face("Times-Bold", Pts, true, default, 0)},
-      {hb,      eg_richText:mk_face("Helvetica-Bold", Pts, true, default, 0)},
-      {helv,   eg_richText:mk_face("Helvetica", Pts, true, default, 0)}
+      {code, eg_richText:mk_face("Courier", Pts, false, default, 0)},
+      {b, eg_richText:mk_face("Times-Bold", Pts, true, default, 0)},
+      {hb, eg_richText:mk_face("Helvetica-Bold", Pts, true, default, 0)},
+      {helv, eg_richText:mk_face("Helvetica", Pts, true, default, 0)}
      ]}.
 
 
@@ -361,6 +392,3 @@ default_tag_map(Pts) ->
 
 % page_w(PageMap) ->
 %   maps:get(page_w, PageMap).
-
-
-

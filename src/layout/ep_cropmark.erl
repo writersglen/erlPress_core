@@ -37,7 +37,7 @@ create(Position) ->
 %% ***********************************************************
 
 %% @doc Create cropmark
--spec cropmark(pdf_server_pid(), job(), CropmarkMap :: map()) -> ok.
+-spec cropmark(pdf_server_pid(), ep_job(), CropmarkMap :: map()) -> ok.
 cropmark(PDF, Job, CropmarkMap) ->
     {X1, Y1}    = ep_job:flip_y(Job, CropmarkMap),
     HFrom       = {(X1 - 10), Y1},  

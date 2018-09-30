@@ -47,7 +47,7 @@
 
 %% @doc Create project specification map
 
--spec create(Title :: iolist(), Publisher :: iolist()) -> job().
+-spec create(Title :: iolist(), Publisher :: iolist()) -> ep_job().
 
 create(Title, Publisher) ->
    #{ title          => Title 
@@ -65,7 +65,7 @@ create(Title, Publisher) ->
    }.
 
 
--spec flip_box(job(), #{position => number(), size => number()}) -> xy().
+-spec flip_box(ep_job(), #{position => number(), size => number()}) -> xy().
 flip_box(Job, Map) ->
    {PaperStock, _PagePosition} = ep_job:stock_position(Job),
    Position     = maps:get(position, Map),
@@ -103,7 +103,7 @@ desktop_printer_stock() ->
 
 %% @doc Return paper stock 
 
--spec paper_stock(Job :: job()) -> paper_stock().
+-spec paper_stock(Job :: ep_job()) -> paper_stock().
 
 paper_stock(Job) ->
    maps:get(paper_stock, Job).
@@ -111,7 +111,7 @@ paper_stock(Job) ->
 
 %% @doc Return paper stock dimensions in points
 
--spec stock_size(Job :: job()) -> {paper_stock(), xy()}.
+-spec stock_size(Job :: ep_job()) -> {paper_stock(), xy()}.
 
 stock_size(Job) ->
    Stock = maps:get(paper_stock, Job),
@@ -128,7 +128,7 @@ page_formats() ->
 
 %% @doc Return specified page format
 
--spec page_format(Job :: job()) -> page_format().
+-spec page_format(Job :: ep_job()) -> page_format().
 
 page_format(Job) ->
    maps:get(page_format, Job).
@@ -136,7 +136,7 @@ page_format(Job) ->
 
 %% @doc Return size of specified page format in points
 
--spec specified_page_size(Job :: job()) -> xywh().
+-spec specified_page_size(Job :: ep_job()) -> xywh().
 
 specified_page_size(Job) ->
    PageFormat = maps:get(page_format, Job),
@@ -145,7 +145,7 @@ specified_page_size(Job) ->
 
 %% @doc Return upper left corner of pages imposed on paper stock
 
--spec page_positions(job(), N :: integer()) -> list().
+-spec page_positions(ep_job(), N :: integer()) -> list().
 
 page_positions(Job, N) ->
    PaperStock = paper_stock(Job),
@@ -153,7 +153,7 @@ page_positions(Job, N) ->
    ep_impose:place_pages(PaperStock, PageFormat, N).
 
 
--spec stock_position(job()) -> {paper_stock(), xy()}.
+-spec stock_position(ep_job()) -> {paper_stock(), xy()}.
 stock_position(Job) ->
     PaperStock = maps:get(paper_stock, Job),
     PagePositions = ep_job:page_positions(Job, 1),
