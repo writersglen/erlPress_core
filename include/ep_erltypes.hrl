@@ -133,3 +133,21 @@
                        Nested :: list(eg_xmlform())}.
 -type eg_xml() :: list(eg_xmlform()).
 
+-type ep_bezier() :: #{
+    from => xy(),
+    to => xy(),
+    pt2 => xy(),
+    pt3 => xy(),
+    width => points(),
+    color => color()
+}.
+
+-type ep_line() :: #{
+    from => xy(),
+    to => xy(),
+    color => color(),
+    width => points(),
+    dash => atom()
+}.
+
+-type ep_line_list() :: #{ lines => list(ep_line())}.
