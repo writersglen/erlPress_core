@@ -13,24 +13,22 @@
 
 -module (ep_rectangle).
 
--export ([ create/2, rectangle/3 ]). 
+-export([
+    create/2,
+    rectangle/3
+]).
 
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 -define(BORDER, 1).
 -define(BORDER_COLOR, black).
 -define(BORDER_STYLE, solid).
 -define(FILL_COLOR, white).
 
-%% ***********************************************************
-%% Create rectangle map 
-%% ***********************************************************
 
 %% @doc Create rectangle map
-
--spec create(Position :: tuple(),
-             Size     :: tuple()) -> map().
-
+-spec create(Position :: xy(), Size     :: xy()) -> ep_rectangle().
 create(Position, Size) ->
    #{ position       => Position 
     , size           => Size 
@@ -41,16 +39,8 @@ create(Position, Size) ->
     }.
 
 
-%% ***********************************************************
-%% rectangle/2, solid_rectangle/2  
-%% ***********************************************************
-
 %% @doc Display rectangle
-
--spec rectangle(PDF          :: identifier(),
-                Job          :: map(),
-                RectangleMap :: map()) -> ok.
-
+-spec rectangle(pdf_server_pid(), ep_job(), ep_rectangle()) -> ok.
 rectangle(PDF, Job, RectangleMap) ->
    {PaperStock, PagePosition} = ep_job:stock_position(Job),
    Position     = maps:get(position, RectangleMap),
@@ -67,4 +57,3 @@ rectangle(PDF, Job, RectangleMap) ->
    eg_pdf:rectangle(PDF, Position1, Size),
    eg_pdf:path(PDF, fill_stroke),
    ok.
-

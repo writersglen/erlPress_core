@@ -178,3 +178,50 @@
     border_color  => color(),
     fill_color    => color()
 }.
+
+-type ep_ellipse() :: #{
+    center         => xy(),
+    axes           => xy1_xy2(),
+    border         => points(),
+    border_style   => line_style(),
+    border_color   => color(),
+    fill_color     => color(),
+    format         => page_format()
+}.
+
+-type ep_poly() :: #{
+    vertices      => list(xy()),
+    outline       => points(),
+    dash          => line_style(),
+    outline_color => color(),
+    fill_color    => color()
+}.
+
+-type ep_rectangle() :: #{
+    position       => xy(),
+    size           => xy(),
+    outline        => points(),
+    outline_style  => line_style(),
+    outline_color  => color(),
+    fill_color     => color()
+}.
+
+-type ep_round_rect() :: #{
+    position          => xy(),
+    size              => xy(),
+    radius            => points(),
+    border            => points(),
+    border_style      => line_style(),
+    border_color      => color(),
+    background_color  => color()
+}.
+
+-type ep_text() ::    #{
+    font          => string(),
+    position      => xy(),
+    size          => points(),
+    text_color    => color(),
+    justification => atom(),
+    rot           => number(),
+    leading       => points()
+}.

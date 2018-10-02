@@ -15,9 +15,13 @@
 
 -module (ep_round_rect).
 
--export ([ create/3, round_rect/3 ]). 
+-export([
+    create/3,
+    round_rect/3
+]).
 
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 -define(BORDER, 1).
 -define(BORDER_COLOR, black).
@@ -29,12 +33,7 @@
 %% ***********************************************************
 
 %% @doc Create round_rect map
-
--spec create(Position :: tuple(),
-             Size     :: tuple(),
-             Radius   :: integer()) -> map().
-           
-
+-spec create(Position :: xy(), Size :: xy(), Radius :: points()) -> ep_round_rect().
 create(Position, Size, Radius) ->
    #{ position          => Position 
     , size              => Size 
@@ -46,16 +45,8 @@ create(Position, Size, Radius) ->
     }.
 
 
-%% ***********************************************************
-%% rectangle/2, solid_rectangle/2  
-%% ***********************************************************
-
 %% @doc Display rectangle
-
--spec round_rect(PDF         :: identifier(),
-                Job          :: map(),
-                RoundRectMap :: map()) -> ok.
-
+-spec round_rect(pdf_server_pid(), ep_job(), ep_round_rect()) -> ok.
 round_rect(PDF, Job, RoundRectMap) ->
    Position        = ep_job:flip_y(Job, RoundRectMap), 
    Size            = maps:get(size, RoundRectMap),
@@ -71,8 +62,3 @@ round_rect(PDF, Job, RoundRectMap) ->
    eg_pdf:round_rect(PDF, Position, Size, Radius),
    eg_pdf:path(PDF, fill_stroke),
    ok.
-
-
-
-
-

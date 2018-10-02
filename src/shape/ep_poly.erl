@@ -13,10 +13,13 @@
 
 -module (ep_poly).
 
--export ([create/1]). 
--export([polygon/3]).
+-export([
+    create/1,
+    polygon/3
+]).
 
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 -define(OUTLINE_WIDTH, 1).
 -define(DASH, solid).
@@ -24,14 +27,8 @@
 -define(FILL_COLOR, white).
 
 
-%% ***********************************************************
-%% Create polygon map 
-%% ***********************************************************
-
 %% @doc Create polygon map
-
--spec create(Vertices :: list()) -> map().
-
+-spec create(Vertices :: list(xy())) -> ep_poly().
 create(Vertices) ->
    #{ vertices      => Vertices 
     , outline       => ?OUTLINE_WIDTH
@@ -41,17 +38,8 @@ create(Vertices) ->
     }.
 
 
-%% ***********************************************************
-%% Polygon to pdf  
-%% ***********************************************************
-
 %% @doc Display polygon
-
--spec polygon(PDF        :: identifier(),
-              Job        :: map(),
-              PolygonMap :: map()) -> ok.
-
-
+-spec polygon(pdf_server_pid(), ep_job(), ep_poly()) -> ok.
 polygon(PDF, Job, PolygonMap) ->
     {PaperStock, PagePosition} = ep_job:stock_position(Job),
     Vertices       = maps:get(vertices, PolygonMap),
@@ -59,8 +47,8 @@ polygon(PDF, Job, PolygonMap) ->
     Dash           = maps:get(dash, PolygonMap),
     OutlineColor   = maps:get(outline_color, PolygonMap),
     FillColor      = maps:get(fill_color, PolygonMap),
-    Vertices1      = [ep_lib:impose_xy(Vertice, PagePosition, PaperStock) ||
-                                        Vertice <- Vertices],
+    Vertices1 = [ep_lib:impose_xy(Vertice, PagePosition, PaperStock)
+                 || Vertice <- Vertices],
     eg_pdf:save_state(PDF),
     eg_pdf:poly(PDF, Vertices1),
     eg_pdf:set_line_width(PDF, Outline),
@@ -71,5 +59,3 @@ polygon(PDF, Job, PolygonMap) ->
     eg_pdf:path(PDF, fill_stroke),
     eg_pdf:restore_state(PDF),
     ok.
-
-    
