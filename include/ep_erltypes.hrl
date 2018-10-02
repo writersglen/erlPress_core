@@ -46,8 +46,9 @@
     | right_justified | ragged_left | ragged_force_split | simple_hyphenate
     | preformatted | centered.
 
--type paper_stock() :: a4 | avery_labels | avery_labels_5164
-    | avery_labels_8168 | envelope_no10 | legal | letter | atom().
+-type paper_stock() :: a0 | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 | a10
+    | avery_labels | avery_labels_5164 | avery_labels_8168
+    | envelope_no10 | legal | letter | tabloid.
 
 -type page_format() :: a0 | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 | b0 |
     b1 | b2 | b3 | b4 | b5 | b6 | b7 | b8 | b9 | b10 | avery_5164 |
@@ -65,7 +66,7 @@
 
 -type line_cap_t() :: flat_cap | round_cap | square_cap | integer().
 -type line_join_t() :: miter_join | round_join | bevel_join | integer().
--type dash_t() :: solid | dash | dot | dashdot | string().
+-type line_style() :: solid | dash | dot | dashdot | string().
 
 -type path_t() :: close | close_strike | fill | fill_even_odd
     | fill_stroke | fill_then_stroke | fill_stroke_even_odd | close_fill_stroke
@@ -151,3 +152,29 @@
 }.
 
 -type ep_line_list() :: #{ lines => list(ep_line())}.
+
+-type ep_page_number() :: #{
+    from => tuple(),
+    text => string(),
+    font => string(),
+    font_size => points()
+}.
+
+-type ep_checkbox() :: #{
+    box_position  => xy(),
+    width         => points(),
+    height        => points(),
+    outline       => points(),
+    outline_type  => atom(),
+    outline_color => color(),
+    fill_color    => color()
+}.
+
+-type ep_circle() :: #{
+    center        => xy(),
+    radius        => points(),
+    border        => points(),
+    border_style  => line_style(),
+    border_color  => color(),
+    fill_color    => color()
+}.

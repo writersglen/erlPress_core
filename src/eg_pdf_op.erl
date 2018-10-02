@@ -355,7 +355,7 @@ set_dash(Array, Phase) ->
     ["[", n2s(Array), "] ", n2s(Phase), " d\n"].
 
 
--spec set_dash(dash_t()) -> iolist().
+-spec set_dash(line_style()) -> iolist().
 set_dash(solid)             -> set_dash([], 0);
 set_dash(dash)              -> set_dash([6,2],0);
 set_dash(dot)               -> set_dash([2],0);

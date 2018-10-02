@@ -11,28 +11,21 @@
 %%% @end
 %%%==========================================================================
 
+-module(ep_dot).
 
--module (ep_dot).
-
--export ([create/1, dot/3]).
-
-% -compile(export_all).
+-export([
+    create/1,
+    dot/3
+]).
 
 -define(DEFAULT_RADIUS, 5).
 
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
-%% ***********************************************************
-%% create 
-%% ***********************************************************
-
-%% Colors: white, silver, gray, black, maroon, red, fuschia,
-%%         purple, lime, green, olive, yellow, navy, blue, teal, aqua 
 
 %% @doc Create dot map
-
--spec create(Center :: tuple()) -> map().
-
+-spec create(Center :: xy()) -> map().
 create(Center) ->
    #{ center         => Center
     , radius         => ?DEFAULT_RADIUS

@@ -534,7 +534,7 @@ set_miter_limit(PID, Limit) ->
     append_stream(PID, eg_pdf_op:set_miter_limit(Limit)).
 
 
--spec set_dash(pdf_server_pid(), eg_pdf_op:dash_t()) -> ok.
+-spec set_dash(pdf_server_pid(), eg_pdf_op:line_style()) -> ok.
 set_dash(PID, Mode) ->
     append_stream(PID, eg_pdf_op:set_dash(Mode)).
 

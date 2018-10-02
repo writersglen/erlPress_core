@@ -12,30 +12,22 @@
 
 %%% ==========================================================================
 
-
 -module (ep_page_number).
 
--export ([create/2]). 
--export([page_number/3]).
+-export([
+    create/2,
+    page_number/3
+]).
 
-% -compile(export_all).
-
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 -define(FONT, "Times-Roman").
 -define(FONT_SIZE, 14).
 
-%% Examples:  1, page 1, Page 1
 
-%% ***********************************************************
-%% Create page number map 
-%% ***********************************************************
-
-%% @doc Create page number map 
-
--spec create(From :: tuple(),
-             Text :: string()) -> map().
-
+%% @doc Create page number map
+-spec create(From :: tuple(), Text :: string()) -> ep_page_number().
 create(From, Text) ->
    #{ from         =>  From
     , text          => Text 
@@ -44,17 +36,8 @@ create(From, Text) ->
     }.
 
 
-%% ***********************************************************
-%% Page number to PDF  
-%% ***********************************************************
-
 %% @doc Page number to PDF
-
--spec page_number(PDF            :: identifier(),
-                  Job            :: map(),
-                  PpageNumberMap :: map()) -> ok.  
-
-
+-spec page_number(pdf_server_pid(), ep_job(), ep_page_number()) -> ok.
 page_number(PDF, Job, PageNumberMap) ->
     {X, Y}       = ep_job:flip_y(Job, PageNumberMap),
     PageNumber   = maps:get(page_number, PageNumberMap),
@@ -67,6 +50,5 @@ page_number(PDF, Job, PageNumberMap) ->
     eg_pdf:set_text_pos(PDF, X, Y),
     eg_pdf:text(PDF, Text1),
     eg_pdf:end_text(PDF),
-    eg_pdf:restore_state(PDF), 
+    eg_pdf:restore_state(PDF),
     ok.
-

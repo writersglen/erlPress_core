@@ -11,8 +11,7 @@
 
 %%% ==========================================================================
 
-
--module (ep_metrics).
+-module(ep_metrics).
 
 -export([
     to_picas/1,
@@ -22,27 +21,19 @@
 -include("ep_erltypes.hrl").
 
 
-%% ****************************************************************
-%% Convert inches to printer-friendly units 
-%% **************************************************************** 
-
-
 %% @doc Convert {Width, Height} in inches to picas
-
 -spec to_picas(Dimensions :: xy()) -> xy().
-
 to_picas(Dimensions) ->
-   {Width, Height} = Dimensions,
-   Width1  = round(Width * 6),
-   Height1 = round(Height * 6),
-   {Width1, Height1}.
+    {Width, Height} = Dimensions,
+    Width1 = round(Width * 6),
+    Height1 = round(Height * 6),
+    {Width1, Height1}.
+
 
 %% @doc Convert page type dimensions in inches to points
-
 -spec to_points(Dimensions :: xy()) -> xy().
-
 to_points(Dimensions) ->
-   {Width, Height} = Dimensions,
-   Width1  = round(Width * 72),
-   Height1 = round(Height * 72),
-   {Width1, Height1}.
+    {Width, Height} = Dimensions,
+    Width1 = round(Width * 72),
+    Height1 = round(Height * 72),
+    {Width1, Height1}.
