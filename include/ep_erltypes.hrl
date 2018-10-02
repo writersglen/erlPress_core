@@ -225,3 +225,11 @@
     rot           => number(),
     leading       => points()
 }.
+
+-type ep_font_face() :: #{
+    font        => string(),
+    size        => points(),
+    breakable   => boolean(),
+    color       => color(),
+    voffset     => points()
+}.

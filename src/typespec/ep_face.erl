@@ -13,45 +13,32 @@
 
 %%% ==========================================================================
 
-
 -module (ep_face).
 
--export ([create/2,make_face/1]).
+-export([
+    create/2,
+    make_face/1
+]).
+
+-include("ep_erltypes.hrl").
 
 -define(COLOR, eg_pdf_op:color(black)).
 
-%% Colors: white, silver, gray, black, maroon, red, fuschia,
-%%         purple, lime, green, olive, yellow, navy, blue, teal, aqua 
-%%         | {R,G,B}
-
-%% ***********************************************************
-%% Create font face map
-%% See ep_typestyle:tag_face/3 for application
-%% ***********************************************************
-
 
 %% @doc Create font face map
-
--spec create(Font :: string(),
-             Size :: integer()) -> map().
-
+%% See ep_typestyle:tag_face/3 for application
+-spec create(Font :: string(), Size :: integer()) -> ep_font_face().
 create(Font, Size) ->
-   #{ font        => Font 
-    , size        => Size 
-    , breakable   => true 
-    , color       => ?COLOR 
-    , voffset     => 0 
+    #{    font        => Font
+        , size        => Size
+        , breakable   => true
+        , color       => ?COLOR
+        , voffset     => 0
     }.
 
 
-%% ***********************************************************
-%% make_face/3  
-%% ***********************************************************
-
-%% @doc Define font face 
-
--spec make_face(FaceMap :: map()) -> ok.
-
+%% @doc Define font face
+-spec make_face(ep_font_face()) -> ok.
 make_face(FaceMap) ->
     Font      = maps:get(font, FaceMap),
     FontSize  = maps:get(size, FaceMap),
