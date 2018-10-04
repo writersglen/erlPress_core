@@ -1,5 +1,5 @@
 %%==========================================================================
-%%% ep_paper_stock.erl
+%%% ep_circle.erl
 
 %%% @author     Lloyd R. Prentice
 %%% @copyright  2018 Lloyd R. Prentice
@@ -13,42 +13,39 @@
 %%% ==========================================================================
 
 
--module (ep_circle).
+-module(ep_circle).
 
--export ([create/2]). 
--export ([circle/3]).
+-export([
+    border_color/1,
+    border_specs/1,
+    border_style/1,
+    center/1,
+    circle/3,
+    colors/1,
+    create/2,
+    fill_color/1,
+    format/1,
+    radius/1,
+    update_border/2,
+    update_border_color/2,
+    update_border_style/2,
+    update_center/3,
+    update_fill_color/2,
+    update_format/2,
+    update_radius/2
+]).
 
--export ([center/1, radius/1, border_style/1, border_color/1]).
--export ([fill_color/1, format/1]). 
--export ([border_specs/1, colors/1]). 
--export ([update_center/3]).
--export ([update_radius/2, update_border/2, update_border_style/2]).
--export ([update_border_color/2, update_fill_color/2, update_format/2]).
-
-%% -compile(export_all).
-
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 -define(BORDER, 1).
 -define(BORDER_COLOR, black).
 -define(BORDER_STYLE, solid).
 -define(FILL_COLOR, white).
 
-%% Border style options: solid, dash, dot, dashdot
-%% Color options: white, silver, gray, black, maroon, red, fuschia,
-%%                purple, lime, green, olive, yellow, navy, blue, teal, aqua 
-%% Format options: N> rp(ep_format:formats()). 
-
-
-%% ***********************************************************
-%% Create circle map 
-%% ***********************************************************
 
 %% @doc Create circle map
-
--spec create(Center :: integer(),
-             Radius  :: integer()) -> map().
-
+-spec create(Center :: xy(), Radius :: points()) -> ep_circle().
 create(Center, Radius) ->
    #{ center        => Center
     , radius        => Radius 
@@ -59,16 +56,8 @@ create(Center, Radius) ->
     }.
 
 
-%% ***********************************************************
-%% circle/3  
-%% ***********************************************************
-
 %% @doc Draw circle
-
--spec circle(PDF      :: identifier(),
-             Job      :: map(),
-             CircleMap :: map()) -> ok.
-
+-spec circle(pdf_server_pid(), ep_job(), ep_circle()) -> ok.
 circle(PDF, Job, CircleMap) ->
     {PaperStock, PagePosition} = ep_job:stock_position(Job),
     Center     = maps:get(center, CircleMap),
@@ -87,72 +76,44 @@ circle(PDF, Job, CircleMap) ->
     ok.
 
 
-
-%% ***********************************************************
-%% Get circle attributes 
-%% ***********************************************************
-
-
-%% @doc Return center coordinates 
-
-% -spec center(CircleMap :: map()) -> tuple().
-
-center(CircleMap) ->
-   maps:get(center, CircleMap).
+%% @doc Return center coordinates
+-spec center(ep_circle()) -> xy().
+center(#{center := C}) -> C.
 
 
-%% @doc Return radius 
-
--spec radius(CircleMap :: map()) -> tuple().
-
-radius(CircleMap) ->
-   maps:get(radius, CircleMap).
+%% @doc Return radius
+-spec radius(ep_circle()) -> points().
+radius(#{radius := R}) -> R.
 
 
-%% @doc Return border  
-
--spec border(CircleMap :: map()) -> tuple().
-
-border(CircleMap) ->
-   maps:get(border, CircleMap).
+%% @doc Return border
+-spec border(ep_circle()) -> points().
+border(#{border := B}) -> B.
 
 
-%% @doc Return border style 
-
--spec border_style(CircleMap :: map()) -> tuple().
-
-border_style(CircleMap) ->
-   maps:get(border_style, CircleMap).
+%% @doc Return border style
+-spec border_style(ep_circle()) -> line_style().
+border_style(#{border_style := BS}) -> BS.
 
 
-%% @doc Return border color 
-
--spec border_color(CircleMap :: map()) -> tuple().
-
-border_color(CircleMap) ->
-   maps:get(border_color, CircleMap).
+%% @doc Return border color
+-spec border_color(ep_circle()) -> color().
+border_color(#{border_color := BC}) -> BC.
 
 
-%% @doc Return fill color 
-
--spec fill_color(CircleMap :: map()) -> tuple().
-
-fill_color(CircleMap) ->
-   maps:get(fill_color, CircleMap).
+%% @doc Return fill color
+-spec fill_color(ep_circle()) -> color().
+fill_color(#{fill_color := FC}) -> FC.
 
 
-%% @doc Return page format 
-
--spec format(CircleMap :: map()) -> tuple().
-
-format(CircleMap) ->
-   maps:get(format, CircleMap).
+%% @doc Return page format
+%% FIXME: the field does not exist in the constructor?
+-spec format(ep_circle()) -> page_format().
+format(#{format := F}) -> F.
 
 
-%% @doc Return border specifications 
-
--spec border_specs(CircleMap :: map()) -> tuple().
-
+%% @doc Return border specifications
+-spec border_specs(ep_circle()) -> {points(), line_style(), color()}.
 border_specs(CircleMap) ->
     Border = border(CircleMap),
     Style  = border_style(CircleMap),
@@ -161,86 +122,51 @@ border_specs(CircleMap) ->
 
 
 %% @doc Return border and fill colors 
-
--spec colors(CircleMap :: map()) -> tuple().
-
+-spec colors(ep_circle()) -> {color(), color()}.
 colors(CircleMap) ->
     BorderColor  = border_color(CircleMap),
     FillColor    = fill_color(CircleMap),
     {BorderColor, FillColor}.
 
 
-
-%% ***********************************************************
-%% Update circle parameters 
-%% ***********************************************************
-
-%% Border style: solid, dash, dot, dashdot
-%% Colors: white, silver, gray, black, maroon, red, fuschia,
-%%         purple, lime, green, olive, yellow, navy, blue, teal, aqua 
-
-
-%% @doc Update center coordinates 
-
--spec update_center(CenterX   :: integer(),
-                    CenterY   :: integer(),
-                    CircleMap :: map()) -> tuple().
-
+%% @doc Update center coordinates
+-spec update_center(CenterX :: points(), CenterY :: points(), ep_circle())
+                   -> ep_circle().
 update_center(CenterX, CenterY, CircleMap) ->
     maps:put(center, {CenterX, CenterY}, CircleMap).
 
 
 %% @doc Update radius 
-
--spec update_radius(Radius    :: integer(),
-                    CircleMap :: map()) -> tuple().
-
+-spec update_radius(Radius :: points(), ep_circle()) -> tuple().
 update_radius(Radius, CircleMap) ->
     maps:put(radius, Radius, CircleMap).
 
 
 %% @doc Update border 
-
--spec update_border(Border    :: integer(),
-                    CircleMap :: map()) -> tuple().
-
+-spec update_border(Border :: points(), ep_circle()) -> ep_circle().
 update_border(Border, CircleMap) ->
     maps:put(border, Border, CircleMap).
 
 
-%% @doc Update border style 
-
--spec update_border_style(BorderStyle :: integer(),
-                          CircleMap   :: map()) -> tuple().
-
+%% @doc Update border style
+-spec update_border_style(BorderStyle :: line_style(), ep_circle()) -> ep_circle().
 update_border_style(BorderStyle, CircleMap) ->
     maps:put(border_style, BorderStyle, CircleMap).
 
 
 %% @doc Update border color 
-
--spec update_border_color(BorderColor :: integer(),
-                          CircleMap   :: map()) -> tuple().
-
+-spec update_border_color(BorderColor :: color(), ep_circle()) -> ep_circle().
 update_border_color(BorderColor, CircleMap) ->
     maps:put(border_color, BorderColor, CircleMap).
 
-%% @doc Update fill color 
 
--spec update_fill_color(FillColor :: integer(),
-                        CircleMap :: map()) -> tuple().
-
+%% @doc Update fill color
+-spec update_fill_color(FillColor :: color(), ep_circle()) -> ep_circle().
 update_fill_color(FillColor, CircleMap) ->
     maps:put(fill_color, FillColor, CircleMap).
 
 
 %% @doc Update format 
-
--spec update_format(Format    :: integer(),
-                    CircleMap :: map()) -> tuple().
-
+-spec update_format(Format :: page_format(), ep_circle()) -> ep_circle().
 update_format(Format, CircleMap) ->
     maps:put(format, Format, CircleMap).
-
-
-

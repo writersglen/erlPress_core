@@ -15,9 +15,13 @@
 
 -module (ep_copyfit).
 
--export([get_tag/1, get_lines/3, move_content_cursor/2, gap/1, close_gap/4]).
-
-% -compile([export_all]).
+-export([
+    close_gap/4,
+    gap/1,
+    get_lines/3,
+    get_tag/1,
+    move_content_cursor/2
+]).
 
 
 %% @doc Given content elment, return tag 
@@ -30,21 +34,21 @@ get_tag(Xml) ->
 
 %% @doc Convert Xml to copyfit richText.
 
--spec get_lines(Tag        :: atom(),
-                Xml        :: list(),
-                PanelMap   :: map()) -> list().
+-spec get_lines(Tag      :: atom(),
+                Xml      :: list(),
+                PanelMap :: map()) -> list().
 
 get_lines(Tag, Xml, PanelMap) ->
-   case Tag of
-      ul  ->  List  = element(3, Xml),
-              get_richText(List, PanelMap);
-      ol  ->  List  = element(3, Xml),
-              get_richText(List, PanelMap);
-      cl  ->  List  = element(3, Xml),
-              get_richText(List, PanelMap);
-      br   -> break_rt();
-      _    -> ep_xml_lib:xml2lines(Xml, PanelMap)
-   end.
+    case Tag of
+        ul -> List = element(3, Xml),
+            get_richText(List, PanelMap);
+        ol -> List = element(3, Xml),
+            get_richText(List, PanelMap);
+        cl -> List = element(3, Xml),
+            get_richText(List, PanelMap);
+        br -> break_rt();
+        _ -> ep_xml_lib:xml2lines(Xml, PanelMap)
+    end.
 
 
 %% @doc get_lines/3 helper - Convert list of Xml copy elements into richText
@@ -59,7 +63,11 @@ get_richText(List, PanelMap) ->
 %% @doc get_lines/3 helper
 
 break_rt() ->
-     [{richText, [{space,3000, {face,eg_font_13,12,0,{0,0,0},true}}]}].
+    [{richText,
+      [{space, 3000,
+        {face, eg_font_13, 12, 0, {0, 0, 0}, true}
+       }]
+     }].
 
 
 %% @doc Update content cursor in panel map
@@ -89,10 +97,10 @@ gap(PanelMap) ->
 
 %% @doc copyfit/copyfit_text/3 helper
 
--spec close_gap(Gap            :: integer(),
-                Tag            :: atom(),
-                Lines          :: list(),
-                PanelMap       :: map()) -> integer().
+-spec close_gap(Gap      :: integer(),
+                Tag      :: atom(),
+                Lines    :: list(),
+                PanelMap :: map()) -> integer().
 
 close_gap(Gap, Tag, Lines, PanelMap) ->
    Needs = needs(Tag, Lines, PanelMap),
@@ -109,8 +117,3 @@ needs(Tag, Lines, PanelMap) ->
     TypeStyle = ep_panel:get_typestyle(PanelMap),
     Leading   = ep_typespec:leading(TypeStyle, Tag),
     Leading * length(Lines).
-
-
-
-
-

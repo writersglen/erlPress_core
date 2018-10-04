@@ -15,20 +15,30 @@
 
 -module (ep_job).
 
--export([create/2, flip_box/2, flip_y/2]).
--export([resource_path/1]).
--export([standard_paper_stock/0, desktop_printer_stock/0]).
--export([paper_stock/1, stock_size/1]).
--export([page_formats/0, page_format/1]).
--export([specified_page_size/1, page_positions/2]).
--export([stock_position/1]).
--export([save_job/2]).
+-export([
+    create/2,
+    desktop_printer_stock/0,
+    flip_box/2,
+    flip_y/2,
+    page_format/1,
+    page_formats/0,
+    page_positions/2,
+    paper_stock/1,
+    resource_path/1,
+    save_job/2,
+    specified_page_size/1,
+    standard_paper_stock/0,
+    stock_position/1,
+    stock_size/1
+]).
 
 -define(PAPER_STOCK, letter).
 %% -define(_PAPER_STOCK, legal).
 %% -define(PAPER_STOCK, a4).
 
 -define(PAGE_FORMAT, letter).
+
+-include("ep_erltypes.hrl").
 
 
 %%% *********************************************************      
@@ -37,8 +47,7 @@
 
 %% @doc Create project specification map
 
--spec create(Title     :: string(),
-             Publisher :: string()) -> atom().
+-spec create(Title :: iolist(), Publisher :: iolist()) -> ep_job().
 
 create(Title, Publisher) ->
    #{ title          => Title 
@@ -56,6 +65,7 @@ create(Title, Publisher) ->
    }.
 
 
+-spec flip_box(ep_job(), #{position => number(), size => number()}) -> xy().
 flip_box(Job, Map) ->
    {PaperStock, _PagePosition} = ep_job:stock_position(Job),
    Position     = maps:get(position, Map),
@@ -85,21 +95,15 @@ standard_paper_stock() ->
 
 %% @doc Return standard desktop printer paper stock 
 
--spec desktop_printer_stock() -> atom().
-
+-spec desktop_printer_stock() -> list(paper_stock()).
 
 desktop_printer_stock() ->
-   [ a4
-   , avery_labels
-   , envelope_no10
-   , legal
-   , letter
-   ].
+    [a4, avery_labels, envelope_no10, legal, letter].
 
 
 %% @doc Return paper stock 
 
--spec paper_stock(Job :: map()) -> atom().
+-spec paper_stock(Job :: ep_job()) -> paper_stock().
 
 paper_stock(Job) ->
    maps:get(paper_stock, Job).
@@ -107,7 +111,7 @@ paper_stock(Job) ->
 
 %% @doc Return paper stock dimensions in points
 
--spec stock_size(Job :: map()) -> tuple().
+-spec stock_size(Job :: ep_job()) -> {paper_stock(), xy()}.
 
 stock_size(Job) ->
    Stock = maps:get(paper_stock, Job),
@@ -124,7 +128,7 @@ page_formats() ->
 
 %% @doc Return specified page format
 
--spec page_format(Job :: map()) -> atom().
+-spec page_format(Job :: ep_job()) -> page_format().
 
 page_format(Job) ->
    maps:get(page_format, Job).
@@ -132,7 +136,7 @@ page_format(Job) ->
 
 %% @doc Return size of specified page format in points
 
--spec specified_page_size(Job :: map()) -> tuple().
+-spec specified_page_size(Job :: ep_job()) -> xywh().
 
 specified_page_size(Job) ->
    PageFormat = maps:get(page_format, Job),
@@ -141,13 +145,15 @@ specified_page_size(Job) ->
 
 %% @doc Return upper left corner of pages imposed on paper stock
 
--spec page_positions(Job :: map(), N :: integer()) -> list().
+-spec page_positions(ep_job(), N :: integer()) -> list().
 
 page_positions(Job, N) ->
    PaperStock = paper_stock(Job),
    PageFormat = page_format(Job),
    ep_impose:place_pages(PaperStock, PageFormat, N).
 
+
+-spec stock_position(ep_job()) -> {paper_stock(), xy()}.
 stock_position(Job) ->
     PaperStock = maps:get(paper_stock, Job),
     PagePositions = ep_job:page_positions(Job, 1),
@@ -155,11 +161,8 @@ stock_position(Job) ->
     {PaperStock, Position}.
 
 
-
+-spec save_job(pdf_server_pid(), file:filename()) -> ok.
 save_job(PDF, OutFile) ->
     {Serialised, _PageNo} = eg_pdf:export(PDF),
-    file:write_file(OutFile,[Serialised]),
+    file:write_file(OutFile, [Serialised]),
     eg_pdf:delete(PDF).
-
-
-

@@ -12,26 +12,24 @@
 
 %%% ==========================================================================
 
+-module(ep_cropmark).
 
--module (ep_cropmark).
+-export([
+    create/1,
+    cropmark/3
+]).
 
--export ([create/1, cropmark/3]).
-
-% -compile(export_all).
-
--include("../../include/ep.hrl").
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 %% ***********************************************************
 %% create cropmark map 
 %% ***********************************************************
 
 %% @doc Create cropmark map
-
--spec create(Position :: tuple()) -> map().
-
+-spec create(Position :: xy()) -> map().
 create(Position) ->
-   #{position    =>  Position
-    }.
+    #{position => Position}.
 
 
 %% ***********************************************************
@@ -39,12 +37,7 @@ create(Position) ->
 %% ***********************************************************
 
 %% @doc Create cropmark
-
--spec cropmark(PDF :: identifier(),
-               Job :: map(),
-               CropmarkMap :: map()) -> ok. 
-
-
+-spec cropmark(pdf_server_pid(), ep_job(), CropmarkMap :: map()) -> ok.
 cropmark(PDF, Job, CropmarkMap) ->
     {X1, Y1}    = ep_job:flip_y(Job, CropmarkMap),
     HFrom       = {(X1 - 10), Y1},  
@@ -61,4 +54,3 @@ cropmark(PDF, Job, CropmarkMap) ->
     eg_pdf:path(PDF, fill_stroke),
     eg_pdf:restore_state(PDF),
     ok.
-

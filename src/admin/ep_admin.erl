@@ -13,24 +13,23 @@
 %%% ==========================================================================
 
 
--module (ep_admin).
+-module(ep_admin).
 
 -export([config_resource_root/1, get_resource_root/0]).
 
 
 config_resource_root(RootDir) ->
-   {ok, _} = dets:open_file(resources, [{type, set}]),
-   Response = dets:insert_new(resources, {root, RootDir}),
-   dets:close(resources),
-   case Response of
-       true   -> file:make_dir(RootDir);
-       false  -> resource_root_file_exists 
-   end.
+    {ok, _} = dets:open_file(resources, [{type, set}]),
+    Response = dets:insert_new(resources, {root, RootDir}),
+    dets:close(resources),
+    case Response of
+        true -> file:make_dir(RootDir);
+        false -> resource_root_file_exists
+    end.
 
 
 get_resource_root() ->
-   {ok, Ref} = dets:open_file("./resources"),
-   Response = dets:lookup(Ref, root),
-   dets:close(Ref),
-   element(2, hd(Response)). 
-
+    {ok, Ref} = dets:open_file("./resources"),
+    Response = dets:lookup(Ref, root),
+    dets:close(Ref),
+    element(2, hd(Response)).

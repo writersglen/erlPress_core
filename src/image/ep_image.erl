@@ -15,13 +15,16 @@
 
 -module (ep_image).
 
--export ([create/3, image/3]).
--export ([position/1, image_size/1]).
--export ([update_position/2, update_image_size/2]).
--export([get_image/1]).
+-export ([
+    create/3,
+    get_image/1,
+    image/3,
+    image_size/1,
+    position/1,
+    update_image_size/2,
+    update_position/2
+]).
  
-% -compile(export_all).
-
 -define(FORMAT, letter).
 
  
@@ -75,7 +78,7 @@ image(PDF, Job, ImageMap) ->
 
 %% @doc Return position 
 
--spec position(ImageMap :: map) -> tuple().
+-spec position(ImageMap :: map()) -> tuple().
 
 position(ImageMap) ->
     maps:get(position, ImageMap).
@@ -83,7 +86,7 @@ position(ImageMap) ->
 
 %% @doc Return image size 
 
--spec image_size(ImageMap :: map) -> tuple().
+-spec image_size(ImageMap :: map()) -> tuple().
 
 image_size(ImageMap) ->
     maps:get(size, ImageMap).
@@ -125,10 +128,3 @@ update_image_size(ImageSize, ImageMap) ->
 get_image(ImageFilePath) ->
    {ok, Image} = file:read_file(ImageFilePath),
    Image.
-
-
-
-
-
-
-

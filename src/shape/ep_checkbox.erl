@@ -14,21 +14,18 @@
 
 -module (ep_checkbox).
 
--export ([create/1, checkbox/3, checked_box/3]).
+-export ([
+    checkbox/3,
+    checked_box/3,
+    create/1
+]).
 
-% -compile(export_all).
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
--include("../../include/ep.hrl").
-
-
-%% ***********************************************************
-%% create/3 
-%% ***********************************************************
 
 %% @doc Create checked box map
-
--spec create(BoxPosition :: tuple()) -> map().
-
+-spec create(BoxPosition :: xy()) -> ep_checkbox().
 create(BoxPosition) ->
    #{ box_position  => BoxPosition 
     , width         => 12
@@ -40,60 +37,41 @@ create(BoxPosition) ->
     }.
 
 
-%% ***********************************************************
-%% checkbox/3  
-%% **********************************************************
-
 %% @doc Create checkbox
-
--spec checkbox(PDF         :: identifier(),
-               Job         :: map(),
-               CheckboxMap :: map()) -> map().
-
+-spec checkbox(pdf_server_pid(), ep_job(), ep_checkbox()) -> ok.
 checkbox(PDF, Job, CheckboxMap) ->
-   {PaperStock, PagePosition} = ep_job:stock_position(Job),
-   BoxPosition  = maps:get(box_position, CheckboxMap), 
-   BoxPosition1 = ep_lib:impose_xy(BoxPosition, PagePosition, PaperStock),
-   io:format("BoxPositions1: ~p~n", [BoxPosition1]),
-   Width        = maps:get(width, CheckboxMap),
-   Height       = maps:get(height, CheckboxMap),
-   Outline      = maps:get(outline, CheckboxMap),
-   OutlineType  = maps:get(outline_type, CheckboxMap),
-   OutlineColor = maps:get(outline_color, CheckboxMap),
-   FillColor    = maps:get(fill_color, CheckboxMap),
-   eg_pdf:save_state(PDF),
-   eg_pdf:set_line_width(PDF, Outline),
-   eg_pdf:set_dash(PDF, OutlineType),
-   eg_pdf:set_stroke_color(PDF, OutlineColor),
-   eg_pdf:set_fill_color(PDF, FillColor), 
-   eg_pdf:rectangle(PDF, BoxPosition1, {Width, Height}),
-   eg_pdf:path(PDF, fill_stroke),
-   eg_pdf:restore_state(PDF),
-   ok.
+    {PaperStock, PagePosition} = ep_job:stock_position(Job),
+    BoxPosition  = maps:get(box_position, CheckboxMap),
+    BoxPosition1 = ep_lib:impose_xy(BoxPosition, PagePosition, PaperStock),
+    io:format("BoxPositions1: ~p~n", [BoxPosition1]),
+    Width        = maps:get(width, CheckboxMap),
+    Height       = maps:get(height, CheckboxMap),
+    Outline      = maps:get(outline, CheckboxMap),
+    OutlineType  = maps:get(outline_type, CheckboxMap),
+    OutlineColor = maps:get(outline_color, CheckboxMap),
+    FillColor    = maps:get(fill_color, CheckboxMap),
+    eg_pdf:save_state(PDF),
+    eg_pdf:set_line_width(PDF, Outline),
+    eg_pdf:set_dash(PDF, OutlineType),
+    eg_pdf:set_stroke_color(PDF, OutlineColor),
+    eg_pdf:set_fill_color(PDF, FillColor),
+    eg_pdf:rectangle(PDF, BoxPosition1, {Width, Height}),
+    eg_pdf:path(PDF, fill_stroke),
+    eg_pdf:restore_state(PDF),
+    ok.
 
-
-%% ***********************************************************
-%% checked_box/3  
-%% **********************************************************
 
 %% @doc Create checked box
-
--spec checked_box(PDF         :: identifier(),
-                  Job         :: map(),
-                  CheckboxMap :: map()) -> map().
-
-
+-spec checked_box(pdf_server_pid(), ep_job(), ep_checkbox()) -> ok.
 checked_box(PDF, Job, CheckboxMap) ->
-   checkbox(PDF, Job, CheckboxMap),
-   {PaperStock, PagePosition} = ep_job:stock_position(Job),
-   BoxPosition  = maps:get(box_position, CheckboxMap), 
-   {X, Y} = ep_lib:impose_xy(BoxPosition, PagePosition, PaperStock),
-   eg_pdf:begin_text(PDF),
-   eg_pdf:set_text_pos(PDF, X + 2, Y + 2),
-   eg_pdf:set_font(PDF, "Helvetica-Bold", 12),
-   eg_pdf:set_fill_color(PDF, black),
-   eg_pdf:text(PDF, "X"),
-   eg_pdf:end_text(PDF),
-   ok.
-
-
+    checkbox(PDF, Job, CheckboxMap),
+    {PaperStock, PagePosition} = ep_job:stock_position(Job),
+    BoxPosition = maps:get(box_position, CheckboxMap),
+    {X, Y} = ep_lib:impose_xy(BoxPosition, PagePosition, PaperStock),
+    eg_pdf:begin_text(PDF),
+    eg_pdf:set_text_pos(PDF, X + 2, Y + 2),
+    eg_pdf:set_font(PDF, "Helvetica-Bold", 12),
+    eg_pdf:set_fill_color(PDF, black),
+    eg_pdf:text(PDF, "X"),
+    eg_pdf:end_text(PDF),
+    ok.

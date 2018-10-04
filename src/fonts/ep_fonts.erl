@@ -12,8 +12,6 @@
 
 %%% ==========================================================================
 
-
-
 -module (ep_fonts).
 
 -export ([catalog/2]).
@@ -25,8 +23,7 @@
 
 
 catalog(PDF, Position) ->
-
-    LineHeight = 24, 
+    LineHeight = 24,
 
     ep_text:text_lines(PDF, Position, LineHeight),
 
@@ -58,7 +55,7 @@ catalog(PDF, Position) ->
     ep_text:next_text_line(PDF, "abcdefghijklmnopqrstuvwxyz", "Symbol", 18),
     ep_text:next_text_line(PDF, "0123456789", "Symbol", 18),
     ep_text:next_text_line(PDF, "`~!@#$%^&*()-_=+[{]}\|;:',<.>/?", "Symbol", 18),
-    
+
 
     eg_pdf:textbr(PDF, " "),
 

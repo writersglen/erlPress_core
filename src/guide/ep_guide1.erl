@@ -14,14 +14,13 @@
 %%% ==========================================================================
 
 
-
 -module(ep_guide1).
 
 -export([run/0]).
 
 -define(OUTFILE_STRING, "under construction").
 
-run()->
+run() ->
     Job = ep_job:create("erlPress: Programmer's Guide Pt 1", "LRP"),
 
     OutFile = "./pdf/galleys/" ++ ?OUTFILE_STRING ++ ".pdf",
@@ -32,10 +31,10 @@ run()->
     ep_pagination:first_page(PDF),  % ****** Page1
 
     % ********** Page 1 makeup
-    
+
 
     ep_pagination:next_page(PDF),    % ****** Page 2
-    
+
     % ********** Page 2 makeup
 
 
@@ -57,4 +56,4 @@ run()->
 
     % ********** Page 6 makeup 
 
-ep_job:save_job(PDF, OutFile).
+    ep_job:save_job(PDF, OutFile).

@@ -18,10 +18,12 @@
 
 -module (ep_article).
 
-% -export ([  ]). 
-
--compile(export_all).
-
+-export([
+    article/2,
+    beads/3,
+    run/0,
+    top_off/6
+]).
 
 %%% ==========================================================================
 %%% ==========================================================================
@@ -61,11 +63,10 @@ run() ->
 
 
 %% @doc  Copyfit article that spans list of panels (Beads)
-
+%% @private
 -spec article(Paste :: list(),
               XML   :: list(),
               Beads :: list()) -> ok | no_space.
-
 
 article(Paste, [], []) ->
    Paste; 
@@ -121,7 +122,7 @@ beads(Paste, XML, Beads) ->
 %%            Gap is space between last rich_text copy element and
 %%            the bottom of the panel. XML is a list copy elements; 
 %%            e.g. Xml, PanelMap specifies a panel. 
-
+%% @private
 -spec panel(Paste      :: list(),
             Gap        :: integer(),
             XML        :: list(),
@@ -213,6 +214,3 @@ top_off(Paste, Tag, Lines, Gap, Xml, PanelMap) ->
 %% ep_paste_lib:paste/4
 
 %% Need to explicate Cost parameter
-
-   
-

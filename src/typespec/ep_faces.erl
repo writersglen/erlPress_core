@@ -13,28 +13,30 @@
 
 %%% ==========================================================================
 
-
 -module (ep_faces).
 
-% -export ([]).
--compile([export_all]).
+-export([
+    courier/1, courier_oblique/1, courier_bold/1, courier_boldOblique/1,
+    default/1,
+    helvetica/1, helvetica_oblique/1, helvetica_bold/1, helvetica_boldOblique/1,
+    symbol/1,
+    times/1, times_italic/1, times_bold/1, times_boldItalic/1,
+    zapfDingbats/1
+]).
+
+-include("ep_erltypes.hrl").
 
 -define(COLOR, black).
 
-%% Colors: white, silver, gray, black, maroon, red, fuschia,
-%%         purple, lime, green, olive, yellow, navy, blue, teal, aqua 
-%%         | {R,G,B}
 
-%% ***********************************************************
-%% default 
-%% ***********************************************************
-
+-spec default(points()) -> ep_font_face().
 default(FontSize) ->
     FaceMap = ep_face:create("Times-Roman", FontSize),
     ep_face:make_face(FaceMap).
 
+
 %% ***********************************************************
-%% Times-Roman
+%% Times
 %% ***********************************************************
 
 times(FontSize) ->
@@ -109,5 +111,3 @@ symbol(FontSize) ->
 zapfDingbats(FontSize) ->
     FaceMap = ep_face:create("ZapfDingbats", FontSize),
     ep_face:make_face(FaceMap).
-
-

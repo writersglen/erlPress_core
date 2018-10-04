@@ -12,33 +12,28 @@
 
 %%% ==========================================================================
 
+-module(ep_lines).
 
--module (ep_lines).
+-export([
+    create/1,
+    lines/3
+]).
 
--export ([create/1, lines/3]).
-
-% -compile(export_all).
-
--include("../../include/ep.hrl").
-
-%% ***********************************************************
-%% create 
-%% ***********************************************************
+-include("ep.hrl").
+-include("ep_erltypes.hrl").
 
 
+-spec create(list(ep_line())) -> ep_line_list().
 create(LineList) ->
-    #{ lines   => LineList
-     }.
+    #{lines   => LineList
+    }.
 
 
-%% ***********************************************************
-%% lines/3  
-%% ***********************************************************
-
+-spec lines(pdf_server_pid(), ep_job(), ep_line_list()) -> any().
 lines(PDF, Job, LinesMap) ->
     {PaperStock, PagePosition} = ep_job:stock_position(Job),
-    LineList    = maps:get(lines, LinesMap),
-    LineList1   = ep_lib:impose_lines(LineList, PagePosition, PaperStock),
+    LineList = maps:get(lines, LinesMap),
+    LineList1 = ep_lib:impose_lines(LineList, PagePosition, PaperStock),
     eg_pdf:save_state(PDF),
     eg_pdf:set_line_width(PDF, 1),
     eg_pdf:set_dash(PDF, solid),
@@ -47,4 +42,3 @@ lines(PDF, Job, LinesMap) ->
     eg_pdf:lines(PDF, LineList1),
     eg_pdf:path(PDF, fill_stroke),
     eg_pdf:restore_state(PDF).
-
